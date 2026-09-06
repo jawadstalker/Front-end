@@ -70,25 +70,36 @@ export default function App() {
               AUTH
           ===================================================== */}
 
+          {/* صفحه اصلی ورود */}
           <Route
             path="/"
             element={<Login />}
           />
 
+          {/* مسیر استاندارد صفحه ورود */}
+          <Route
+            path="/login"
+            element={<Login />}
+          />
+
+          {/* ثبت نام */}
           <Route
             path="/register"
             element={<Register />}
           />
 
+          {/* ورود با OTP */}
           <Route
             path="/otp-login"
             element={<OTPLogin />}
           />
 
+          {/* تایید OTP */}
           <Route
             path="/verify-otp"
             element={<VerifyOTP />}
           />
+
 
           {/* =====================================================
               GENERAL
@@ -107,6 +118,7 @@ export default function App() {
               </Layout>
             }
           />
+
 
           {/* =====================================================
               VOLUNTEER
@@ -129,6 +141,7 @@ export default function App() {
               </Layout>
             }
           />
+
 
           {/* =====================================================
               COORDINATOR
@@ -188,6 +201,7 @@ export default function App() {
               </CoordinatorLayout>
             }
           />
+
 
           {/* =====================================================
               ADMIN
@@ -306,7 +320,10 @@ export default function App() {
         </Routes>
       </BrowserRouter>
 
-      {/* Toast */}
+
+      {/* =====================================================
+          TOAST
+      ===================================================== */}
 
       <Toaster
         position="top-center"
