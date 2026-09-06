@@ -1,0 +1,20 @@
+@font-face {
+    font-family: "Estedad";
+    src: url("./assets/font/Estedad-Medium.ttf") format("truetype");
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+  }
+  
+  html,
+  body,
+  #root {
+    margin: 0;
+    width: 100%;
+    min-height: 100%;
+    font-family: "Estedad", sans-serif;
+  }
+  
+  * {
+    font-family: "Estedad", sans-serif;
+  }
