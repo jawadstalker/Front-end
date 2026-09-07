@@ -28,10 +28,8 @@ import {
 } from "@mui/icons-material";
 
 import { useNavigate } from "react-router-dom";
-
 import api from "../../../api/axios";
 import { toast } from "react-hot-toast";
-
 
 export default function Register() {
   const navigate = useNavigate();
@@ -44,11 +42,9 @@ export default function Register() {
   });
 
   const [loading, setLoading] = useState(false);
-
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] =
     useState(false);
-
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -58,7 +54,6 @@ export default function Register() {
       [name]: value,
     }));
   };
-
 
   const handleRegister = async () => {
     if (
@@ -86,7 +81,6 @@ export default function Register() {
       });
 
       toast.success("ثبت نام با موفقیت انجام شد");
-
       navigate("/login");
     } catch (error) {
       toast.error(
@@ -98,13 +92,11 @@ export default function Register() {
     }
   };
 
-
   const handleKeyDown = (event) => {
     if (event.key === "Enter" && !loading) {
       handleRegister();
     }
   };
-
 
   const passwordMismatch =
     form.confirm_password.length > 0 &&
@@ -113,7 +105,6 @@ export default function Register() {
   const passwordMatched =
     form.confirm_password.length > 0 &&
     form.password === form.confirm_password;
-
 
   const features = [
     {
@@ -133,7 +124,6 @@ export default function Register() {
     },
   ];
 
-
   const fieldSx = {
     mb: 1.6,
 
@@ -142,17 +132,22 @@ export default function Register() {
       borderRadius: 2.5,
       backgroundColor: "rgba(255,255,255,0.025)",
       color: "#fff",
+
       transition:
         "border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease",
+
       "& fieldset": {
         borderColor: "rgba(255,255,255,0.10)",
       },
+
       "&:hover": {
         backgroundColor: "rgba(255,255,255,0.035)",
       },
+
       "&:hover fieldset": {
         borderColor: "rgba(45,212,191,0.45)",
       },
+
       "&.Mui-focused": {
         backgroundColor: "rgba(20,184,166,0.035)",
         boxShadow: "0 0 0 3px rgba(20,184,166,0.06)",
@@ -167,9 +162,7 @@ export default function Register() {
     "& .MuiInputLabel-root": {
       right: 14,
       left: "auto",
-
       color: "rgba(255,255,255,0.42)",
-
       transformOrigin: "top right",
 
       "&.Mui-focused": {
@@ -181,13 +174,14 @@ export default function Register() {
       transformOrigin: "top right",
     },
 
+    // فاصله مناسب متن داخل فیلد از طرفین
     "& .MuiInputBase-input": {
-      padding: 2,
+      padding: "16px 14px",
       textAlign: "right",
       color: "#fff",
+      boxSizing: "border-box",
 
       "&::placeholder": {
-
         color: "rgba(255,255,255,0.25)",
       },
     },
@@ -197,17 +191,14 @@ export default function Register() {
     },
   };
 
-
   return (
     <Box
       dir="rtl"
       sx={{
         position: "fixed",
         inset: 0,
-
         width: "100%",
         height: "100dvh",
-
         overflow: "hidden",
 
         display: "flex",
@@ -230,7 +221,6 @@ export default function Register() {
           "radial-gradient(circle at 15% 15%, rgba(20,184,166,0.13), transparent 28%), radial-gradient(circle at 85% 85%, rgba(59,130,246,0.11), transparent 30%), #07111f",
       }}
     >
-
       {/* =====================================================
           BACKGROUND DECORATIONS
       ====================================================== */}
@@ -238,12 +228,9 @@ export default function Register() {
       <Box
         sx={{
           position: "absolute",
-
           width: 360,
           height: 360,
-
           borderRadius: "50%",
-
           top: -190,
           right: -130,
 
@@ -257,12 +244,9 @@ export default function Register() {
       <Box
         sx={{
           position: "absolute",
-
           width: 420,
           height: 420,
-
           borderRadius: "50%",
-
           bottom: -250,
           left: -170,
 
@@ -272,7 +256,6 @@ export default function Register() {
           pointerEvents: "none",
         }}
       />
-
 
       {/* =====================================================
           MAIN CARD
@@ -305,9 +288,7 @@ export default function Register() {
           },
 
           minHeight: 0,
-
           overflow: "hidden",
-
           boxSizing: "border-box",
 
           borderRadius: {
@@ -327,8 +308,6 @@ export default function Register() {
           backdropFilter: "blur(20px)",
         }}
       >
-
-
         {/* =====================================================
             LEFT SIDE — BRAND / FEATURES
         ====================================================== */}
@@ -345,9 +324,7 @@ export default function Register() {
 
             minWidth: 0,
             minHeight: 0,
-
             overflow: "hidden",
-
             boxSizing: "border-box",
 
             p: {
@@ -362,9 +339,7 @@ export default function Register() {
               "linear-gradient(145deg, rgba(13,148,136,0.16), rgba(8,25,40,0.4) 60%, rgba(15,23,42,0.55))",
           }}
         >
-
           <Box>
-
             {/* Logo */}
 
             <Stack
@@ -372,12 +347,10 @@ export default function Register() {
               spacing={1.5}
               alignItems="center"
             >
-
               <Box
                 sx={{
                   width: 50,
                   height: 50,
-
                   flexShrink: 0,
 
                   display: "flex",
@@ -401,67 +374,46 @@ export default function Register() {
                 />
               </Box>
 
-
               <Box>
-
                 <Typography
                   sx={{
                     paddingRight: 1,
-
                     color: "#fff",
-
                     fontSize: 19,
-
                     fontWeight: 900,
-
                     lineHeight: 1.2,
                   }}
                 >
                   سامانه امداد
                 </Typography>
 
-
                 <Typography
                   sx={{
                     paddingRight: 1,
-
                     color:
                       "rgba(255,255,255,0.38)",
-
                     fontSize: 8.5,
-
                     fontWeight: 800,
-
                     letterSpacing: 1.2,
-
                     mt: 0.4,
-
                     whiteSpace: "nowrap",
                   }}
                 >
                   VOLUNTEER MANAGEMENT PLATFORM
                 </Typography>
-
               </Box>
-
             </Stack>
-
 
             {/* Heading */}
 
             <Box sx={{ mt: 6 }}>
-
               <Box
                 sx={{
                   display: "inline-flex",
-
                   alignItems: "center",
-
                   gap: 0.8,
-
                   px: 1.4,
                   py: 0.6,
-
                   borderRadius: 10,
 
                   background:
@@ -471,7 +423,6 @@ export default function Register() {
                     "1px solid rgba(20,184,166,0.16)",
                 }}
               >
-
                 <PersonAddRounded
                   sx={{
                     color: "#2dd4bf",
@@ -482,22 +433,17 @@ export default function Register() {
                 <Typography
                   sx={{
                     color: "#5eead4",
-
                     fontSize: 11,
-
                     fontWeight: 800,
                   }}
                 >
                   شروع همکاری
                 </Typography>
-
               </Box>
-
 
               <Typography
                 sx={{
                   mt: 2.2,
-
                   color: "#fff",
 
                   fontSize: {
@@ -506,9 +452,7 @@ export default function Register() {
                   },
 
                   fontWeight: 900,
-
                   lineHeight: 1.35,
-
                   letterSpacing: "-0.8px",
                 }}
               >
@@ -525,18 +469,15 @@ export default function Register() {
                 </Box>
               </Typography>
 
-
               <Typography
                 sx={{
                   mt: 2.2,
-
                   maxWidth: 400,
 
                   color:
                     "rgba(255,255,255,0.48)",
 
                   fontSize: 13,
-
                   lineHeight: 1.95,
                 }}
               >
@@ -545,9 +486,7 @@ export default function Register() {
                 مأموریت‌ها و فعالیت‌های امدادی دسترسی
                 داشته باشید.
               </Typography>
-
             </Box>
-
 
             {/* Features */}
 
@@ -557,19 +496,14 @@ export default function Register() {
                 mt: 4,
               }}
             >
-
               {features.map((item) => (
                 <Box
                   key={item.title}
                   sx={{
                     display: "flex",
-
                     alignItems: "center",
-
                     gap: 1.7,
-
                     p: 1.35,
-
                     borderRadius: 2.7,
 
                     background:
@@ -590,18 +524,14 @@ export default function Register() {
                     },
                   }}
                 >
-
                   <Box
                     sx={{
                       width: 38,
                       height: 38,
-
                       flexShrink: 0,
 
                       display: "flex",
-
                       alignItems: "center",
-
                       justifyContent: "center",
 
                       borderRadius: 2,
@@ -622,62 +552,47 @@ export default function Register() {
                     )}
                   </Box>
 
-
                   <Box
                     sx={{
                       minWidth: 0,
                     }}
                   >
-
                     <Typography
                       sx={{
                         color: "#fff",
-
                         fontSize: 12,
-
                         fontWeight: 800,
                       }}
                     >
                       {item.title}
                     </Typography>
 
-
                     <Typography
                       sx={{
                         color:
                           "rgba(255,255,255,0.37)",
-
                         fontSize: 10,
-
                         mt: 0.3,
                       }}
                     >
                       {item.text}
                     </Typography>
-
                   </Box>
-
                 </Box>
               ))}
-
             </Stack>
-
           </Box>
-
 
           <Typography
             sx={{
               color:
                 "rgba(255,255,255,0.22)",
-
               fontSize: 9.5,
             }}
           >
             سامانه مدیریت و هماهنگی نیروهای امدادی
           </Typography>
-
         </Box>
-
 
         {/* =====================================================
             RIGHT SIDE — REGISTER
@@ -687,18 +602,16 @@ export default function Register() {
           sx={{
             minWidth: 0,
             minHeight: 0,
-
             height: "100%",
 
             boxSizing: "border-box",
 
             display: "flex",
-
             alignItems: "center",
-
             justifyContent: "center",
 
-            overflow: "auto",
+            // حذف اسکرول داخلی
+            overflow: "hidden",
 
             px: {
               xs: 2.5,
@@ -717,17 +630,13 @@ export default function Register() {
               "linear-gradient(180deg, rgba(255,255,255,0.028), rgba(255,255,255,0.012))",
           }}
         >
-
           <Box
             sx={{
               width: "100%",
-
               maxWidth: 430,
-
               minWidth: 0,
             }}
           >
-
             {/* Mobile Logo */}
 
             <Stack
@@ -744,16 +653,13 @@ export default function Register() {
                 mb: 3,
               }}
             >
-
               <Box
                 sx={{
                   width: 43,
                   height: 43,
 
                   display: "flex",
-
                   alignItems: "center",
-
                   justifyContent: "center",
 
                   borderRadius: 2.2,
@@ -770,21 +676,16 @@ export default function Register() {
                 />
               </Box>
 
-
               <Typography
                 sx={{
                   color: "#fff",
-
                   fontSize: 19,
-
                   fontWeight: 900,
                 }}
               >
                 سامانه امداد
               </Typography>
-
             </Stack>
-
 
             {/* Register Header */}
 
@@ -793,16 +694,13 @@ export default function Register() {
                 mb: 2.7,
               }}
             >
-
               <Box
                 sx={{
                   width: 52,
                   height: 52,
 
                   display: "flex",
-
                   alignItems: "center",
-
                   justifyContent: "center",
 
                   borderRadius: 2.7,
@@ -819,12 +717,10 @@ export default function Register() {
                 <PersonAddRounded
                   sx={{
                     color: "#2dd4bf",
-
                     fontSize: 27,
                   }}
                 />
               </Box>
-
 
               <Typography
                 sx={{
@@ -836,13 +732,11 @@ export default function Register() {
                   },
 
                   fontWeight: 900,
-
                   lineHeight: 1.35,
                 }}
               >
                 ایجاد حساب کاربری
               </Typography>
-
 
               <Typography
                 sx={{
@@ -850,44 +744,30 @@ export default function Register() {
                     "rgba(255,255,255,0.43)",
 
                   fontSize: 12.5,
-
                   lineHeight: 1.9,
-
                   mt: 0.8,
-
                   maxWidth: 390,
                 }}
               >
                 اطلاعات خود را وارد کنید تا حساب شما
                 در سامانه امداد ایجاد شود.
               </Typography>
-
             </Box>
-
 
             {/* Form */}
 
             <Stack spacing={0}>
-
               {/* Full Name */}
 
               <TextField
                 fullWidth
-
                 label="نام و نام خانوادگی"
-
                 name="full_name"
-
                 value={form.full_name}
-
                 onChange={handleChange}
-
                 autoComplete="name"
-
                 variant="outlined"
-
                 sx={fieldSx}
-
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -901,28 +781,18 @@ export default function Register() {
                 }}
               />
 
-
               {/* Phone */}
 
               <TextField
                 fullWidth
-
                 label="شماره موبایل"
-
                 name="phone"
-
                 value={form.phone}
-
                 onChange={handleChange}
-
                 autoComplete="tel"
-
                 inputMode="tel"
-
                 variant="outlined"
-
                 sx={fieldSx}
-
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -936,32 +806,22 @@ export default function Register() {
                 }}
               />
 
-
               {/* Password */}
 
               <TextField
                 fullWidth
-
                 label="رمز عبور"
-
                 name="password"
-
                 type={
                   showPassword
                     ? "text"
                     : "password"
                 }
-
                 value={form.password}
-
                 onChange={handleChange}
-
                 autoComplete="new-password"
-
                 variant="outlined"
-
                 sx={fieldSx}
-
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -1010,38 +870,27 @@ export default function Register() {
                 }}
               />
 
-
               {/* Confirm Password */}
 
               <TextField
                 fullWidth
-
                 label="تکرار رمز عبور"
-
                 name="confirm_password"
-
                 type={
                   showConfirmPassword
                     ? "text"
                     : "password"
                 }
-
                 value={form.confirm_password}
-
                 onChange={handleChange}
-
                 autoComplete="new-password"
-
                 variant="outlined"
-
                 error={passwordMismatch}
-
                 helperText={
                   passwordMismatch
                     ? "رمز عبور یکسان نیست"
                     : " "
                 }
-
                 sx={{
                   ...fieldSx,
 
@@ -1056,7 +905,6 @@ export default function Register() {
                     marginRight: 1,
                   },
                 }}
-
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -1109,30 +957,22 @@ export default function Register() {
                   ),
                 }}
               />
-
             </Stack>
-
 
             {/* Password Hint */}
 
             <Box
               sx={{
                 display: "flex",
-
                 alignItems: "center",
-
                 gap: 0.8,
-
                 mt: -0.4,
-
                 mb: 1.5,
               }}
             >
-
               <SecurityRounded
                 sx={{
                   fontSize: 15,
-
                   color:
                     "rgba(45,212,191,0.65)",
                 }}
@@ -1142,31 +982,22 @@ export default function Register() {
                 sx={{
                   color:
                     "rgba(255,255,255,0.32)",
-
                   fontSize: 10.5,
-
                   lineHeight: 1.7,
                 }}
               >
                 برای امنیت بیشتر از رمز عبور قوی استفاده کنید.
               </Typography>
-
             </Box>
-
 
             {/* Register Button */}
 
             <Button
               fullWidth
-
               variant="contained"
-
               size="large"
-
               disabled={loading}
-
               onClick={handleRegister}
-
               startIcon={
                 loading ? (
                   <CircularProgress
@@ -1177,18 +1008,13 @@ export default function Register() {
                   <PersonAddRounded />
                 )
               }
-
               sx={{
                 height: 54,
-
                 borderRadius: 2.5,
-
                 mt: 0.5,
 
                 fontSize: "0.95rem",
-
                 fontWeight: 800,
-
                 color: "#fff",
 
                 background:
@@ -1232,25 +1058,19 @@ export default function Register() {
                 : "ایجاد حساب کاربری"}
             </Button>
 
-
             {/* Divider */}
 
             <Box
               sx={{
                 display: "flex",
-
                 alignItems: "center",
-
                 gap: 1.5,
-
                 my: 2.4,
               }}
             >
-
               <Divider
                 sx={{
                   flex: 1,
-
                   borderColor:
                     "rgba(255,255,255,0.07)",
                 }}
@@ -1260,9 +1080,7 @@ export default function Register() {
                 sx={{
                   color:
                     "rgba(255,255,255,0.27)",
-
                   fontSize: 10.5,
-
                   whiteSpace: "nowrap",
                 }}
               >
@@ -1272,35 +1090,26 @@ export default function Register() {
               <Divider
                 sx={{
                   flex: 1,
-
                   borderColor:
                     "rgba(255,255,255,0.07)",
                 }}
               />
-
             </Box>
-
 
             {/* Login Button */}
 
             <Button
               fullWidth
-
               variant="outlined"
-
               size="large"
-
               onClick={() =>
                 navigate("/login")
               }
-
               endIcon={
                 <ArrowBackRounded />
               }
-
               sx={{
                 height: 50,
-
                 borderRadius: 2.5,
 
                 color: "#5eead4",
@@ -1312,7 +1121,6 @@ export default function Register() {
                   "rgba(20,184,166,0.025)",
 
                 fontSize: "0.88rem",
-
                 fontWeight: 700,
 
                 transition:
@@ -1333,7 +1141,6 @@ export default function Register() {
               ورود به حساب کاربری
             </Button>
 
-
             {/* Security Footer */}
 
             <Stack
@@ -1345,11 +1152,9 @@ export default function Register() {
                 mt: 2,
               }}
             >
-
               <SecurityRounded
                 sx={{
                   fontSize: 14,
-
                   color:
                     "rgba(45,212,191,0.45)",
                 }}
@@ -1359,23 +1164,16 @@ export default function Register() {
                 sx={{
                   color:
                     "rgba(255,255,255,0.22)",
-
                   fontSize: 9.5,
-
                   textAlign: "center",
                 }}
               >
                 اطلاعات شما در محیطی امن نگهداری می‌شود
               </Typography>
-
             </Stack>
-
           </Box>
-
         </Box>
-
       </Box>
-
     </Box>
   );
 }
