@@ -46,7 +46,7 @@ export default function Dashboard() {
   return (
     <Box dir="rtl">
       <Typography sx={{ color: colors.text, fontSize: { xs: 22, sm: 26 }, fontWeight: 900, mb: 0.5 }}>
-        داشبورد مدیریت 👨‍💼
+        داشبورد مدیریت 
       </Typography>
       <Typography sx={{ color: colors.muted, fontSize: 13, mb: 4 }}>
         نمای کلی از وضعیت داوطلبان، بحران‌ها و مأموریت‌های سامانه
@@ -82,6 +82,7 @@ export default function Dashboard() {
               height: 50,
               borderRadius: 2.5,
               px: 3,
+              gap: 1,
               fontWeight: 800,
               textTransform: "none",
               background: gradient,
@@ -101,6 +102,7 @@ export default function Dashboard() {
               height: 50,
               borderRadius: 2.5,
               px: 3,
+              gap: 1,
               fontWeight: 700,
               textTransform: "none",
               color: colors.primary,
@@ -121,6 +123,7 @@ export default function Dashboard() {
               height: 50,
               borderRadius: 2.5,
               px: 3,
+              gap: 1,
               fontWeight: 700,
               textTransform: "none",
               color: colors.primary,

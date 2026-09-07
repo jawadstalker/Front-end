@@ -117,6 +117,7 @@ export default function Missions() {
             height: 46,
             borderRadius: 2.5,
             px: 3,
+            gap: 1,
             fontWeight: 800,
             textTransform: "none",
             background: gradient,

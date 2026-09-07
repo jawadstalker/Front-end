@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
-
 import { Box, Paper, Typography, TextField, MenuItem, Button, CircularProgress } from "@mui/material";
 import { Save, AddTaskRounded } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-
 import api from "../../api/axios";
 import toast from "react-hot-toast";
 import { colors, gradient, fieldSx } from "../../theme/colors";
@@ -85,7 +83,7 @@ export default function CreateMission() {
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      toast.success("مأموریت با موفقیت ایجاد شد ✅");
+      toast.success("مأموریت با موفقیت ایجاد شد ");
       navigate("/admin/missions");
     } catch (error) {
       console.log("Create Mission Error:", error.response?.data || error);
@@ -102,6 +100,14 @@ export default function CreateMission() {
       </Box>
     );
   }
+
+  const fieldSxWithoutIcon = {
+    ...fieldSx,
+    "& .MuiInputBase-input": {
+      ...fieldSx["& .MuiInputBase-input"],
+      paddingRight: 2,
+    },
+  };
 
   return (
     <Box dir="rtl" sx={{ maxWidth: 720, mx: "auto" }}>
@@ -131,7 +137,10 @@ export default function CreateMission() {
             onChange={handleChange}
             required
             fullWidth
-            sx={fieldSx}
+            sx={fieldSxWithoutIcon}
+            SelectProps={{
+              IconComponent: null,
+            }}
           >
             {disasters
               .filter((disaster) => disaster.status === "active")
@@ -178,7 +187,9 @@ export default function CreateMission() {
             elevation={0}
             sx={{ p: 2, borderRadius: 3, background: "#EFF6FF", border: "1px solid #DBEAFE" }}
           >
-            <Typography sx={{ color: colors.primary, fontWeight: 800, fontSize: 12.5, mb: 1 }}>مثال</Typography>
+            <Typography sx={{ color: colors.primary, fontWeight: 800, fontSize: 12.5, mb: 1 }}>
+              مثال
+            </Typography>
 
             <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
               {["نجات", "کمک‌های اولیه", "برق"].map((s) => (
@@ -205,9 +216,24 @@ export default function CreateMission() {
             </Typography>
           </Paper>
 
-          <TextField label="موقعیت" name="location" value={form.location} onChange={handleChange} fullWidth sx={fieldSx} />
+          <TextField
+            label="موقعیت"
+            name="location"
+            value={form.location}
+            onChange={handleChange}
+            fullWidth
+            sx={fieldSx}
+          />
 
-          <TextField select label="اولویت" name="priority" value={form.priority} onChange={handleChange} fullWidth sx={fieldSx}>
+          <TextField
+            select
+            label="اولویت"
+            name="priority"
+            value={form.priority}
+            onChange={handleChange}
+            fullWidth
+            sx={fieldSx}
+          >
             <MenuItem value="low">کم</MenuItem>
             <MenuItem value="medium">متوسط</MenuItem>
             <MenuItem value="high">زیاد</MenuItem>
@@ -233,6 +259,7 @@ export default function CreateMission() {
             disabled={saving}
             fullWidth
             sx={{
+              gap: 1,
               height: 52,
               borderRadius: 2.5,
               fontWeight: 800,
