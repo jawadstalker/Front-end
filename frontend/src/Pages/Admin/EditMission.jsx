@@ -201,6 +201,7 @@ export default function EditMission() {
               borderRadius: 2.5,
               fontWeight: 800,
               fontSize: 14,
+              gap: 1,
               textTransform: "none",
               background: gradient,
               boxShadow: "0 12px 28px rgba(37,99,235,.22)",

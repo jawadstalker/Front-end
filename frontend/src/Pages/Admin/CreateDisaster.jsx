@@ -111,6 +111,7 @@ export default function CreateDisaster() {
               height: 52,
               borderRadius: 2.5,
               mt: 0.5,
+              gap: 1,
               fontWeight: 800,
               fontSize: 14,
               textTransform: "none",
