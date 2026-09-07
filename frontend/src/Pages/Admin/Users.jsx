@@ -1,4 +1,6 @@
+
 import React, { useEffect, useState } from "react";
+
 import axios from "../../api/axios";
 
 import {
@@ -24,6 +26,7 @@ import {
   Menu,
   Divider,
   Avatar,
+  OutlinedInput,
 } from "@mui/material";
 
 import toast from "react-hot-toast";
@@ -34,21 +37,16 @@ export default function Users() {
   const [changingId, setChangingId] = useState(null);
 
   const [role, setRole] = useState("all");
-
   const [search, setSearch] = useState("");
   const [activeFilter, setActiveFilter] = useState("all");
-  const [availabilityFilter, setAvailabilityFilter] =
-    useState("all");
+  const [availabilityFilter, setAvailabilityFilter] = useState("all");
 
   // =========================================================
   // منوی مهارت‌ها
   // =========================================================
 
-  const [skillsMenuAnchor, setSkillsMenuAnchor] =
-    useState(null);
-
-  const [skillsMenuUser, setSkillsMenuUser] =
-    useState(null);
+  const [skillsMenuAnchor, setSkillsMenuAnchor] = useState(null);
+  const [skillsMenuUser, setSkillsMenuUser] = useState(null);
 
   const skillsMenuOpen = Boolean(skillsMenuAnchor);
 
@@ -83,8 +81,7 @@ export default function Users() {
       console.log(error);
 
       toast.error(
-        error.response?.data?.detail ||
-          "خطا در دریافت کاربران"
+        error.response?.data?.detail || "خطا در دریافت کاربران"
       );
     } finally {
       setLoading(false);
@@ -104,14 +101,12 @@ export default function Users() {
       return [];
     }
 
-    // اگر بک‌اند آرایه فرستاده باشد
     if (Array.isArray(skills)) {
       return skills
         .map((skill) => String(skill).trim())
         .filter(Boolean);
     }
 
-    // اگر JSON string باشد
     if (typeof skills === "string") {
       try {
         const parsed = JSON.parse(skills);
@@ -124,9 +119,6 @@ export default function Users() {
 
         return [];
       } catch (error) {
-        // پشتیبانی از داده‌های قدیمی:
-        // "پزشکی, رانندگی, کمک‌های اولیه"
-
         return skills
           .split(",")
           .map((skill) => skill.trim())
@@ -154,9 +146,7 @@ export default function Users() {
 
       setUsers((prev) =>
         prev.map((item) =>
-          item.id === user.id
-            ? response.data
-            : item
+          item.id === user.id ? response.data : item
         )
       );
 
@@ -192,28 +182,19 @@ export default function Users() {
         }
       );
 
-      if (
-        role !== "all" &&
-        newRole !== role
-      ) {
+      if (role !== "all" && newRole !== role) {
         setUsers((prev) =>
-          prev.filter(
-            (item) => item.id !== user.id
-          )
+          prev.filter((item) => item.id !== user.id)
         );
       } else {
         setUsers((prev) =>
           prev.map((item) =>
-            item.id === user.id
-              ? response.data
-              : item
+            item.id === user.id ? response.data : item
           )
         );
       }
 
-      toast.success(
-        "نقش کاربر تغییر کرد ✅"
-      );
+      toast.success("نقش کاربر تغییر کرد ✅");
     } catch (error) {
       console.log(error);
 
@@ -242,19 +223,13 @@ export default function Users() {
     try {
       setChangingId(user.id);
 
-      await axios.delete(
-        `/users/${user.id}`
-      );
+      await axios.delete(`/users/${user.id}`);
 
       setUsers((prev) =>
-        prev.filter(
-          (item) => item.id !== user.id
-        )
+        prev.filter((item) => item.id !== user.id)
       );
 
-      toast.success(
-        "کاربر با موفقیت حذف شد"
-      );
+      toast.success("کاربر با موفقیت حذف شد");
     } catch (error) {
       console.log(error);
 
@@ -272,45 +247,25 @@ export default function Users() {
   // =========================================================
 
   const filteredUsers = users.filter((user) => {
-    const searchText = search
-      .trim()
-      .toLowerCase();
-
-    // -----------------------------
-    // اطلاعات اصلی کاربر
-    // -----------------------------
+    const searchText = search.trim().toLowerCase();
 
     const fullName =
-      user.full_name
-        ?.toLowerCase() || "";
+      user.full_name?.toLowerCase() || "";
 
     const phone =
-      user.phone
-        ?.toLowerCase() || "";
+      user.phone?.toLowerCase() || "";
 
     const city =
-      user.city
-        ?.toLowerCase() || "";
+      user.city?.toLowerCase() || "";
 
     const region =
-      user.region
-        ?.toLowerCase() || "";
+      user.region?.toLowerCase() || "";
 
-    // -----------------------------
-    // مهارت‌های کاربر
-    // -----------------------------
-
-    const userSkills = getSkills(
-      user.skills
-    );
+    const userSkills = getSkills(user.skills);
 
     const skillsText = userSkills
       .join(" ")
       .toLowerCase();
-
-    // -----------------------------
-    // جستجو
-    // -----------------------------
 
     const matchesSearch =
       !searchText ||
@@ -320,10 +275,6 @@ export default function Users() {
       region.includes(searchText) ||
       skillsText.includes(searchText);
 
-    // -----------------------------
-    // وضعیت حساب
-    // -----------------------------
-
     const matchesActive =
       activeFilter === "all" ||
       (activeFilter === "active" &&
@@ -331,14 +282,9 @@ export default function Users() {
       (activeFilter === "inactive" &&
         user.is_active === false);
 
-    // -----------------------------
-    // وضعیت دسترسی
-    // -----------------------------
-
     const matchesAvailability =
       availabilityFilter === "all" ||
-      user.availability_status ===
-        availabilityFilter;
+      user.availability_status === availabilityFilter;
 
     return (
       matchesSearch &&
@@ -440,9 +386,9 @@ export default function Users() {
       sx={{
         direction: "rtl",
         p: 2,
+        width: "100%",
       }}
     >
-
       {/* =================================================
           عنوان
       ================================================= */}
@@ -457,26 +403,36 @@ export default function Users() {
         مدیریت کاربران
       </Typography>
 
-
       {/* =================================================
           Tabs
       ================================================= */}
 
       <Paper
+        elevation={0}
         sx={{
           borderRadius: 3,
           mb: 3,
+          border: "1px solid",
+          borderColor: "divider",
+          overflow: "hidden",
+          backgroundColor: "background.paper",
         }}
       >
         <Tabs
           value={role}
-          onChange={(event, value) =>
-            setRole(value)
-          }
+          onChange={(event, value) => setRole(value)}
           variant="scrollable"
           scrollButtons="auto"
-        >
+          sx={{
+            minHeight: 52,
 
+            "& .MuiTab-root": {
+              minHeight: 52,
+              fontWeight: 600,
+              fontSize: "0.9rem",
+            },
+          }}
+        >
           <Tab
             value="all"
             label="همه کاربران"
@@ -496,23 +452,24 @@ export default function Users() {
             value="admin"
             label="ادمین‌ها"
           />
-
         </Tabs>
       </Paper>
-
 
       {/* =================================================
           Filters
       ================================================= */}
 
       <Paper
+        elevation={0}
         sx={{
-          p: 2,
+          p: 2.5,
           mb: 3,
           borderRadius: 3,
+          border: "1px solid",
+          borderColor: "divider",
+          backgroundColor: "background.paper",
         }}
       >
-
         <Box
           sx={{
             display: "flex",
@@ -521,6 +478,7 @@ export default function Users() {
             alignItems: "center",
           }}
         >
+          {/* Search */}
 
           <TextField
             label="جستجوی کاربر"
@@ -532,30 +490,86 @@ export default function Users() {
             sx={{
               minWidth: 280,
               flex: 1,
+
+              "& .MuiInputLabel-root": {
+                right: 14,
+                left: "auto",
+                transformOrigin: "top right",
+              },
+
+              "& .MuiInputLabel-root.Mui-focused": {
+                right: 14,
+              },
+
+              "& .MuiOutlinedInput-root": {
+                borderRadius: 2.5,
+              },
+            }}
+            InputProps={{
+              sx: {
+                direction: "rtl",
+                textAlign: "right",
+              },
             }}
           />
 
+          {/* وضعیت حساب */}
 
           <FormControl
             sx={{
               minWidth: 180,
+
+              "& .MuiInputLabel-root": {
+                right: 14,
+                left: "auto",
+                transformOrigin: "top right",
+
+                // مهم:
+                // لیبل روی Border نمی‌افتد
+                backgroundColor: "background.paper",
+                px: 0.7,
+              },
+
+              "& .MuiInputLabel-root.Mui-focused": {
+                right: 14,
+              },
+
+              "& .MuiOutlinedInput-root": {
+                borderRadius: 2.5,
+              },
             }}
           >
-
-            <InputLabel>
+            <InputLabel id="active-filter-label">
               وضعیت حساب
             </InputLabel>
 
             <Select
+              labelId="active-filter-label"
               value={activeFilter}
               label="وضعیت حساب"
               onChange={(event) =>
-                setActiveFilter(
-                  event.target.value
-                )
+                setActiveFilter(event.target.value)
               }
-            >
+              input={
+                <OutlinedInput
+                  label="وضعیت حساب"
+                  notched
+                />
+              }
+              sx={{
+                direction: "rtl",
 
+                "& .MuiSelect-select": {
+                  textAlign: "right",
+                  py: 1.45,
+                },
+
+                "& .MuiSelect-icon": {
+                  right: "auto",
+                  left: 10,
+                },
+              }}
+            >
               <MenuItem value="all">
                 همه
               </MenuItem>
@@ -567,23 +581,42 @@ export default function Users() {
               <MenuItem value="inactive">
                 غیرفعال
               </MenuItem>
-
             </Select>
-
           </FormControl>
 
+          {/* وضعیت دسترسی */}
 
           <FormControl
             sx={{
               minWidth: 180,
+
+              "& .MuiInputLabel-root": {
+                right: 14,
+                left: "auto",
+                transformOrigin: "top right",
+
+                // مهم:
+                // پس‌زمینه باعث می‌شود Border
+                // از داخل متن عبور نکند
+                backgroundColor: "background.paper",
+                px: 0.7,
+              },
+
+              "& .MuiInputLabel-root.Mui-focused": {
+                right: 14,
+              },
+
+              "& .MuiOutlinedInput-root": {
+                borderRadius: 2.5,
+              },
             }}
           >
-
-            <InputLabel>
+            <InputLabel id="availability-filter-label">
               وضعیت دسترسی
             </InputLabel>
 
             <Select
+              labelId="availability-filter-label"
               value={availabilityFilter}
               label="وضعیت دسترسی"
               onChange={(event) =>
@@ -591,8 +624,26 @@ export default function Users() {
                   event.target.value
                 )
               }
-            >
+              input={
+                <OutlinedInput
+                  label="وضعیت دسترسی"
+                  notched
+                />
+              }
+              sx={{
+                direction: "rtl",
 
+                "& .MuiSelect-select": {
+                  textAlign: "right",
+                  py: 1.45,
+                },
+
+                "& .MuiSelect-icon": {
+                  right: "auto",
+                  left: 10,
+                },
+              }}
+            >
               <MenuItem value="all">
                 همه
               </MenuItem>
@@ -608,11 +659,10 @@ export default function Users() {
               <MenuItem value="unavailable">
                 در دسترس نیست
               </MenuItem>
-
             </Select>
-
           </FormControl>
 
+          {/* پاک کردن */}
 
           <Button
             variant="outlined"
@@ -621,14 +671,17 @@ export default function Users() {
               setActiveFilter("all");
               setAvailabilityFilter("all");
             }}
+            sx={{
+              minHeight: 56,
+              borderRadius: 2.5,
+              whiteSpace: "nowrap",
+              fontWeight: 600,
+            }}
           >
             پاک کردن فیلترها
           </Button>
-
         </Box>
-
       </Paper>
-
 
       {/* =================================================
           تعداد نتایج
@@ -638,6 +691,7 @@ export default function Users() {
         color="text.secondary"
         sx={{
           mb: 2,
+          fontSize: "0.95rem",
         }}
       >
         تعداد کاربران:{" "}
@@ -646,92 +700,77 @@ export default function Users() {
         </strong>
       </Typography>
 
-
       {/* =================================================
           Table
       ================================================= */}
 
       <TableContainer
         component={Paper}
-        elevation={3}
+        elevation={0}
         sx={{
           borderRadius: 3,
           overflowX: "auto",
+          border: "1px solid",
+          borderColor: "divider",
+          backgroundColor: "background.paper",
         }}
       >
-
         <Table
           sx={{
             minWidth: 1200,
+
+            "& .MuiTableCell-root": {
+              borderColor: "divider",
+            },
           }}
         >
-
           <TableHead>
-
             <TableRow>
-
-              {/* پروفایل */}
-
               <TableCell align="right">
                 پروفایل
               </TableCell>
-
 
               <TableCell align="right">
                 نام
               </TableCell>
 
-
               <TableCell align="right">
                 شماره تلفن
               </TableCell>
-
 
               <TableCell align="right">
                 نقش
               </TableCell>
 
-
               <TableCell align="right">
                 شهر
               </TableCell>
-
 
               <TableCell align="right">
                 منطقه
               </TableCell>
 
-
               <TableCell align="right">
                 مهارت‌ها
               </TableCell>
-
 
               <TableCell align="right">
                 وضعیت دسترسی
               </TableCell>
 
-
               <TableCell align="right">
                 وضعیت حساب
               </TableCell>
 
-
               <TableCell align="right">
                 عملیات
               </TableCell>
-
             </TableRow>
-
           </TableHead>
 
-
           <TableBody>
-
             {filteredUsers.length === 0 ? (
-
               <TableRow>
-
                 <TableCell
                   colSpan={10}
                   align="center"
@@ -739,31 +778,26 @@ export default function Users() {
                     py: 5,
                   }}
                 >
-                  کاربری با این مشخصات پیدا نشد
+                  <Typography
+                    color="text.secondary"
+                  >
+                    کاربری با این مشخصات پیدا نشد
+                  </Typography>
                 </TableCell>
-
               </TableRow>
-
             ) : (
-
               filteredUsers.map((user) => {
-
                 const userSkills =
                   getSkills(user.skills);
 
                 return (
-
                   <TableRow
                     key={user.id}
                     hover
                   >
-
-                    {/* =================================================
-                        پروفایل کاربر
-                    ================================================= */}
+                    {/* پروفایل */}
 
                     <TableCell align="right">
-
                       <Avatar
                         src={
                           user.profile_image
@@ -779,33 +813,25 @@ export default function Users() {
                           height: 55,
                           bgcolor: "#166534",
                           fontSize: 24,
-                          border: "2px solid #e5e7eb",
+                          border:
+                            "2px solid #e5e7eb",
                         }}
                       >
-
                         {!user.profile_image &&
                           user.full_name?.charAt(0)}
-
                       </Avatar>
-
                     </TableCell>
 
-
-                    {/* =================================================
-                        نام
-                    ================================================= */}
+                    {/* نام */}
 
                     <TableCell align="right">
-
                       <Typography
                         fontWeight="bold"
                         noWrap
                       >
                         {user.full_name}
                       </Typography>
-
                     </TableCell>
-
 
                     {/* تلفن */}
 
@@ -813,11 +839,9 @@ export default function Users() {
                       {user.phone}
                     </TableCell>
 
-
                     {/* نقش */}
 
                     <TableCell align="right">
-
                       <Chip
                         label={getRoleLabel(
                           user.role
@@ -827,9 +851,7 @@ export default function Users() {
                         )}
                         size="small"
                       />
-
                     </TableCell>
-
 
                     {/* شهر */}
 
@@ -837,17 +859,13 @@ export default function Users() {
                       {user.city || "-"}
                     </TableCell>
 
-
                     {/* منطقه */}
 
                     <TableCell align="right">
                       {user.region || "-"}
                     </TableCell>
 
-
-                    {/* =================================================
-                        مهارت‌ها
-                    ================================================= */}
+                    {/* مهارت‌ها */}
 
                     <TableCell
                       align="right"
@@ -856,20 +874,15 @@ export default function Users() {
                         whiteSpace: "nowrap",
                       }}
                     >
-
                       {userSkills.length === 0 ? (
-
                         <Typography
                           color="text.secondary"
                           variant="body2"
                         >
                           بدون مهارت
                         </Typography>
-
                       ) : (
-
                         <>
-
                           <Button
                             size="small"
                             variant="outlined"
@@ -886,10 +899,8 @@ export default function Users() {
                             }}
                           >
                             مشاهده مهارت‌ها (
-                            {userSkills.length}
-                            )
+                            {userSkills.length})
                           </Button>
-
 
                           <Menu
                             anchorEl={
@@ -924,14 +935,12 @@ export default function Users() {
                               },
                             }}
                           >
-
                             <Box
                               sx={{
                                 px: 1,
                                 py: 0.5,
                               }}
                             >
-
                               <Typography
                                 variant="subtitle2"
                                 fontWeight="bold"
@@ -939,16 +948,13 @@ export default function Users() {
                                 مهارت‌های{" "}
                                 {user.full_name}
                               </Typography>
-
                             </Box>
-
 
                             <Divider
                               sx={{
                                 my: 1,
                               }}
                             />
-
 
                             <Box
                               sx={{
@@ -960,13 +966,11 @@ export default function Users() {
                                 p: 0.5,
                               }}
                             >
-
                               {userSkills.map(
                                 (
                                   skill,
                                   index
                                 ) => (
-
                                   <Chip
                                     key={`${skill}-${index}`}
                                     label={skill}
@@ -974,25 +978,17 @@ export default function Users() {
                                     color="primary"
                                     variant="outlined"
                                   />
-
                                 )
                               )}
-
                             </Box>
-
                           </Menu>
-
                         </>
-
                       )}
-
                     </TableCell>
-
 
                     {/* وضعیت دسترسی */}
 
                     <TableCell align="right">
-
                       <Chip
                         label={getAvailabilityLabel(
                           user.availability_status
@@ -1002,14 +998,11 @@ export default function Users() {
                         )}
                         size="small"
                       />
-
                     </TableCell>
-
 
                     {/* وضعیت حساب */}
 
                     <TableCell align="right">
-
                       <Chip
                         label={
                           user.is_active
@@ -1023,16 +1016,11 @@ export default function Users() {
                         }
                         size="small"
                       />
-
                     </TableCell>
 
-
-                    {/* =================================================
-                        عملیات
-                    ================================================= */}
+                    {/* عملیات */}
 
                     <TableCell align="right">
-
                       <Box
                         sx={{
                           display: "flex",
@@ -1041,13 +1029,11 @@ export default function Users() {
                           alignItems: "center",
                         }}
                       >
-
                         <Select
                           size="small"
                           value={user.role}
                           disabled={
-                            changingId ===
-                            user.id
+                            changingId === user.id
                           }
                           onChange={(event) =>
                             changeRole(
@@ -1057,9 +1043,20 @@ export default function Users() {
                           }
                           sx={{
                             minWidth: 135,
+                            direction: "rtl",
+                            borderRadius: 2,
+
+                            "& .MuiSelect-select": {
+                              textAlign: "right",
+                              py: 0.8,
+                            },
+
+                            "& .MuiSelect-icon": {
+                              right: "auto",
+                              left: 7,
+                            },
                           }}
                         >
-
                           <MenuItem value="volunteer">
                             داوطلب
                           </MenuItem>
@@ -1071,9 +1068,7 @@ export default function Users() {
                           <MenuItem value="admin">
                             ادمین
                           </MenuItem>
-
                         </Select>
-
 
                         <Button
                           variant={
@@ -1088,61 +1083,52 @@ export default function Users() {
                           }
                           size="small"
                           disabled={
-                            changingId ===
-                            user.id
+                            changingId === user.id
                           }
                           onClick={() =>
                             toggleStatus(user)
                           }
                           sx={{
-                            whiteSpace:
-                              "nowrap",
+                            whiteSpace: "nowrap",
+                            borderRadius: 2,
+                            fontWeight: 600,
                           }}
                         >
-
-                          {changingId ===
-                          user.id
+                          {changingId === user.id
                             ? "در حال تغییر..."
                             : user.is_active
                             ? "غیرفعال کردن"
                             : "فعال کردن"}
-
                         </Button>
-
 
                         <Button
                           variant="contained"
                           color="error"
                           size="small"
                           disabled={
-                            changingId ===
-                            user.id
+                            changingId === user.id
                           }
                           onClick={() =>
                             deleteUser(user)
                           }
+                          sx={{
+                            borderRadius: 2,
+                            fontWeight: 600,
+                          }}
                         >
                           حذف
                         </Button>
-
                       </Box>
-
                     </TableCell>
-
                   </TableRow>
-
                 );
-
               })
-
             )}
-
           </TableBody>
-
         </Table>
-
       </TableContainer>
-
     </Box>
   );
 }
+
+
