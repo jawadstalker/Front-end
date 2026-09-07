@@ -36,6 +36,24 @@ const colors = {
   border: "#E5E7EB",
 };
 
+const features = [
+  {
+    icon: <VolunteerActivismRounded />,
+    title: "مدیریت داوطلبان",
+    text: "مدیریت اطلاعات و فعالیت‌های داوطلبان",
+  },
+  {
+    icon: <KeyRounded />,
+    title: "ورود سریع",
+    text: "دسترسی سریع بدون نیاز به حفظ رمز عبور",
+  },
+  {
+    icon: <SecurityRounded />,
+    title: "امنیت بیشتر",
+    text: "احراز هویت امن با کد یکبار مصرف",
+  },
+];
+
 export default function OTPLogin() {
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
@@ -51,7 +69,7 @@ export default function OTPLogin() {
     try {
       setLoading(true);
 
-      // Backend logic intentionally unchanged
+      // Backend logic — unchanged
       await api.post("/auth/send-otp", {
         phone,
       });
@@ -78,7 +96,7 @@ export default function OTPLogin() {
 
   const fieldSx = {
     "& .MuiOutlinedInput-root": {
-      height: 58,
+      height: 60,
       borderRadius: 3,
       backgroundColor: "#F8FAFC",
       color: colors.text,
@@ -108,7 +126,7 @@ export default function OTPLogin() {
     },
 
     "& .MuiInputBase-input": {
-      padding: "0 10px",
+      padding: "0 12px",
       textAlign: "right",
       direction: "rtl",
       color: colors.text,
@@ -121,7 +139,7 @@ export default function OTPLogin() {
     },
 
     "& .MuiInputAdornment-root": {
-      marginRight: 10,
+      marginRight: 16,
       color: colors.primary,
     },
   };
@@ -133,28 +151,37 @@ export default function OTPLogin() {
       sx={{
         minHeight: "100dvh",
         width: "100%",
+
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+
         p: {
           xs: 1.5,
           sm: 3,
         },
+
         overflow: "auto",
+
         position: "relative",
 
         background:
           "linear-gradient(135deg, #EFF6FF 0%, #F5F3FF 48%, #ECFEFF 100%)",
       }}
     >
-      {/* Background decoration */}
+      {/* =========================================================
+          BACKGROUND DECORATIONS
+      ========================================================= */}
 
       <Box
         sx={{
           position: "absolute",
+
           width: 420,
           height: 420,
+
           borderRadius: "50%",
+
           top: -230,
           right: -130,
 
@@ -166,9 +193,12 @@ export default function OTPLogin() {
       <Box
         sx={{
           position: "absolute",
+
           width: 460,
           height: 460,
+
           borderRadius: "50%",
+
           bottom: -280,
           left: -170,
 
@@ -177,7 +207,9 @@ export default function OTPLogin() {
         }}
       />
 
-      {/* Main Card */}
+      {/* =========================================================
+          MAIN CARD
+      ========================================================= */}
 
       <Box
         sx={{
@@ -212,9 +244,9 @@ export default function OTPLogin() {
           boxShadow: "0 30px 80px rgba(30,41,59,.14)",
         }}
       >
-        {/* ========================================================= */}
-        {/* LEFT INFORMATION PANEL */}
-        {/* ========================================================= */}
+        {/* =========================================================
+            LEFT INFORMATION PANEL
+        ========================================================= */}
 
         <Box
           sx={{
@@ -242,27 +274,30 @@ export default function OTPLogin() {
 
             <Stack
               direction="row"
-              spacing={1.5}
+              spacing={2}
               alignItems="center"
             >
               <Box
                 sx={{
-                  width: 52,
-                  height: 52,
+                  width: 54,
+                  height: 54,
+
+                  flexShrink: 0,
 
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
 
-                  borderRadius: 2.7,
+                  borderRadius: 2.8,
 
                   color: "#FFFFFF",
 
-                  background: `linear-gradient(
-                    135deg,
-                    ${colors.primary},
-                    ${colors.cyan}
-                  )`,
+                  background:
+                    `linear-gradient(
+                      135deg,
+                      ${colors.primary},
+                      ${colors.cyan}
+                    )`,
 
                   boxShadow:
                     "0 12px 25px rgba(37,99,235,.22)",
@@ -270,7 +305,7 @@ export default function OTPLogin() {
               >
                 <VolunteerActivismRounded
                   sx={{
-                    fontSize: 28,
+                    fontSize: 29,
                   }}
                 />
               </Box>
@@ -279,8 +314,12 @@ export default function OTPLogin() {
                 <Typography
                   sx={{
                     color: colors.text,
+
                     fontSize: 19,
+
                     fontWeight: 900,
+
+                    lineHeight: 1.4,
                   }}
                 >
                   سامانه امداد
@@ -289,10 +328,14 @@ export default function OTPLogin() {
                 <Typography
                   sx={{
                     color: "#64748B",
+
                     fontSize: 8.5,
+
                     fontWeight: 800,
+
                     letterSpacing: 1.1,
-                    mt: 0.4,
+
+                    mt: 0.6,
                   }}
                 >
                   VOLUNTEER MANAGEMENT PLATFORM
@@ -310,11 +353,13 @@ export default function OTPLogin() {
               <Box
                 sx={{
                   display: "inline-flex",
-                  alignItems: "center",
-                  gap: 0.8,
 
-                  px: 1.4,
-                  py: 0.7,
+                  alignItems: "center",
+
+                  gap: 1.1,
+
+                  px: 1.6,
+                  py: 0.8,
 
                   borderRadius: 10,
 
@@ -322,18 +367,20 @@ export default function OTPLogin() {
 
                   background: "#DBEAFE",
 
-                  border: "1px solid #BFDBFE",
+                  border:
+                    "1px solid #BFDBFE",
                 }}
               >
                 <CheckCircleRounded
                   sx={{
-                    fontSize: 17,
+                    fontSize: 18,
                   }}
                 />
 
                 <Typography
                   sx={{
                     fontSize: 11,
+
                     fontWeight: 800,
                   }}
                 >
@@ -343,7 +390,7 @@ export default function OTPLogin() {
 
               <Typography
                 sx={{
-                  mt: 2.2,
+                  mt: 2.5,
 
                   color: colors.text,
 
@@ -372,8 +419,11 @@ export default function OTPLogin() {
                         ${colors.purple}
                       )`,
 
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
+                    WebkitBackgroundClip:
+                      "text",
+
+                    WebkitTextFillColor:
+                      "transparent",
                   }}
                 >
                   بدون رمز عبور
@@ -382,7 +432,7 @@ export default function OTPLogin() {
 
               <Typography
                 sx={{
-                  mt: 2.2,
+                  mt: 2.4,
 
                   maxWidth: 410,
 
@@ -397,11 +447,119 @@ export default function OTPLogin() {
                 حساب کاربری خود شوید و به خدمات سامانه امداد دسترسی پیدا کنید.
               </Typography>
             </Box>
+
+            {/* Features */}
+
+            <Stack
+              spacing={1.4}
+              sx={{
+                mt: 4.2,
+              }}
+            >
+              {features.map((item) => (
+                <Box
+                  key={item.title}
+                  sx={{
+                    display: "flex",
+
+                    alignItems: "center",
+
+                    gap: 2,
+
+                    p: 1.6,
+
+                    borderRadius: 3,
+
+                    background:
+                      "rgba(255,255,255,.72)",
+
+                    border:
+                      "1px solid rgba(148,163,184,.18)",
+
+                    transition:
+                      "all .2s ease",
+
+                    "&:hover": {
+                      transform:
+                        "translateX(-3px)",
+
+                      boxShadow:
+                        "0 8px 24px rgba(37,99,235,.08)",
+                    },
+                  }}
+                >
+                  <Box
+                    sx={{
+                      width: 43,
+                      height: 43,
+
+                      flexShrink: 0,
+
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+
+                      borderRadius: 2.3,
+
+                      background: "#DBEAFE",
+
+                      color: colors.primary,
+                    }}
+                  >
+                    {React.cloneElement(
+                      item.icon,
+                      {
+                        sx: {
+                          fontSize: 21,
+                        },
+                      }
+                    )}
+                  </Box>
+
+                  <Box
+                    sx={{
+                      minWidth: 0,
+
+                      flex: 1,
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        color: colors.text,
+
+                        fontSize: 12,
+
+                        fontWeight: 800,
+
+                        lineHeight: 1.6,
+                      }}
+                    >
+                      {item.title}
+                    </Typography>
+
+                    <Typography
+                      sx={{
+                        color: colors.muted,
+
+                        fontSize: 10,
+
+                        mt: 0.5,
+
+                        lineHeight: 1.7,
+                      }}
+                    >
+                      {item.text}
+                    </Typography>
+                  </Box>
+                </Box>
+              ))}
+            </Stack>
           </Box>
 
           <Typography
             sx={{
               color: "#94A3B8",
+
               fontSize: 9.5,
             }}
           >
@@ -409,15 +567,16 @@ export default function OTPLogin() {
           </Typography>
         </Box>
 
-        {/* ========================================================= */}
-        {/* RIGHT FORM PANEL */}
-        {/* ========================================================= */}
+        {/* =========================================================
+            RIGHT OTP PANEL
+        ========================================================= */}
 
         <Box
           sx={{
             display: "flex",
 
             alignItems: "center",
+
             justifyContent: "center",
 
             px: {
@@ -438,6 +597,7 @@ export default function OTPLogin() {
           <Box
             sx={{
               width: "100%",
+
               maxWidth: 430,
             }}
           >
@@ -447,26 +607,30 @@ export default function OTPLogin() {
               direction="row"
               alignItems="center"
               justifyContent="center"
-              spacing={1.2}
+
+              spacing={1.8}
+
               sx={{
                 display: {
                   xs: "flex",
                   md: "none",
                 },
 
-                mb: 3,
+                mb: 3.5,
               }}
             >
               <Box
                 sx={{
-                  width: 44,
-                  height: 44,
+                  width: 46,
+                  height: 46,
+
+                  flexShrink: 0,
 
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
 
-                  borderRadius: 2.3,
+                  borderRadius: 2.4,
 
                   color: "#FFFFFF",
 
@@ -478,13 +642,19 @@ export default function OTPLogin() {
                     )`,
                 }}
               >
-                <VolunteerActivismRounded />
+                <VolunteerActivismRounded
+                  sx={{
+                    fontSize: 24,
+                  }}
+                />
               </Box>
 
               <Typography
                 sx={{
                   color: colors.text,
+
                   fontSize: 19,
+
                   fontWeight: 900,
                 }}
               >
@@ -501,8 +671,8 @@ export default function OTPLogin() {
             >
               <Box
                 sx={{
-                  width: 56,
-                  height: 56,
+                  width: 58,
+                  height: 58,
 
                   display: "flex",
                   alignItems: "center",
@@ -517,12 +687,12 @@ export default function OTPLogin() {
                   border:
                     "1px solid #DBEAFE",
 
-                  mb: 2,
+                  mb: 2.5,
                 }}
               >
                 <SmsRounded
                   sx={{
-                    fontSize: 28,
+                    fontSize: 30,
                   }}
                 />
               </Box>
@@ -538,7 +708,7 @@ export default function OTPLogin() {
 
                   fontWeight: 900,
 
-                  lineHeight: 1.3,
+                  lineHeight: 1.35,
                 }}
               >
                 ورود با کد یکبار مصرف
@@ -552,25 +722,26 @@ export default function OTPLogin() {
 
                   lineHeight: 1.9,
 
-                  mt: 0.8,
+                  mt: 1,
                 }}
               >
                 شماره موبایل خود را وارد کنید تا کد تأیید برای شما ارسال شود.
               </Typography>
             </Box>
 
-            {/* Info Notice */}
+            {/* Information Card */}
 
             <Box
               sx={{
                 display: "flex",
+
                 alignItems: "center",
 
-                gap: 1.3,
+                gap: 1.7,
 
-                p: 1.6,
+                p: 1.7,
 
-                mb: 2.3,
+                mb: 2.8,
 
                 borderRadius: 3,
 
@@ -583,8 +754,8 @@ export default function OTPLogin() {
             >
               <Box
                 sx={{
-                  width: 38,
-                  height: 38,
+                  width: 42,
+                  height: 42,
 
                   flexShrink: 0,
 
@@ -592,26 +763,38 @@ export default function OTPLogin() {
                   alignItems: "center",
                   justifyContent: "center",
 
-                  borderRadius: 2,
+                  borderRadius: 2.2,
 
                   color: colors.primary,
 
                   background: "#FFFFFF",
+
+                  boxShadow:
+                    "0 4px 12px rgba(37,99,235,.07)",
                 }}
               >
                 <KeyRounded
                   sx={{
-                    fontSize: 20,
+                    fontSize: 21,
                   }}
                 />
               </Box>
 
-              <Box>
+              <Box
+                sx={{
+                  flex: 1,
+                  minWidth: 0,
+                }}
+              >
                 <Typography
                   sx={{
                     color: colors.text,
+
                     fontSize: 11.5,
+
                     fontWeight: 800,
+
+                    lineHeight: 1.6,
                   }}
                 >
                   ورود بدون رمز عبور
@@ -620,55 +803,98 @@ export default function OTPLogin() {
                 <Typography
                   sx={{
                     color: colors.muted,
+
                     fontSize: 9.5,
-                    mt: 0.25,
-                    lineHeight: 1.7,
+
+                    mt: 0.4,
+
+                    lineHeight: 1.8,
                   }}
                 >
-                  کد تأیید به شماره موبایل شما ارسال خواهد شد.
+                  یک کد تأیید امن به شماره موبایل شما ارسال خواهد شد.
                 </Typography>
               </Box>
             </Box>
 
+            {/* Phone Label */}
+
+            <Typography
+              sx={{
+                color: "#344054",
+
+                fontSize: 12,
+
+                fontWeight: 800,
+
+                mb: 1,
+              }}
+            >
+              شماره موبایل
+            </Typography>
+
             {/* Phone Field */}
 
-            <Box>
-              <Typography
-                sx={{
-                  color: "#344054",
-                  fontSize: 12,
-                  fontWeight: 800,
-                  mb: 0.8,
-                }}
-              >
-                شماره موبایل
-              </Typography>
+            <TextField
+              fullWidth
+              value={phone}
+              onChange={(e) =>
+                setPhone(e.target.value)
+              }
+              onKeyDown={handleKeyDown}
+              placeholder="09123456789"
+              type="tel"
+              inputMode="tel"
+              autoComplete="tel"
+              dir="rtl"
+              sx={fieldSx}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment
+                    position="start"
+                  >
+                    <PhoneIphoneRounded
+                      sx={{
+                        fontSize: 21,
+                      }}
+                    />
+                  </InputAdornment>
+                ),
+              }}
+            />
 
-              <TextField
-                fullWidth
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                placeholder="09123456789"
-                type="tel"
-                inputMode="tel"
-                autoComplete="tel"
-                dir="rtl"
-                sx={fieldSx}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <PhoneIphoneRounded
-                        sx={{
-                          fontSize: 20,
-                        }}
-                      />
-                    </InputAdornment>
-                  ),
+            {/* Helper */}
+
+            <Stack
+              direction="row"
+              alignItems="center"
+              spacing={1}
+              sx={{
+                mt: 0.2,
+                mb: 1.8,
+                px: 0.5,
+              }}
+            >
+              <SecurityRounded
+                sx={{
+                  fontSize: 15,
+                  color: "#94A3B8",
                 }}
               />
-            </Box>
 
-            {/* Send Button */}
+              <Typography
+                sx={{
+                  color: "#98A2B3",
+
+                  fontSize: 9.5,
+
+                  lineHeight: 1.7,
+                }}
+              >
+                شماره شما فقط برای احراز هویت استفاده می‌شود.
+              </Typography>
+            </Stack>
+
+            {/* Send OTP */}
 
             <Button
               fullWidth
@@ -685,17 +911,17 @@ export default function OTPLogin() {
                 ) : null
               }
               sx={{
-                height: 57,
+                height: 58,
 
                 borderRadius: 3,
-
-                mt: 1,
 
                 textTransform: "none",
 
                 fontSize: 13.5,
 
                 fontWeight: 900,
+
+                gap: 1.2,
 
                 background:
                   `linear-gradient(
@@ -717,7 +943,8 @@ export default function OTPLogin() {
                       ${colors.cyan}
                     )`,
 
-                  transform: "translateY(-1px)",
+                  transform:
+                    "translateY(-1px)",
 
                   boxShadow:
                     "0 16px 34px rgba(37,99,235,.25)",
@@ -725,6 +952,7 @@ export default function OTPLogin() {
 
                 "&:disabled": {
                   background: "#BFDBFE",
+
                   color: "#FFFFFF",
                 },
               }}
@@ -747,12 +975,14 @@ export default function OTPLogin() {
               )}
             </Button>
 
-            {/* Back to Password Login */}
+            {/* Back to Login */}
 
             <Button
               fullWidth
               variant="text"
-              onClick={() => navigate("/login")}
+              onClick={() =>
+                navigate("/login")
+              }
               startIcon={
                 <ArrowBackRounded
                   sx={{
@@ -761,11 +991,11 @@ export default function OTPLogin() {
                 />
               }
               sx={{
-                height: 44,
+                height: 46,
 
-                mt: 1.2,
+                mt: 1.3,
 
-                borderRadius: 2.3,
+                borderRadius: 2.4,
 
                 color: "#667085",
 
@@ -775,8 +1005,11 @@ export default function OTPLogin() {
 
                 textTransform: "none",
 
+                gap: 1,
+
                 "&:hover": {
                   color: colors.primary,
+
                   background: "#EFF6FF",
                 },
               }}
@@ -786,22 +1019,25 @@ export default function OTPLogin() {
 
             <Divider
               sx={{
-                my: 2.5,
+                my: 2.7,
+
                 borderColor: colors.border,
               }}
             />
 
-            {/* Security */}
+            {/* Security Card */}
 
             <Box
               sx={{
                 display: "flex",
+
                 alignItems: "center",
+
                 justifyContent: "center",
 
-                gap: 0.8,
+                gap: 1.3,
 
-                p: 1.5,
+                p: 1.7,
 
                 borderRadius: 3,
 
@@ -811,12 +1047,30 @@ export default function OTPLogin() {
                   "1px solid #E5E7EB",
               }}
             >
-              <SecurityRounded
+              <Box
                 sx={{
-                  fontSize: 17,
+                  width: 36,
+                  height: 36,
+
+                  flexShrink: 0,
+
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+
+                  borderRadius: 2,
+
+                  background: "#FFFFFF",
+
                   color: "#64748B",
                 }}
-              />
+              >
+                <SecurityRounded
+                  sx={{
+                    fontSize: 18,
+                  }}
+                />
+              </Box>
 
               <Typography
                 sx={{
@@ -824,27 +1078,31 @@ export default function OTPLogin() {
 
                   fontSize: 10,
 
-                  textAlign: "center",
+                  lineHeight: 1.8,
 
-                  lineHeight: 1.7,
+                  textAlign: "right",
                 }}
               >
-                کد تأیید فقط برای شماره موبایل شما ارسال می‌شود
+                کد تأیید فقط برای شماره موبایل شما ارسال می‌شود و اطلاعات
+                شما در محیطی امن نگهداری خواهد شد.
               </Typography>
             </Box>
 
+            {/* Status */}
+
             <Stack
               direction="row"
-              spacing={0.7}
+              spacing={0.9}
               justifyContent="center"
               alignItems="center"
               sx={{
-                mt: 2,
+                mt: 2.2,
               }}
             >
               <CheckCircleRounded
                 sx={{
-                  fontSize: 14,
+                  fontSize: 15,
+
                   color: "#16A34A",
                 }}
               />
@@ -852,10 +1110,11 @@ export default function OTPLogin() {
               <Typography
                 sx={{
                   color: "#98A2B3",
+
                   fontSize: 9.5,
                 }}
               >
-                ارتباط شما با سامانه امن است
+                سرویس احراز هویت امن و فعال است
               </Typography>
             </Stack>
           </Box>

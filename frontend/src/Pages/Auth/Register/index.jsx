@@ -1,13 +1,41 @@
+
 import React, { useState } from "react";
-import { Box, Button, CircularProgress, Divider, IconButton, InputAdornment, Stack, TextField, Typography } from "@mui/material";
-import { ArrowBackRounded, CheckCircleRounded, LockRounded, PersonAddRounded, PersonRounded, PhoneIphoneRounded, SecurityRounded, VisibilityOffRounded, VisibilityRounded, VolunteerActivismRounded } from "@mui/icons-material";
+
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Divider,
+  IconButton,
+  InputAdornment,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
+
+import {
+  ArrowBackRounded,
+  CheckCircleRounded,
+  LockRounded,
+  PersonAddRounded,
+  PersonRounded,
+  PhoneIphoneRounded,
+  SecurityRounded,
+  VisibilityOffRounded,
+  VisibilityRounded,
+  VolunteerActivismRounded,
+} from "@mui/icons-material";
+
 import { useNavigate } from "react-router-dom";
+
 import api from "../../../api/axios";
+
 import { toast } from "react-hot-toast";
 
 // ============================================================
-// COLOR PALETTE — MATCHES THE LOGIN PAGE
+// COLOR PALETTE
 // ============================================================
+
 const colors = {
   primary: "#2563EB",
   primaryDark: "#1D4ED8",
@@ -21,29 +49,62 @@ const colors = {
 
 export default function Register() {
   const navigate = useNavigate();
-  const [form, setForm] = useState({ full_name: "", phone: "", password: "", confirm_password: "" });
+
+  const [form, setForm] = useState({
+    full_name: "",
+    phone: "",
+    password: "",
+    confirm_password: "",
+  });
+
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
+
     setForm((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
 
+  // ============================================================
+  // REGISTER — BACKEND LOGIC UNCHANGED
+  // ============================================================
+
   const handleRegister = async () => {
-    if (!form.full_name.trim() || !form.phone.trim() || !form.password || !form.confirm_password) return toast.error("لطفاً همه فیلدها را کامل کنید");
-    if (form.password !== form.confirm_password) return toast.error("رمز عبور و تکرار آن یکسان نیست");
+    if (
+      !form.full_name.trim() ||
+      !form.phone.trim() ||
+      !form.password ||
+      !form.confirm_password
+    ) {
+      return toast.error("لطفاً همه فیلدها را کامل کنید");
+    }
+
+    if (form.password !== form.confirm_password) {
+      return toast.error("رمز عبور و تکرار آن یکسان نیست");
+    }
+
     try {
       setLoading(true);
-      await api.post("/users/register", { full_name: form.full_name, phone: form.phone, password: form.password });
+
+      await api.post("/users/register", {
+        full_name: form.full_name,
+        phone: form.phone,
+        password: form.password,
+      });
+
       toast.success("ثبت نام با موفقیت انجام شد");
+
       navigate("/login");
-    } catch (error) { toast.error(error.response?.data?.detail || "خطا در ثبت نام"); }
-    finally { setLoading(false); }
+    } catch (error) {
+      toast.error(error.response?.data?.detail || "خطا در ثبت نام");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleKeyDown = (event) => {
@@ -61,56 +122,82 @@ export default function Register() {
     form.password === form.confirm_password;
 
   // ============================================================
-  // FIELD STYLES — UPDATED TO MATCH LOGIN PAGE COLORS
+  // FIELD STYLES
   // ============================================================
+
   const fieldSx = {
-    mb: 1.6,
+    mb: 1.25,
+
     "& .MuiOutlinedInput-root": {
-      minHeight: 56,
+      height: 54,
       borderRadius: 2.5,
-      backgroundColor: "rgba(255,255,255,0.025)",
+      backgroundColor: "#F8FAFC",
       color: colors.text,
-      transition: "border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease",
+
+      transition:
+        "border-color .2s ease, background-color .2s ease, box-shadow .2s ease",
+
       "& fieldset": {
-        borderColor: "rgba(0,0,0,0.10)",
+        borderColor: colors.border,
       },
+
       "&:hover": {
-        backgroundColor: "rgba(37,99,235,0.035)",
+        backgroundColor: "#F1F5F9",
       },
+
       "&:hover fieldset": {
-        borderColor: "rgba(37,99,235,0.45)",
+        borderColor: "#BFDBFE",
       },
+
       "&.Mui-focused": {
-        backgroundColor: "rgba(37,99,235,0.035)",
-        boxShadow: "0 0 0 3px rgba(37,99,235,0.08)",
+        backgroundColor: "#FFFFFF",
+        boxShadow: "0 0 0 3px rgba(37,99,235,.08)",
       },
+
       "&.Mui-focused fieldset": {
         borderColor: colors.primary,
         borderWidth: 1.5,
       },
     },
+
     "& .MuiInputLabel-root": {
-      right: 14,
+      right: 15,
       left: "auto",
-      color: "rgba(0,0,0,0.42)",
+      color: "#667085",
       transformOrigin: "top right",
+
       "&.Mui-focused": {
         color: colors.primary,
       },
     },
+
     "& .MuiInputLabel-shrink": {
       transformOrigin: "top right",
     },
+
     "& .MuiInputBase-input": {
-      padding: 2,
+      padding: "0 10px",
       textAlign: "right",
+      direction: "rtl",
       color: colors.text,
+      fontSize: 13,
+
       "&::placeholder": {
-        color: "rgba(0,0,0,0.25)",
+        color: "#98A2B3",
+        opacity: 1,
       },
     },
+
     "& .MuiInputAdornment-root": {
       color: colors.primary,
+    },
+
+    "& .MuiInputAdornment-positionStart": {
+      marginRight: 13,
+    },
+
+    "& .MuiInputAdornment-positionEnd": {
+      marginLeft: 1,
     },
   };
 
@@ -120,31 +207,67 @@ export default function Register() {
       sx={{
         position: "fixed",
         inset: 0,
+
         width: "100%",
         height: "100dvh",
+
         overflow: "hidden",
+
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        px: { xs: 1.5, sm: 2, md: 3 },
-        py: { xs: 1.5, sm: 2, md: 3 },
-        background: "linear-gradient(135deg, #EFF6FF 0%, #F5F3FF 48%, #ECFEFF 100%)",
+
+        boxSizing: "border-box",
+
+        px: {
+          xs: 1.2,
+          sm: 2,
+          md: 3,
+        },
+
+        py: {
+          xs: 1.2,
+          sm: 2,
+          md: 2.5,
+        },
+
+        background:
+          "linear-gradient(135deg, #EFF6FF 0%, #F5F3FF 48%, #ECFEFF 100%)",
       }}
     >
-
       {/* =====================================================
-          BACKGROUND DECORATIONS — UPDATED COLORS
+          BACKGROUND DECORATIONS
       ====================================================== */}
 
       <Box
         sx={{
           position: "absolute",
-          width: 360,
-          height: 360,
+
+          width: {
+            xs: 250,
+            md: 360,
+          },
+
+          height: {
+            xs: 250,
+            md: 360,
+          },
+
           borderRadius: "50%",
-          top: -190,
-          right: -130,
-          background: "radial-gradient(circle, rgba(37,99,235,0.16), transparent 68%)",
+
+          top: {
+            xs: -150,
+            md: -190,
+          },
+
+          right: {
+            xs: -110,
+            md: -130,
+          },
+
+          background:
+            "radial-gradient(circle, rgba(37,99,235,.14), transparent 68%)",
+
           pointerEvents: "none",
         }}
       />
@@ -152,18 +275,38 @@ export default function Register() {
       <Box
         sx={{
           position: "absolute",
-          width: 420,
-          height: 420,
+
+          width: {
+            xs: 300,
+            md: 420,
+          },
+
+          height: {
+            xs: 300,
+            md: 420,
+          },
+
           borderRadius: "50%",
-          bottom: -250,
-          left: -170,
-          background: "radial-gradient(circle, rgba(124,58,237,0.13), transparent 68%)",
+
+          bottom: {
+            xs: -190,
+            md: -250,
+          },
+
+          left: {
+            xs: -130,
+            md: -170,
+          },
+
+          background:
+            "radial-gradient(circle, rgba(124,58,237,.11), transparent 68%)",
+
           pointerEvents: "none",
         }}
       />
 
       {/* =====================================================
-          MAIN CARD — UPDATED TO LIGHT THEME
+          MAIN CARD
       ====================================================== */}
 
       <Box
@@ -171,156 +314,415 @@ export default function Register() {
         sx={{
           position: "relative",
           zIndex: 2,
+
           width: "100%",
-          maxWidth: 1120,
-          display: { xs: "block", md: "grid" },
-          gridTemplateColumns: "1fr 1fr",
-          height: { xs: "auto", md: "min(700px, calc(100dvh - 48px))" },
-          maxHeight: { xs: "calc(100dvh - 24px)", md: "calc(100dvh - 48px)" },
+          maxWidth: 1080,
+
+          height: {
+            xs: "calc(100dvh - 24px)",
+            sm: "calc(100dvh - 32px)",
+            md: "min(650px, calc(100dvh - 40px))",
+          },
+
           minHeight: 0,
+
+          display: {
+            xs: "block",
+            md: "grid",
+          },
+
+          gridTemplateColumns: "0.95fr 1.05fr",
+
           overflow: "hidden",
+
           boxSizing: "border-box",
-          borderRadius: { xs: 3.5, md: 5 },
-          border: "1px solid rgba(255,255,255,0.9)",
-          background: colors.surface,
-          boxShadow: "0 30px 80px rgba(30,41,59,.14)",
+
+          borderRadius: {
+            xs: 3.5,
+            md: 4.5,
+          },
+
+          border: "1px solid rgba(255,255,255,.95)",
+
+          background: "#FFFFFF",
+
+          boxShadow: "0 24px 65px rgba(30,41,59,.13)",
         }}
       >
-
         {/* =====================================================
-            LEFT SIDE — BRAND (UPDATED TO LIGHT, FEATURES REMOVED)
+            LEFT SIDE
         ====================================================== */}
 
         <Box
           sx={{
-            display: { xs: "none", md: "flex" },
+            display: {
+              xs: "none",
+              md: "flex",
+            },
+
             flexDirection: "column",
             justifyContent: "space-between",
+
             minWidth: 0,
             minHeight: 0,
+
             overflow: "hidden",
+
             boxSizing: "border-box",
-            p: { md: 4.5, lg: 5 },
+
+            p: {
+              md: 4,
+              lg: 4.5,
+            },
+
             borderLeft: "1px solid #E5E7EB",
-            background: "linear-gradient(145deg, #EFF6FF 0%, #EEF2FF 52%, #ECFEFF 100%)",
+
+            background:
+              "linear-gradient(145deg, #EFF6FF 0%, #EEF2FF 52%, #ECFEFF 100%)",
           }}
         >
-
           <Box>
-
             {/* Logo */}
 
-            <Stack direction="row" spacing={1.5} alignItems="center">
+            <Stack
+              direction="row"
+              spacing={1.7}
+              alignItems="center"
+            >
               <Box
                 sx={{
-                  width: 50,
-                  height: 50,
+                  width: 48,
+                  height: 48,
+
                   flexShrink: 0,
+
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  borderRadius: 2.5,
-                  background: `linear-gradient(135deg, ${colors.primary}, ${colors.cyan})`,
-                  boxShadow: "0 12px 28px rgba(37,99,235,0.22)",
+
+                  borderRadius: 2.4,
+
+                  background:
+                    `linear-gradient(135deg, ${colors.primary}, ${colors.cyan})`,
+
+                  boxShadow:
+                    "0 10px 24px rgba(37,99,235,.18)",
                 }}
               >
-                <VolunteerActivismRounded sx={{ color: "#fff", fontSize: 27 }} />
+                <VolunteerActivismRounded
+                  sx={{
+                    color: "#FFFFFF",
+                    fontSize: 25,
+                  }}
+                />
               </Box>
 
               <Box>
-                <Typography sx={{ paddingRight: 1, color: colors.text, fontSize: 19, fontWeight: 900, lineHeight: 1.2 }}>
+                <Typography
+                  sx={{
+                    color: colors.text,
+                    fontSize: 18,
+                    fontWeight: 900,
+                    lineHeight: 1.2,
+                  }}
+                >
                   سامانه امداد
                 </Typography>
-                <Typography sx={{ paddingRight: 1, color: "#64748B", fontSize: 8.5, fontWeight: 800, letterSpacing: 1.2, mt: 0.4, whiteSpace: "nowrap" }}>
+
+                <Typography
+                  sx={{
+                    color: "#64748B",
+                    fontSize: 7.8,
+                    fontWeight: 800,
+                    letterSpacing: 1,
+
+                    mt: 0.5,
+
+                    whiteSpace: "nowrap",
+                  }}
+                >
                   VOLUNTEER MANAGEMENT PLATFORM
                 </Typography>
               </Box>
             </Stack>
 
-            {/* Heading */}
+            {/* Main Left Content */}
 
-            <Box sx={{ mt: 6 }}>
-              <Box sx={{ display: "inline-flex", alignItems: "center", gap: 0.8, px: 1.4, py: 0.6, borderRadius: 10, background: "#DBEAFE", border: "1px solid #BFDBFE" }}>
-                <PersonAddRounded sx={{ color: colors.primary, fontSize: 16 }} />
-                <Typography sx={{ color: colors.primary, fontSize: 11, fontWeight: 800 }}>
+            <Box
+              sx={{
+                mt: {
+                  md: 7,
+                  lg: 8,
+                },
+              }}
+            >
+              <Box
+                sx={{
+                  display: "inline-flex",
+                  alignItems: "center",
+
+                  gap: 0.9,
+
+                  px: 1.3,
+                  py: 0.6,
+
+                  borderRadius: 10,
+
+                  background: "#DBEAFE",
+                  border: "1px solid #BFDBFE",
+                }}
+              >
+                <PersonAddRounded
+                  sx={{
+                    color: colors.primary,
+                    fontSize: 16,
+                  }}
+                />
+
+                <Typography
+                  sx={{
+                    color: colors.primary,
+                    fontSize: 10.5,
+                    fontWeight: 800,
+                  }}
+                >
                   شروع همکاری
                 </Typography>
               </Box>
 
-              <Typography sx={{ mt: 2.2, color: colors.text, fontSize: { md: 34, lg: 40 }, fontWeight: 900, lineHeight: 1.35, letterSpacing: "-0.8px" }}>
+              <Typography
+                sx={{
+                  mt: 2,
+
+                  color: colors.text,
+
+                  fontSize: {
+                    md: 31,
+                    lg: 37,
+                  },
+
+                  fontWeight: 900,
+
+                  lineHeight: 1.35,
+
+                  letterSpacing: "-0.7px",
+                }}
+              >
                 به سامانه
                 <br />
-                <Box component="span" sx={{ background: `linear-gradient(90deg, ${colors.primary}, ${colors.purple})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+
+                <Box
+                  component="span"
+                  sx={{
+                    background:
+                      `linear-gradient(90deg, ${colors.primary}, ${colors.purple})`,
+
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                  }}
+                >
                   امداد بپیوندید
                 </Box>
               </Typography>
 
-              <Typography sx={{ mt: 2.2, maxWidth: 400, color: colors.muted, fontSize: 13, lineHeight: 1.95 }}>
-                حساب کاربری خود را ایجاد کنید و به مجموعه‌ای یکپارچه برای مدیریت داوطلبان، مأموریت‌ها و فعالیت‌های امدادی دسترسی داشته باشید.
+              <Typography
+                sx={{
+                  mt: 2,
+
+                  maxWidth: 370,
+
+                  color: colors.muted,
+
+                  fontSize: 12,
+
+                  lineHeight: 1.9,
+                }}
+              >
+                حساب کاربری خود را ایجاد کنید و به مجموعه‌ای یکپارچه
+                برای مدیریت داوطلبان، مأموریت‌ها و فعالیت‌های امدادی
+                دسترسی داشته باشید.
               </Typography>
             </Box>
-
           </Box>
 
-          <Typography sx={{ color: "#94A3B8", fontSize: 9.5 }}>
+          <Typography
+            sx={{
+              color: "#94A3B8",
+              fontSize: 9,
+            }}
+          >
             سامانه مدیریت و هماهنگی نیروهای امدادی
           </Typography>
-
         </Box>
 
         {/* =====================================================
-            RIGHT SIDE — REGISTER (UPDATED TO LIGHT)
+            RIGHT SIDE
         ====================================================== */}
 
         <Box
           sx={{
             minWidth: 0,
             minHeight: 0,
+
             height: "100%",
+
             boxSizing: "border-box",
+
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            overflow: "auto",
-            px: { xs: 2.5, sm: 4, md: 5, lg: 6 },
-            py: { xs: 3, sm: 3.5, md: 4 },
+
+            overflow: "hidden",
+
+            px: {
+              xs: 2.2,
+              sm: 3.5,
+              md: 4.5,
+              lg: 5.5,
+            },
+
+            py: {
+              xs: 2,
+              sm: 2.5,
+              md: 3,
+            },
+
             background: "#FFFFFF",
           }}
         >
+          <Box
+            sx={{
+              width: "100%",
+              maxWidth: 410,
+              minWidth: 0,
+            }}
+          >
+            {/* =================================================
+                MOBILE LOGO
+            ================================================== */}
 
-          <Box sx={{ width: "100%", maxWidth: 430, minWidth: 0 }}>
+            <Stack
+              direction="row"
+              alignItems="center"
+              justifyContent="center"
+              spacing={1.5}
+              sx={{
+                display: {
+                  xs: "flex",
+                  md: "none",
+                },
 
-            {/* Mobile Logo */}
+                mb: 2.3,
+              }}
+            >
+              <Box
+                sx={{
+                  width: 40,
+                  height: 40,
 
-            <Stack direction="row" alignItems="center" justifyContent="center" spacing={1.2} sx={{ display: { xs: "flex", md: "none" }, mb: 3 }}>
-              <Box sx={{ width: 43, height: 43, display: "flex", alignItems: "center", justifyContent: "center", borderRadius: 2.2, background: `linear-gradient(135deg, ${colors.primary}, ${colors.cyan})` }}>
-                <VolunteerActivismRounded sx={{ color: "#fff", fontSize: 23 }} />
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+
+                  borderRadius: 2.1,
+
+                  background:
+                    `linear-gradient(135deg, ${colors.primary}, ${colors.cyan})`,
+                }}
+              >
+                <VolunteerActivismRounded
+                  sx={{
+                    color: "#FFFFFF",
+                    fontSize: 21,
+                  }}
+                />
               </Box>
-              <Typography sx={{ color: colors.text, fontSize: 19, fontWeight: 900 }}>
+
+              <Typography
+                sx={{
+                  color: colors.text,
+                  fontSize: 18,
+                  fontWeight: 900,
+                }}
+              >
                 سامانه امداد
               </Typography>
             </Stack>
 
-            {/* Register Header */}
+            {/* =================================================
+                HEADER
+            ================================================== */}
 
-            <Box sx={{ mb: 2.7 }}>
-              <Box sx={{ width: 52, height: 52, display: "flex", alignItems: "center", justifyContent: "center", borderRadius: 2.7, background: "#EFF6FF", border: "1px solid #DBEAFE", mb: 2 }}>
-                <PersonAddRounded sx={{ color: colors.primary, fontSize: 27 }} />
+            <Box
+              sx={{
+                mb: 2.2,
+              }}
+            >
+              <Box
+                sx={{
+                  width: 48,
+                  height: 48,
+
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+
+                  borderRadius: 2.4,
+
+                  background: "#EFF6FF",
+                  border: "1px solid #DBEAFE",
+
+                  mb: 1.6,
+                }}
+              >
+                <PersonAddRounded
+                  sx={{
+                    color: colors.primary,
+                    fontSize: 25,
+                  }}
+                />
               </Box>
 
-              <Typography sx={{ color: colors.text, fontSize: { xs: 25, sm: 28 }, fontWeight: 900, lineHeight: 1.35 }}>
+              <Typography
+                sx={{
+                  color: colors.text,
+
+                  fontSize: {
+                    xs: 23,
+                    sm: 26,
+                  },
+
+                  fontWeight: 900,
+
+                  lineHeight: 1.3,
+                }}
+              >
                 ایجاد حساب کاربری
               </Typography>
 
-              <Typography sx={{ color: colors.muted, fontSize: 12.5, lineHeight: 1.9, mt: 0.8, maxWidth: 390 }}>
-                اطلاعات خود را وارد کنید تا حساب شما در سامانه امداد ایجاد شود.
+              <Typography
+                sx={{
+                  color: colors.muted,
+
+                  fontSize: 11.5,
+
+                  lineHeight: 1.8,
+
+                  mt: 0.7,
+
+                  maxWidth: 380,
+                }}
+              >
+                اطلاعات خود را وارد کنید تا حساب شما در سامانه امداد
+                ایجاد شود.
               </Typography>
             </Box>
 
-            {/* Form */}
+            {/* =================================================
+                FORM
+            ================================================== */}
 
-            <Stack spacing={0}>
-
+            <Box>
               {/* Full Name */}
 
               <TextField
@@ -335,7 +737,11 @@ export default function Register() {
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <PersonRounded sx={{ fontSize: 20 }} />
+                      <PersonRounded
+                        sx={{
+                          fontSize: 20,
+                        }}
+                      />
                     </InputAdornment>
                   ),
                 }}
@@ -356,7 +762,11 @@ export default function Register() {
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <PhoneIphoneRounded sx={{ fontSize: 20 }} />
+                      <PhoneIphoneRounded
+                        sx={{
+                          fontSize: 20,
+                        }}
+                      />
                     </InputAdornment>
                   ),
                 }}
@@ -368,7 +778,11 @@ export default function Register() {
                 fullWidth
                 label="رمز عبور"
                 name="password"
-                type={showPassword ? "text" : "password"}
+                type={
+                  showPassword
+                    ? "text"
+                    : "password"
+                }
                 value={form.password}
                 onChange={handleChange}
                 autoComplete="new-password"
@@ -377,21 +791,45 @@ export default function Register() {
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <LockRounded sx={{ fontSize: 20 }} />
+                      <LockRounded
+                        sx={{
+                          fontSize: 20,
+                        }}
+                      />
                     </InputAdornment>
                   ),
+
                   endAdornment: (
                     <InputAdornment position="end">
                       <IconButton
-                        onClick={() => setShowPassword((prev) => !prev)}
+                        onClick={() =>
+                          setShowPassword(
+                            (prev) => !prev
+                          )
+                        }
                         edge="end"
-                        aria-label={showPassword ? "مخفی کردن رمز عبور" : "نمایش رمز عبور"}
+                        aria-label={
+                          showPassword
+                            ? "مخفی کردن رمز عبور"
+                            : "نمایش رمز عبور"
+                        }
                         sx={{
+                          width: 38,
+                          height: 38,
+
                           color: "#98A2B3",
-                          "&:hover": { color: colors.primary, background: "#EFF6FF" },
+
+                          "&:hover": {
+                            color: colors.primary,
+                            background: "#EFF6FF",
+                          },
                         }}
                       >
-                        {showPassword ? <VisibilityOffRounded /> : <VisibilityRounded />}
+                        {showPassword ? (
+                          <VisibilityOffRounded />
+                        ) : (
+                          <VisibilityRounded />
+                        )}
                       </IconButton>
                     </InputAdornment>
                   ),
@@ -404,19 +842,49 @@ export default function Register() {
                 fullWidth
                 label="تکرار رمز عبور"
                 name="confirm_password"
-                type={showConfirmPassword ? "text" : "password"}
+                type={
+                  showConfirmPassword
+                    ? "text"
+                    : "password"
+                }
                 value={form.confirm_password}
                 onChange={handleChange}
                 autoComplete="new-password"
                 variant="outlined"
                 error={passwordMismatch}
-                helperText={passwordMismatch ? "رمز عبور یکسان نیست" : " "}
+                helperText={
+                  passwordMismatch
+                    ? "رمز عبور یکسان نیست"
+                    : " "
+                }
                 sx={{
                   ...fieldSx,
+
                   "& .MuiFormHelperText-root": {
                     textAlign: "right",
-                    color: passwordMismatch ? "#f87171" : "transparent",
+
+                    color: passwordMismatch
+                      ? "#EF4444"
+                      : "transparent",
+
                     marginRight: 1,
+
+                    fontSize: 10,
+                  },
+
+                  "& .MuiOutlinedInput-root.Mui-error": {
+                    "& fieldset": {
+                      borderColor: "#FCA5A5",
+                    },
+
+                    "&.Mui-focused": {
+                      boxShadow:
+                        "0 0 0 3px rgba(239,68,68,.08)",
+                    },
+
+                    "&.Mui-focused fieldset": {
+                      borderColor: "#EF4444",
+                    },
                   },
                 }}
                 InputProps={{
@@ -425,102 +893,242 @@ export default function Register() {
                       <CheckCircleRounded
                         sx={{
                           fontSize: 20,
-                          color: passwordMatched ? "#34d399" : colors.primary,
+
+                          color: passwordMatched
+                            ? "#22C55E"
+                            : colors.primary,
+
+                          transition:
+                            "color .2s ease",
                         }}
                       />
                     </InputAdornment>
                   ),
+
                   endAdornment: (
                     <InputAdornment position="end">
                       <IconButton
-                        onClick={() => setShowConfirmPassword((prev) => !prev)}
+                        onClick={() =>
+                          setShowConfirmPassword(
+                            (prev) => !prev
+                          )
+                        }
                         edge="end"
-                        aria-label={showConfirmPassword ? "مخفی کردن تکرار رمز عبور" : "نمایش تکرار رمز عبور"}
+                        aria-label={
+                          showConfirmPassword
+                            ? "مخفی کردن تکرار رمز عبور"
+                            : "نمایش تکرار رمز عبور"
+                        }
                         sx={{
+                          width: 38,
+                          height: 38,
+
                           color: "#98A2B3",
-                          "&:hover": { color: colors.primary, background: "#EFF6FF" },
+
+                          "&:hover": {
+                            color: colors.primary,
+                            background: "#EFF6FF",
+                          },
                         }}
                       >
-                        {showConfirmPassword ? <VisibilityOffRounded /> : <VisibilityRounded />}
+                        {showConfirmPassword ? (
+                          <VisibilityOffRounded />
+                        ) : (
+                          <VisibilityRounded />
+                        )}
                       </IconButton>
                     </InputAdornment>
                   ),
                 }}
               />
+            </Box>
 
-            </Stack>
+            {/* =================================================
+                PASSWORD HINT
+            ================================================== */}
 
-            {/* Password Hint */}
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
 
-            <Box sx={{ display: "flex", alignItems: "center", gap: 0.8, mt: -0.4, mb: 1.5 }}>
-              <SecurityRounded sx={{ fontSize: 15, color: colors.primary }} />
-              <Typography sx={{ color: colors.muted, fontSize: 10.5, lineHeight: 1.7 }}>
+                gap: 0.9,
+
+                mt: -0.2,
+                mb: 1.4,
+
+                px: 0.2,
+              }}
+            >
+              <SecurityRounded
+                sx={{
+                  fontSize: 15,
+                  color: colors.primary,
+                  flexShrink: 0,
+                }}
+              />
+
+              <Typography
+                sx={{
+                  color: colors.muted,
+                  fontSize: 10,
+                  lineHeight: 1.6,
+                }}
+              >
                 برای امنیت بیشتر از رمز عبور قوی استفاده کنید.
               </Typography>
             </Box>
 
-            {/* Register Button — UPDATED GRADIENT */}
+            {/* =================================================
+                REGISTER BUTTON
+            ================================================== */}
 
             <Button
               fullWidth
               variant="contained"
-              size="large"
               disabled={loading}
               onClick={handleRegister}
-              startIcon={loading ? <CircularProgress size={19} color="inherit" /> : <PersonAddRounded />}
+              startIcon={
+                loading ? (
+                  <CircularProgress
+                    size={18}
+                    color="inherit"
+                  />
+                ) : (
+                  <PersonAddRounded
+                    sx={{
+                      fontSize: 20,
+                    }}
+                  />
+                )
+              }
               sx={{
-                height: 54,
+                height: 52,
+
                 borderRadius: 2.5,
-                mt: 0.5,
-                fontSize: "0.95rem",
-                fontWeight: 800,
-                color: "#fff",
-                background: `linear-gradient(135deg, ${colors.primary}, ${colors.cyan})`,
-                boxShadow: "0 12px 28px rgba(37,99,235,0.22)",
-                transition: "transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease",
+
+                mt: 0.3,
+
+                fontSize: 13,
+
+                fontWeight: 900,
+
+                color: "#FFFFFF",
+
+                textTransform: "none",
+
+                gap: 1,
+
+                background:
+                  `linear-gradient(135deg, ${colors.primary}, ${colors.cyan})`,
+
+                boxShadow:
+                  "0 10px 24px rgba(37,99,235,.19)",
+
+                transition:
+                  "transform .2s ease, box-shadow .2s ease",
+
                 "&:hover": {
-                  background: `linear-gradient(135deg, ${colors.primaryDark}, ${colors.cyan})`,
+                  background:
+                    `linear-gradient(135deg, ${colors.primaryDark}, ${colors.cyan})`,
+
                   transform: "translateY(-1px)",
-                  boxShadow: "0 16px 34px rgba(37,99,235,0.30)",
-                  filter: "brightness(1.03)",
+
+                  boxShadow:
+                    "0 14px 30px rgba(37,99,235,.26)",
                 },
-                "&:active": { transform: "translateY(0)" },
+
+                "&:active": {
+                  transform: "translateY(0)",
+                },
+
                 "&.Mui-disabled": {
-                  color: "rgba(255,255,255,0.65)",
+                  color: "rgba(255,255,255,.7)",
                   background: "#BFDBFE",
                 },
               }}
             >
-              {loading ? "در حال ایجاد حساب..." : "ایجاد حساب کاربری"}
+              {loading
+                ? "در حال ایجاد حساب..."
+                : "ایجاد حساب کاربری"}
             </Button>
 
-            {/* Divider */}
+            {/* =================================================
+                DIVIDER
+            ================================================== */}
 
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, my: 2.4 }}>
-              <Divider sx={{ flex: 1, borderColor: colors.border }} />
-              <Typography sx={{ color: colors.muted, fontSize: 10.5, whiteSpace: "nowrap" }}>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+
+                gap: 1.3,
+
+                my: 1.8,
+              }}
+            >
+              <Divider
+                sx={{
+                  flex: 1,
+                  borderColor: colors.border,
+                }}
+              />
+
+              <Typography
+                sx={{
+                  color: colors.muted,
+                  fontSize: 10,
+
+                  whiteSpace: "nowrap",
+                }}
+              >
                 قبلاً حساب دارید؟
               </Typography>
-              <Divider sx={{ flex: 1, borderColor: colors.border }} />
+
+              <Divider
+                sx={{
+                  flex: 1,
+                  borderColor: colors.border,
+                }}
+              />
             </Box>
 
-            {/* Login Button */}
+            {/* =================================================
+                LOGIN BUTTON
+            ================================================== */}
 
             <Button
               fullWidth
               variant="outlined"
-              size="large"
               onClick={() => navigate("/login")}
-              endIcon={<ArrowBackRounded />}
+              endIcon={
+                <ArrowBackRounded
+                  sx={{
+                    fontSize: 18,
+                  }}
+                />
+              }
               sx={{
-                height: 50,
+                height: 48,
+
                 borderRadius: 2.5,
+
                 color: colors.primary,
+
                 borderColor: "#DBEAFE",
+
                 background: "#EFF6FF",
-                fontSize: "0.88rem",
-                fontWeight: 700,
-                transition: "all 0.2s ease",
+
+                fontSize: 12,
+
+                fontWeight: 800,
+
+                textTransform: "none",
+
+                gap: 0.8,
+
+                transition: "all .2s ease",
+
                 "&:hover": {
                   borderColor: "#BFDBFE",
                   background: "#DBEAFE",
@@ -531,15 +1139,37 @@ export default function Register() {
               ورود به حساب کاربری
             </Button>
 
-            {/* Security Footer */}
+            {/* =================================================
+                SECURITY FOOTER
+            ================================================== */}
 
-            <Stack direction="row" alignItems="center" justifyContent="center" spacing={0.7} sx={{ mt: 2 }}>
-              <SecurityRounded sx={{ fontSize: 14, color: "#98A2B3" }} />
-              <Typography sx={{ color: "#98A2B3", fontSize: 9.5, textAlign: "center" }}>
+            <Stack
+              direction="row"
+              alignItems="center"
+              justifyContent="center"
+              spacing={0.8}
+              sx={{
+                mt: 1.5,
+              }}
+            >
+              <SecurityRounded
+                sx={{
+                  fontSize: 14,
+                  color: "#98A2B3",
+                  flexShrink: 0,
+                }}
+              />
+
+              <Typography
+                sx={{
+                  color: "#98A2B3",
+                  fontSize: 9,
+                  textAlign: "center",
+                }}
+              >
                 اطلاعات شما در محیطی امن نگهداری می‌شود
               </Typography>
             </Stack>
-
           </Box>
         </Box>
       </Box>

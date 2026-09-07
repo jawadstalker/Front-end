@@ -20,9 +20,30 @@ import {
 } from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
+import { CameraAltRounded, SaveRounded } from "@mui/icons-material";
 
 import api from "../../api/axios";
 import toast from "react-hot-toast";
+
+// ============================================================
+// COLOR PALETTE — MATCHES LOGIN / REGISTER
+// ============================================================
+const colors = {
+  primary: "#2563EB",
+  primaryDark: "#1D4ED8",
+  cyan: "#06B6D4",
+  purple: "#7C3AED",
+  text: "#172033",
+  muted: "#667085",
+  border: "#E5E7EB",
+  surface: "#FFFFFF",
+};
+
+const ROLE_LABELS = {
+  volunteer: "داوطلب امدادی",
+  admin: "مدیر سامانه",
+  coordinator: "هماهنگ‌کننده",
+};
 
 const SKILL_OPTIONS = [
   "کمک‌های اولیه",
@@ -57,29 +78,17 @@ export default function ProfileForm({ user, setUser }) {
   // =========================================================
 
   const parseSkills = (value) => {
-    if (!value) {
-      return [];
-    }
-
-    if (Array.isArray(value)) {
-      return value;
-    }
+    if (!value) return [];
+    if (Array.isArray(value)) return value;
 
     if (typeof value === "string") {
       try {
         const parsed = JSON.parse(value);
-
-        if (Array.isArray(parsed)) {
-          return parsed;
-        }
+        if (Array.isArray(parsed)) return parsed;
       } catch {
         // JSON نیست
       }
-
-      return value
-        .split(",")
-        .map((item) => item.trim())
-        .filter(Boolean);
+      return value.split(",").map((item) => item.trim()).filter(Boolean);
     }
 
     return [];
@@ -90,10 +99,7 @@ export default function ProfileForm({ user, setUser }) {
   // =========================================================
 
   useEffect(() => {
-    if (!user) {
-      return;
-    }
-
+    if (!user) return;
     setCity(user.city || "");
     setRegion(user.region || "");
     setLocation(user.location || "");
@@ -106,22 +112,12 @@ export default function ProfileForm({ user, setUser }) {
 
   const handleImageUpload = async (event) => {
     const file = event.target.files?.[0];
+    if (!file) return;
 
-    if (!file) {
-      return;
-    }
-
-    const allowedTypes = [
-      "image/jpeg",
-      "image/png",
-      "image/webp",
-    ];
+    const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
 
     if (!allowedTypes.includes(file.type)) {
-      toast.error(
-        "فقط عکس‌های JPG، PNG یا WEBP مجاز هستند"
-      );
-
+      toast.error("فقط عکس‌های JPG، PNG یا WEBP مجاز هستند");
       event.target.value = "";
       return;
     }
@@ -129,118 +125,45 @@ export default function ProfileForm({ user, setUser }) {
     const maxSize = 5 * 1024 * 1024;
 
     if (file.size > maxSize) {
-      toast.error(
-        "حجم عکس نباید بیشتر از ۵ مگابایت باشد"
-      );
-
+      toast.error("حجم عکس نباید بیشتر از ۵ مگابایت باشد");
       event.target.value = "";
       return;
     }
 
     try {
       setUploadingImage(true);
-
       const token = localStorage.getItem("token");
 
       if (!token) {
-        toast.error(
-          "لطفاً دوباره وارد حساب شوید"
-        );
-
+        toast.error("لطفاً دوباره وارد حساب شوید");
         navigate("/");
         return;
       }
 
       const formData = new FormData();
-
       formData.append("file", file);
 
-      console.log(
-        "Uploading profile image:",
-        file.name,
-        file.type,
-        file.size
-      );
+      const response = await api.put("/users/profile-image", formData, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
-      console.log(
-        "FormData file:",
-        formData.get("file")
-      );
+      if (response.data) setUser(response.data);
 
-      // مهم:
-      // Content-Type را اینجا تعیین نکن.
-      // axios interceptor خودش برای FormData هدر را حذف می‌کند.
-      const response = await api.put(
-        "/users/profile-image",
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      console.log(
-        "Profile image response:",
-        response.data
-      );
-
-      if (response.data) {
-        setUser(response.data);
-      }
-
-      toast.success(
-        "عکس پروفایل با موفقیت تغییر کرد ✅"
-      );
+      toast.success("عکس پروفایل با موفقیت تغییر کرد ✅");
     } catch (error) {
-      console.error(
-        "===================================="
-      );
-
-      console.error(
-        "PROFILE IMAGE ERROR"
-      );
-
-      console.error(
-        "Status:",
-        error.response?.status
-      );
-
-      console.error(
-        "Response:",
-        error.response?.data
-      );
-
-      console.error(
-        "Message:",
-        error.message
-      );
-
-      console.error(
-        "===================================="
-      );
+      console.error("Profile Image Error:", error.response?.data || error.message);
 
       if (error.response?.status === 401) {
-        toast.error(
-          "نشست شما منقضی شده است. دوباره وارد شوید."
-        );
-
+        toast.error("نشست شما منقضی شده است. دوباره وارد شوید.");
         localStorage.removeItem("token");
         navigate("/");
-
         return;
       }
 
-      toast.error(
-        error.response?.data?.detail ||
-        "خطا در آپلود عکس"
-      );
+      toast.error(error.response?.data?.detail || "خطا در آپلود عکس");
     } finally {
       setUploadingImage(false);
-
-      if (fileInputRef.current) {
-        fileInputRef.current.value = "";
-      }
+      if (fileInputRef.current) fileInputRef.current.value = "";
     }
   };
 
@@ -251,14 +174,10 @@ export default function ProfileForm({ user, setUser }) {
   const handleSave = async () => {
     try {
       setSaving(true);
-
       const token = localStorage.getItem("token");
 
       if (!token) {
-        toast.error(
-          "لطفاً دوباره وارد حساب شوید"
-        );
-
+        toast.error("لطفاً دوباره وارد حساب شوید");
         navigate("/");
         return;
       }
@@ -270,142 +189,130 @@ export default function ProfileForm({ user, setUser }) {
         {
           city,
           region,
-          availability_status:
-            user?.availability_status || "available",
+          availability_status: user?.availability_status || "available",
           location,
           skills: skillsValue,
         },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
 
       setUser(response.data);
-
-      toast.success(
-        "پروفایل و مهارت‌ها با موفقیت ذخیره شد ✅"
-      );
+      toast.success("پروفایل و مهارت‌ها با موفقیت ذخیره شد ✅");
 
       const role = response.data?.role;
 
-      if (role === "volunteer") {
-        navigate("/volunteer/dashboard");
-      } else if (role === "admin") {
-        navigate("/admin/dashboard");
-      } else if (role === "coordinator") {
-        navigate("/coordinator/missions");
-      } else {
-        navigate("/dashboard");
-      }
+      if (role === "volunteer") navigate("/volunteer/dashboard");
+      else if (role === "admin") navigate("/admin/dashboard");
+      else if (role === "coordinator") navigate("/coordinator/missions");
+      else navigate("/dashboard");
     } catch (error) {
-      console.error(
-        "Profile Save Error:",
-        error
-      );
-
-      console.error(
-        "Response:",
-        error.response?.data
-      );
-
-      toast.error(
-        error.response?.data?.detail ||
-        "خطا در ذخیره اطلاعات"
-      );
+      console.error("Profile Save Error:", error.response?.data || error);
+      toast.error(error.response?.data?.detail || "خطا در ذخیره اطلاعات");
     } finally {
       setSaving(false);
     }
   };
 
-  // =========================================================
-  // Profile Image URL
-  // =========================================================
-
   const profileImageUrl = user?.profile_image
     ? `http://127.0.0.1:8000${user.profile_image}`
     : undefined;
 
-  // =========================================================
-  // Loading
-  // =========================================================
-
   if (!user) {
     return (
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          minHeight: 300,
-        }}
-      >
-        <CircularProgress sx={{ color: "#16a34a" }} />
+      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: 300 }}>
+        <CircularProgress sx={{ color: colors.primary }} />
       </Box>
     );
   }
 
   // =========================================================
-  // Render
+  // Field Style — matches Login/Register
   // =========================================================
 
   const fieldSx = {
+    mb: 0.2,
     "& .MuiOutlinedInput-root": {
-      borderRadius: 2,
-      "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-        borderColor: "#16a34a",
-      },
+      borderRadius: 2.5,
+      backgroundColor: "#F8FAFC",
+      transition: "all .2s ease",
+      "& fieldset": { borderColor: colors.border },
+      "&:hover": { backgroundColor: "#F1F5F9" },
+      "&:hover fieldset": { borderColor: "#BFDBFE" },
+      "&.Mui-focused": { backgroundColor: "#FFFFFF", boxShadow: "0 0 0 3px rgba(37,99,235,.08)" },
+      "&.Mui-focused fieldset": { borderColor: colors.primary, borderWidth: 1.5 },
+      "&.Mui-disabled": { backgroundColor: "#F1F5F9" },
     },
-    "& .MuiInputLabel-root.Mui-focused": {
-      color: "#16a34a",
+    "& .MuiInputLabel-root": {
+      right: 14,
+      left: "auto",
+      color: colors.muted,
+      transformOrigin: "top right",
+      "&.Mui-focused": { color: colors.primary },
     },
+    "& .MuiInputLabel-shrink": { transformOrigin: "top right" },
+    "& .MuiInputBase-input": { textAlign: "right", color: colors.text },
   };
 
   return (
     <Paper
       elevation={0}
       sx={{
-        maxWidth: 550,
+        maxWidth: 580,
         mx: "auto",
-        p: 4,
+        p: { xs: 3, sm: 4 },
         borderRadius: 4,
-        border: "1px solid rgba(22,101,52,0.15)",
-        boxShadow: "-8px 0 24px rgba(20,83,45,0.08)",
+        border: `1px solid ${colors.border}`,
+        background: colors.surface,
+        boxShadow: "0 20px 50px rgba(23,32,51,.06)",
       }}
     >
       {/* Avatar */}
-
       <Box
         sx={{
           position: "relative",
-          width: 90,
-          height: 90,
+          width: 92,
+          height: 92,
           mx: "auto",
           mb: 2,
-          cursor: uploadingImage
-            ? "default"
-            : "pointer",
+          cursor: uploadingImage ? "default" : "pointer",
         }}
-        onClick={() => {
-          if (!uploadingImage) {
-            fileInputRef.current?.click();
-          }
-        }}
+        onClick={() => !uploadingImage && fileInputRef.current?.click()}
       >
         <Avatar
           src={profileImageUrl}
           sx={{
-            width: 90,
-            height: 90,
-            fontSize: 36,
-            background: "linear-gradient(135deg, #16a34a, #4ade80)",
-            boxShadow: "0 8px 18px rgba(22,163,74,0.3)",
+            width: 92,
+            height: 92,
+            fontSize: 34,
+            fontWeight: 800,
+            background: `linear-gradient(135deg, ${colors.primary}, ${colors.cyan})`,
+            boxShadow: "0 12px 26px rgba(37,99,235,.25)",
+            border: "3px solid #FFFFFF",
+            outline: `1px solid ${colors.border}`,
           }}
         >
-          {!user.profile_image &&
-            user.full_name?.charAt(0)}
+          {!user.profile_image && user.full_name?.charAt(0)}
         </Avatar>
+
+        <Box
+          sx={{
+            position: "absolute",
+            bottom: -2,
+            left: -2,
+            width: 30,
+            height: 30,
+            borderRadius: "50%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: "#fff",
+            background: colors.primary,
+            border: "2px solid #fff",
+            boxShadow: "0 4px 10px rgba(37,99,235,.35)",
+          }}
+        >
+          <CameraAltRounded sx={{ fontSize: 15 }} />
+        </Box>
 
         <input
           ref={fileInputRef}
@@ -421,76 +328,52 @@ export default function ProfileForm({ user, setUser }) {
               position: "absolute",
               inset: 0,
               borderRadius: "50%",
-              bgcolor: "rgba(20,83,45,0.65)",
+              bgcolor: "rgba(23,32,51,.55)",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",
-              color: "white",
-              fontSize: 11,
-              textAlign: "center",
+              color: "#fff",
+              fontSize: 10,
               gap: 0.5,
             }}
           >
-            <CircularProgress
-              size={24}
-              sx={{
-                color: "white",
-              }}
-            />
-
+            <CircularProgress size={22} sx={{ color: "#fff" }} />
             در حال آپلود...
           </Box>
         )}
       </Box>
 
-      <Typography
-        variant="body2"
-        sx={{
-          textAlign: "center",
-          color: "text.secondary",
-          mb: 2,
-        }}
-      >
-        برای تغییر عکس پروفایل روی عکس کلیک کنید
+      <Typography sx={{ textAlign: "center", color: colors.muted, fontSize: 11.5, mb: 2 }}>
+        برای تغییر عکس پروفایل روی آن کلیک کنید
       </Typography>
 
-      <Typography
-        variant="h5"
-        sx={{
-          textAlign: "center",
-          fontWeight: "bold",
-          color: "#14532d",
-        }}
-      >
+      <Typography sx={{ textAlign: "center", fontWeight: 900, fontSize: 20, color: colors.text }}>
         {user.full_name}
       </Typography>
 
-      <Typography
-        sx={{
-          textAlign: "center",
-          color: "gray",
-          mb: 2,
-        }}
-      >
-        {user.role === "volunteer"
-          ? "داوطلب امدادی"
-          : user.role === "admin"
-          ? "مدیر سامانه"
-          : user.role === "coordinator"
-          ? "هماهنگ‌کننده"
-          : user.role}
-      </Typography>
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 0.8, mb: 3 }}>
+        <Box
+          sx={{
+            display: "inline-flex",
+            alignItems: "center",
+            px: 1.6,
+            py: 0.5,
+            borderRadius: 10,
+            fontSize: 11.5,
+            fontWeight: 800,
+            color: colors.primary,
+            background: "#EFF6FF",
+            border: "1px solid #DBEAFE",
+          }}
+        >
+          {ROLE_LABELS[user.role] || user.role}
+        </Box>
+      </Box>
 
-      <Divider sx={{ mb: 3, borderColor: "rgba(22,101,52,0.15)" }} />
+      <Divider sx={{ mb: 3, borderColor: colors.border }} />
 
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          gap: 2,
-        }}
-      >
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 2.2 }}>
         <TextField
           fullWidth
           label="شماره موبایل"
@@ -503,9 +386,7 @@ export default function ProfileForm({ user, setUser }) {
           fullWidth
           label="شهر"
           value={city}
-          onChange={(e) =>
-            setCity(e.target.value)
-          }
+          onChange={(e) => setCity(e.target.value)}
           sx={fieldSx}
         />
 
@@ -513,9 +394,7 @@ export default function ProfileForm({ user, setUser }) {
           fullWidth
           label="منطقه"
           value={region}
-          onChange={(e) =>
-            setRegion(e.target.value)
-          }
+          onChange={(e) => setRegion(e.target.value)}
           sx={fieldSx}
         />
 
@@ -523,53 +402,29 @@ export default function ProfileForm({ user, setUser }) {
           fullWidth
           label="لوکیشن"
           value={location}
-          onChange={(e) =>
-            setLocation(e.target.value)
-          }
+          onChange={(e) => setLocation(e.target.value)}
           sx={fieldSx}
         />
 
         <FormControl fullWidth sx={fieldSx}>
-          <InputLabel id="skills-label">
-            مهارت‌ها
-          </InputLabel>
-
+          <InputLabel id="skills-label">مهارت‌ها</InputLabel>
           <Select
             labelId="skills-label"
             multiple
             value={skills}
             onChange={(e) => {
               const value = e.target.value;
-
-              setSkills(
-                typeof value === "string"
-                  ? value.split(",")
-                  : value
-              );
+              setSkills(typeof value === "string" ? value.split(",") : value);
             }}
-            input={
-              <OutlinedInput
-                label="مهارت‌ها"
-              />
-            }
+            input={<OutlinedInput label="مهارت‌ها" />}
             renderValue={(selected) => (
-              <Box
-                sx={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  gap: 0.5,
-                }}
-              >
+              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.6 }}>
                 {selected.map((skill) => (
                   <Chip
                     key={skill}
                     label={skill}
                     size="small"
-                    sx={{
-                      bgcolor: "#dcfce7",
-                      color: "#15803d",
-                      fontWeight: 600,
-                    }}
+                    sx={{ bgcolor: "#EFF6FF", color: colors.primary, fontWeight: 700 }}
                   />
                 ))}
               </Box>
@@ -579,78 +434,37 @@ export default function ProfileForm({ user, setUser }) {
               <MenuItem
                 key={skill}
                 value={skill}
-                sx={{
-                  "&.Mui-selected": {
-                    bgcolor: "#dcfce7 !important",
-                  },
-                }}
+                sx={{ "&.Mui-selected": { bgcolor: "#EFF6FF !important" } }}
               >
                 <Checkbox
-                  checked={
-                    skills.indexOf(skill) > -1
-                  }
-                  sx={{
-                    color: "#16a34a",
-                    "&.Mui-checked": {
-                      color: "#16a34a",
-                    },
-                  }}
+                  checked={skills.indexOf(skill) > -1}
+                  sx={{ color: colors.primary, "&.Mui-checked": { color: colors.primary } }}
                 />
-
-                <ListItemText
-                  primary={skill}
-                />
+                <ListItemText primary={skill} />
               </MenuItem>
             ))}
           </Select>
         </FormControl>
 
         {user.role === "volunteer" && (
-          <Typography
-            variant="body2"
-            sx={{
-              color: "text.secondary",
-              mt: -1,
-              lineHeight: 1.8,
-            }}
-          >
-            مهارت‌های واقعی خود را انتخاب کنید.
-            این اطلاعات در زمان تخصیص مأموریت
-            برای انتخاب داوطلب مناسب استفاده می‌شود.
+          <Typography sx={{ color: colors.muted, fontSize: 11.5, mt: -1, lineHeight: 1.9 }}>
+            مهارت‌های واقعی خود را انتخاب کنید. این اطلاعات در زمان تخصیص مأموریت برای انتخاب داوطلب مناسب استفاده می‌شود.
           </Typography>
         )}
 
         {skills.length > 0 && (
           <Box>
-            <Typography
-              variant="body2"
-              fontWeight="bold"
-              sx={{
-                mb: 1,
-                color: "#14532d",
-              }}
-            >
+            <Typography sx={{ fontWeight: 800, fontSize: 12.5, mb: 1, color: colors.text }}>
               مهارت‌های انتخاب‌شده:
             </Typography>
-
-            <Box
-              sx={{
-                display: "flex",
-                flexWrap: "wrap",
-                gap: 1,
-              }}
-            >
+            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
               {skills.map((skill) => (
                 <Chip
                   key={skill}
                   label={skill}
                   variant="outlined"
                   size="small"
-                  sx={{
-                    borderColor: "#16a34a",
-                    color: "#15803d",
-                    fontWeight: 600,
-                  }}
+                  sx={{ borderColor: "#DBEAFE", color: colors.primary, fontWeight: 700 }}
                 />
               ))}
             </Box>
@@ -658,47 +472,30 @@ export default function ProfileForm({ user, setUser }) {
         )}
 
         <Button
+          fullWidth
           variant="contained"
           size="large"
-          sx={{
-            mt: 2,
-            height: 50,
-            fontWeight: 700,
-            background: "linear-gradient(135deg, #16a34a, #15803d)",
-            boxShadow: "0 8px 16px rgba(21,128,61,0.3)",
-            "&:hover": {
-              background: "linear-gradient(135deg, #15803d, #14532d)",
-            },
-            "&.Mui-disabled": {
-              background: "#e2e8f0",
-            },
-          }}
+          disabled={saving || uploadingImage}
           onClick={handleSave}
-          disabled={
-            saving ||
-            uploadingImage
-          }
+          startIcon={saving ? <CircularProgress size={19} sx={{ color: "#fff" }} /> : <SaveRounded />}
+          sx={{
+            height: 54,
+            mt: 1,
+            borderRadius: 2.5,
+            fontSize: 14,
+            fontWeight: 800,
+            textTransform: "none",
+            background: `linear-gradient(135deg, ${colors.primary}, ${colors.cyan})`,
+            boxShadow: "0 12px 28px rgba(37,99,235,.22)",
+            "&:hover": {
+              background: `linear-gradient(135deg, ${colors.primaryDark}, ${colors.cyan})`,
+              transform: "translateY(-1px)",
+              boxShadow: "0 16px 34px rgba(37,99,235,.28)",
+            },
+            "&.Mui-disabled": { background: "#BFDBFE", color: "#fff" },
+          }}
         >
-          {saving ? (
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                gap: 1,
-              }}
-            >
-              <CircularProgress
-                size={20}
-                sx={{
-                  color: "white",
-                }}
-              />
-
-              در حال ذخیره...
-            </Box>
-          ) : (
-            "ذخیره اطلاعات"
-          )}
+          {saving ? "در حال ذخیره..." : "ذخیره اطلاعات"}
         </Button>
       </Box>
     </Paper>

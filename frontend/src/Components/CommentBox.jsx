@@ -53,29 +53,12 @@ export default function CommentBox({ productId }) {
     setSubmitting(true);
     setError("");
 
-    // const now = new Date();
-    
-    // //   زمانی به ایران 
-    // const iranTime = new Date(now.getTime() + (3.5 * 60 * 60 * 1000));
-    
-    // const persianDate = iranTime.toLocaleDateString('fa-IR', {
-    //   year: 'numeric',
-    //   month: 'long',
-    //   day: 'numeric'
-    // });
-    // const persianTime = iranTime.toLocaleTimeString('fa-IR', {
-    //   hour: '2-digit',
-    //   minute: '2-digit',
-    //   hour12: false
-    // });
-
     const newLocalComment = {
       id: `temp_${Date.now()}`,
       name: name.trim(),
       comment: comment.trim(),
       rating: rating,
-      // created_at: `${persianDate} - ${persianTime}`,
-      created_at: "", // تاریخ خالی
+      created_at: "",
       isLocal: true
     };
 
@@ -115,43 +98,6 @@ export default function CommentBox({ productId }) {
     }
   };
 
-  // //   فرمت تاریخ به فارسی با زمان
-  // const formatDate = (dateString) => {
-  //   if (!dateString) return "";
-    
-  //   try {
-  //     // اگر تاریخ به صورت رشته فارسی بود، مستقیم برگردون
-  //     if (typeof dateString === 'string' && dateString.includes(' - ')) {
-  //       return dateString;
-  //     }
-      
-  //     const date = new Date(dateString);
-      
-  //     if (isNaN(date.getTime())) return dateString;
-      
-  //     //   منطقه زمانی به ایران 
-  //     const iranTime = new Date(date.getTime() + (3.5 * 60 * 60 * 1000));
-      
-  //     const persianDate = iranTime.toLocaleDateString('fa-IR', {
-  //       day: 'numeric',
-  //       year: 'numeric',
-  //       month: 'long',
-  //     });
-      
-  //     const persianTime = iranTime.toLocaleTimeString('fa-IR', {
-  //       hour: '2-digit',
-  //       minute: '2-digit',
-  //       hour12: false
-  //     });
-      
-  //     return `${persianDate} - ${persianTime}`;
-      
-  //   } catch (error) {
-  //     console.error("خطا در فرمت تاریخ:", error);
-  //     return dateString;
-  //   }
-  // };
-
   return (
     <Box
       sx={{
@@ -177,15 +123,16 @@ export default function CommentBox({ productId }) {
               display: "flex",
               alignItems: "center",
               gap: 1,
+              color: "#1e293b",
             }}
           >
-            نظرات کاربران 💬
+            نظرات کاربران
             <Typography
               component="span"
               sx={{
                 fontSize: 12,
                 fontWeight: 400,
-                color: "#6b7280",
+                color: "#64748b",
                 mr: 1,
               }}
             >
@@ -208,13 +155,13 @@ export default function CommentBox({ productId }) {
               elevation={0}
               sx={{
                 p: 3,
-                borderRadius: "12px",
-                border: "1px solid #e5e7eb",
+                borderRadius: "14px",
+                border: "1px solid #e2e8f0",
                 textAlign: "center",
               }}
             >
-              <Typography sx={{ fontSize: 13, color: "#6b7280" }}>
-                هنوز نظری ثبت نشده است. اولین نفری باشید که نظر می‌دهید! 🌟
+              <Typography sx={{ fontSize: 13, color: "#64748b" }}>
+                هنوز نظری ثبت نشده است. اولین نفری باشید که نظر می‌دهید!
               </Typography>
             </Paper>
           ) : (
@@ -225,17 +172,17 @@ export default function CommentBox({ productId }) {
                   elevation={0}
                   sx={{
                     p: 2,
-                    borderRadius: "12px",
-                    border: "1px solid #e5e7eb",
+                    borderRadius: "14px",
+                    border: "1px solid #e2e8f0",
                     display: "flex",
                     gap: 1.5,
                     transition: "all 0.2s",
                     "&:hover": {
-                      borderColor: "#9ca3af",
+                      borderColor: "#94a3b8",
                     },
                     ...(item.isLocal && {
-                      borderColor: "#3b82f6",
-                      backgroundColor: "#f0f7ff",
+                      borderColor: "#0e9384",
+                      backgroundColor: "#f0fdfa",
                     }),
                   }}
                 >
@@ -243,7 +190,7 @@ export default function CommentBox({ productId }) {
                     sx={{
                       width: 32,
                       height: 32,
-                      bgcolor: item.isLocal ? "#3b82f6" : "#111827",
+                      bgcolor: item.isLocal ? "#0e9384" : "#334155",
                       fontSize: 12,
                       flexShrink: 0,
                     }}
@@ -266,6 +213,7 @@ export default function CommentBox({ productId }) {
                         sx={{
                           fontSize: 13,
                           fontWeight: 700,
+                          color: "#1e293b",
                           display: "flex",
                           alignItems: "center",
                           gap: 0.5,
@@ -277,8 +225,8 @@ export default function CommentBox({ productId }) {
                             component="span"
                             sx={{
                               fontSize: 9,
-                              color: "#3b82f6",
-                              backgroundColor: "#dbeafe",
+                              color: "#0e9384",
+                              backgroundColor: "#d1fae5",
                               px: 0.5,
                               py: 0.2,
                               borderRadius: "4px",
@@ -288,25 +236,6 @@ export default function CommentBox({ productId }) {
                           </Typography>
                         )}
                       </Typography>
-
-                      {/* 🔥 تاریخ کامنت شده */}
-                      {/* <Typography
-                        sx={{
-                          fontSize: 13,
-                          fontWeight: 500,
-                          color: "#6b7280",
-                          backgroundColor: "#f3f4f6",
-                          px: 1,
-                          py: 0.3,
-                          borderRadius: "6px",
-                          display: "flex",
-                          alignItems: "center",
-                          gap: 0.5,
-                          direction: "rtl",
-                        }}
-                      >
-                        {formatDate(item.created_at)}
-                      </Typography> */}
                     </Box>
 
                     <Rating
@@ -319,7 +248,7 @@ export default function CommentBox({ productId }) {
                     <Typography
                       sx={{
                         fontSize: 12,
-                        color: "#4b5563",
+                        color: "#475569",
                         lineHeight: 1.8,
                         wordBreak: "break-word",
                       }}
@@ -337,10 +266,10 @@ export default function CommentBox({ productId }) {
           elevation={0}
           sx={{
             p: 2.5,
-            borderRadius: "14px",
-            border: "1px solid #e5e7eb",
+            borderRadius: "16px",
+            border: "1px solid #e2e8f0",
             position: "sticky",
-            top: 20,
+            top: 90,
             height: "fit-content",
           }}
         >
@@ -352,14 +281,15 @@ export default function CommentBox({ productId }) {
               display: "flex",
               alignItems: "center",
               gap: 1,
+              color: "#1e293b",
             }}
           >
-            ثبت نظر شما ✍️
+            ثبت نظر شما
           </Typography>
 
           <Stack spacing={2}>
             <Box>
-              <Typography sx={{ fontSize: 11, color: "#6b7280", mb: 0.5 }}>
+              <Typography sx={{ fontSize: 11, color: "#64748b", mb: 0.5 }}>
                 امتیاز شما
               </Typography>
               <Rating
@@ -370,13 +300,13 @@ export default function CommentBox({ productId }) {
                 }}
                 size="medium"
               />
-              <Typography sx={{ fontSize: 11, color: "#9ca3af", mt: 0.5 }}>
+              <Typography sx={{ fontSize: 11, color: "#94a3b8", mt: 0.5 }}>
                 {rating === 0 && "بد"}
                 {rating === 1 && "خیلی ضعیف"}
                 {rating === 2 && "ضعیف"}
                 {rating === 3 && "متوسط"}
                 {rating === 4 && "خوب"}
-                {rating === 5 && "عالی 🌟"}
+                {rating === 5 && "عالی"}
               </Typography>
             </Box>
 
@@ -411,15 +341,11 @@ export default function CommentBox({ productId }) {
               disabled={!name.trim() || !comment.trim() || submitting}
               fullWidth
               sx={{
-                borderRadius: "8px",
+                borderRadius: "10px",
                 py: 1.5,
                 fontWeight: 600,
                 fontSize: 13,
-                background: "#111827",
-                "&:hover": { background: "#000" },
-                "&:disabled": {
-                  background: "#9ca3af",
-                },
+                textTransform: "none",
               }}
             >
               {submitting ? "در حال ارسال..." : "ارسال نظر"}

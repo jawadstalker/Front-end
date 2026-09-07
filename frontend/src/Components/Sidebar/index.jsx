@@ -22,6 +22,7 @@ import {
 } from "@mui/icons-material";
 
 import { useNavigate, useLocation } from "react-router-dom";
+import { colors, gradient } from "../../theme/colors";
 
 const drawerWidth = 260;
 
@@ -30,26 +31,10 @@ export default function Sidebar({ variant = "permanent", open = false, onClose }
   const location = useLocation();
 
   const menu = [
-    {
-      title: "داشبورد",
-      icon: <Dashboard />,
-      path: "/volunteer/dashboard",
-    },
-    {
-      title: "ماموریت‌های من",
-      icon: <Assignment />,
-      path: "/volunteer/missions",
-    },
-    {
-      title: "پروفایل",
-      icon: <Person />,
-      path: "/profile",
-    },
-    {
-      title: "اعلان‌ها",
-      icon: <Notifications />,
-      path: "/notifications",
-    },
+    { title: "داشبورد", icon: <Dashboard />, path: "/volunteer/dashboard" },
+    { title: "ماموریت‌های من", icon: <Assignment />, path: "/volunteer/missions" },
+    { title: "پروفایل", icon: <Person />, path: "/profile" },
+    { title: "اعلان‌ها", icon: <Notifications />, path: "/notifications" },
   ];
 
   const logout = () => {
@@ -69,8 +54,8 @@ export default function Sidebar({ variant = "permanent", open = false, onClose }
         "& .MuiDrawer-paper": {
           width: drawerWidth,
           boxSizing: "border-box",
-          background: "#ffffff",
-          borderLeft: "1px solid #e2e8f0",
+          background: colors.surface,
+          borderLeft: `1px solid ${colors.border}`,
           overflowX: "hidden",
         },
       }}
@@ -83,25 +68,25 @@ export default function Sidebar({ variant = "permanent", open = false, onClose }
           display: "flex",
           alignItems: "center",
           gap: 1.5,
-          borderBottom: "1px solid #eef2f6",
+          borderBottom: `1px solid ${colors.border}`,
         }}
       >
         <Avatar
           sx={{
             width: 46,
             height: 46,
-            background: "linear-gradient(135deg, #059669, #34d399)",
-            boxShadow: "0 6px 14px rgba(5,150,105,0.35)",
+            background: gradient,
+            boxShadow: "0 10px 22px rgba(37,99,235,.28)",
           }}
         >
           <VolunteerActivismRounded />
         </Avatar>
 
         <Box>
-          <Typography variant="subtitle1" fontWeight={800} sx={{ color: "#065f46" }}>
+          <Typography variant="subtitle1" fontWeight={800} sx={{ color: colors.text }}>
             ایلیا سافت
           </Typography>
-          <Typography variant="caption" sx={{ color: "text.secondary" }}>
+          <Typography variant="caption" sx={{ color: colors.muted }}>
             سامانه امداد
           </Typography>
         </Box>
@@ -110,13 +95,7 @@ export default function Sidebar({ variant = "permanent", open = false, onClose }
       <Box sx={{ flexGrow: 1, py: 2, px: 2 }}>
         <Typography
           variant="caption"
-          sx={{
-            px: 1.5,
-            mb: 1,
-            display: "block",
-            color: "text.disabled",
-            fontWeight: 600,
-          }}
+          sx={{ px: 1.5, mb: 1, display: "block", color: "#98A2B3", fontWeight: 700 }}
         >
           منو
         </Typography>
@@ -137,30 +116,19 @@ export default function Sidebar({ variant = "permanent", open = false, onClose }
                   mb: 0.5,
                   py: 1.1,
                   px: 1.5,
-                  color: active ? "#059669" : "#475569",
-                  background: active ? "#ecfdf5" : "transparent",
-                  border: active ? "1px solid #a7f3d0" : "1px solid transparent",
+                  color: active ? colors.primary : "#475569",
+                  background: active ? "#EFF6FF" : "transparent",
+                  border: active ? "1px solid #DBEAFE" : "1px solid transparent",
                   transition: "all .18s ease",
-                  "&:hover": {
-                    background: active ? "#ecfdf5" : "#f8fafc",
-                  },
+                  "&:hover": { background: active ? "#EFF6FF" : colors.bg },
                 }}
               >
-                <ListItemIcon
-                  sx={{
-                    color: active ? "#059669" : "#94a3b8",
-                    minWidth: 40,
-                  }}
-                >
+                <ListItemIcon sx={{ color: active ? colors.primary : "#98A2B3", minWidth: 40 }}>
                   {item.icon}
                 </ListItemIcon>
-
                 <ListItemText
                   primary={item.title}
-                  primaryTypographyProps={{
-                    fontWeight: active ? 700 : 500,
-                    fontSize: "0.9rem",
-                  }}
+                  primaryTypographyProps={{ fontWeight: active ? 700 : 500, fontSize: "0.9rem" }}
                 />
               </ListItemButton>
             );
@@ -168,28 +136,23 @@ export default function Sidebar({ variant = "permanent", open = false, onClose }
         </List>
       </Box>
 
-      <Box sx={{ p: 2, borderTop: "1px solid #eef2f6" }}>
-        <Divider sx={{ mb: 1.5 }} />
+      <Box sx={{ p: 2, borderTop: `1px solid ${colors.border}` }}>
+        <Divider sx={{ mb: 1.5, borderColor: colors.border }} />
         <ListItemButton
           onClick={logout}
           sx={{
             borderRadius: 3,
             py: 1.1,
             px: 1.5,
-            color: "#dc2626",
+            color: colors.danger,
             transition: "all .18s ease",
-            "&:hover": {
-              background: "#fef2f2",
-            },
+            "&:hover": { background: colors.dangerBg },
           }}
         >
-          <ListItemIcon sx={{ color: "#dc2626", minWidth: 40 }}>
+          <ListItemIcon sx={{ color: colors.danger, minWidth: 40 }}>
             <Logout />
           </ListItemIcon>
-          <ListItemText
-            primary="خروج از حساب"
-            primaryTypographyProps={{ fontWeight: 600, fontSize: "0.9rem" }}
-          />
+          <ListItemText primary="خروج از حساب" primaryTypographyProps={{ fontWeight: 600, fontSize: "0.9rem" }} />
         </ListItemButton>
       </Box>
     </Drawer>

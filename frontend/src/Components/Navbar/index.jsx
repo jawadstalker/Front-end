@@ -1,20 +1,8 @@
 import React from "react";
 
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  Box,
-  Avatar,
-  IconButton,
-  Tooltip,
-} from "@mui/material";
-
-import {
-  Notifications,
-  Menu,
-  Person,
-} from "@mui/icons-material";
+import { AppBar, Toolbar, Typography, Box, Avatar, IconButton, Tooltip } from "@mui/material";
+import { Notifications, Menu, Person } from "@mui/icons-material";
+import { colors, gradient } from "../../theme/colors";
 
 export default function Navbar({ user, onMenuClick }) {
   return (
@@ -22,19 +10,15 @@ export default function Navbar({ user, onMenuClick }) {
       position="fixed"
       elevation={0}
       sx={{
-        background: "rgba(255, 255, 255, 0.92)",
+        background: "rgba(255,255,255,.92)",
         backdropFilter: "blur(12px)",
-        color: "#1e293b",
-        borderBottom: "1px solid #e2e8f0",
+        color: colors.text,
+        borderBottom: `1px solid ${colors.border}`,
         zIndex: (theme) => theme.zIndex.drawer + 1,
       }}
     >
       <Toolbar sx={{ minHeight: { xs: 64, md: 72 } }}>
-        <IconButton
-          edge="start"
-          onClick={onMenuClick}
-          sx={{ mr: 0.5, display: { md: "none" } }}
-        >
+        <IconButton edge="start" onClick={onMenuClick} sx={{ mr: 0.5, display: { md: "none" } }}>
           <Menu />
         </IconButton>
 
@@ -47,7 +31,7 @@ export default function Navbar({ user, onMenuClick }) {
               display: { xs: "none", sm: "flex" },
               alignItems: "center",
               justifyContent: "center",
-              background: "linear-gradient(135deg, #059669, #34d399)",
+              background: gradient,
               color: "#fff",
             }}
           >
@@ -55,13 +39,10 @@ export default function Navbar({ user, onMenuClick }) {
           </Box>
 
           <Box>
-            <Typography variant="subtitle1" fontWeight={700} lineHeight={1.2}>
+            <Typography variant="subtitle1" fontWeight={700} lineHeight={1.2} sx={{ color: colors.text }}>
               پنل داوطلب امداد
             </Typography>
-            <Typography
-              variant="caption"
-              sx={{ color: "text.secondary", display: { xs: "none", sm: "block" } }}
-            >
+            <Typography variant="caption" sx={{ color: colors.muted, display: { xs: "none", sm: "block" } }}>
               مدیریت ماموریت‌ها و عملیات بحران
             </Typography>
           </Box>
@@ -71,13 +52,7 @@ export default function Navbar({ user, onMenuClick }) {
 
         <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
           <Tooltip title="اعلان‌ها">
-            <IconButton
-              sx={{
-                color: "#64748b",
-                background: "#f1f5f9",
-                "&:hover": { background: "#e2e8f0" },
-              }}
-            >
+            <IconButton sx={{ color: colors.primary, background: "#EFF6FF", "&:hover": { background: "#DBEAFE" } }}>
               <Notifications fontSize="small" />
             </IconButton>
           </Tooltip>
@@ -90,24 +65,14 @@ export default function Navbar({ user, onMenuClick }) {
               px: 1,
               py: 0.5,
               borderRadius: "12px",
-              background: "#f8fafc",
-              border: "1px solid #e2e8f0",
+              background: colors.bg,
+              border: `1px solid ${colors.border}`,
             }}
           >
             <Avatar
-              src={
-                user?.profile_image
-                  ? `http://127.0.0.1:8000${user.profile_image}`
-                  : undefined
-              }
+              src={user?.profile_image ? `http://127.0.0.1:8000${user.profile_image}` : undefined}
               alt={user?.full_name || "پروفایل"}
-              sx={{
-                width: 34,
-                height: 34,
-                fontSize: 14,
-                fontWeight: 700,
-                background: "linear-gradient(135deg, #059669, #34d399)",
-              }}
+              sx={{ width: 34, height: 34, fontSize: 14, fontWeight: 700, background: gradient }}
             >
               {!user?.profile_image && (user?.full_name?.charAt(0) || "د")}
             </Avatar>
@@ -116,7 +81,7 @@ export default function Navbar({ user, onMenuClick }) {
               sx={{
                 fontWeight: 600,
                 fontSize: 14,
-                color: "#1f2937",
+                color: colors.text,
                 display: { xs: "none", sm: "block" },
                 maxWidth: 140,
                 textOverflow: "ellipsis",

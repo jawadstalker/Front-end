@@ -1,38 +1,44 @@
-import React from "react";
+import React, { useState } from "react";
 
-import { Box } from "@mui/material";
+import { Box, useMediaQuery, useTheme } from "@mui/material";
 
 import AdminSidebar from "../AdminSidebar";
 import AdminNavbar from "../AdminNavbar";
 
 export default function AdminLayout({ children }) {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const [mobileOpen, setMobileOpen] = useState(false);
+
   return (
     <Box
       sx={{
         minHeight: "100vh",
-        background: "#f8fafc",
-        direction: "rtl",
+        background: "#f7faf9",
       }}
     >
-
       {/* Admin Navbar */}
-      <AdminNavbar />
+      <AdminNavbar onMenuClick={() => setMobileOpen(true)} />
 
       {/* Admin Sidebar */}
-      <AdminSidebar />
+      <AdminSidebar
+        variant={isMobile ? "temporary" : "permanent"}
+        open={isMobile && mobileOpen}
+        onClose={() => setMobileOpen(false)}
+      />
 
       {/* Main Content */}
       <Box
         component="main"
         sx={{
-          mr: "260px",
+          mr: isMobile ? 0 : "260px",
 
           // فاصله از Navbar
-          pt: "90px",
+          pt: isMobile ? "80px" : "96px",
 
           // فاصله از اطراف محتوا
-          px: 4,
-          pb: 4,
+          px: isMobile ? 2 : 4,
+          pb: 6,
 
           minHeight: "100vh",
 
@@ -41,7 +47,6 @@ export default function AdminLayout({ children }) {
       >
         {children}
       </Box>
-
     </Box>
   );
 }
