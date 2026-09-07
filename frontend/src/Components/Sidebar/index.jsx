@@ -23,7 +23,9 @@ import {
 
 import { useNavigate, useLocation } from "react-router-dom";
 
-export default function Sidebar() {
+const drawerWidth = 260;
+
+export default function Sidebar({ variant = "permanent", open = false, onClose }) {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -57,137 +59,139 @@ export default function Sidebar() {
 
   return (
     <Drawer
-      variant="permanent"
+      variant={variant}
+      open={open}
+      onClose={onClose}
       anchor="right"
       sx={{
-        width: 270,
+        width: drawerWidth,
+        flexShrink: 0,
         "& .MuiDrawer-paper": {
-          width: 270,
+          width: drawerWidth,
           boxSizing: "border-box",
-          background:
-            "linear-gradient(180deg, #f0faf3 0%, #dff3e5 100%)",
-          color: "#1a1a1a",
-          borderLeft: "1px solid rgba(22,101,52,0.15)",
-          boxShadow: "-8px 0 24px rgba(20,83,45,0.08)",
+          background: "#ffffff",
+          borderLeft: "1px solid #e2e8f0",
+          overflowX: "hidden",
         },
       }}
     >
       <Box
         sx={{
-          p: 3,
-          textAlign: "center",
+          pt: 8,
+          px: 3,
+          pb: 2,
+          display: "flex",
+          alignItems: "center",
+          gap: 1.5,
+          borderBottom: "1px solid #eef2f6",
         }}
       >
         <Avatar
           sx={{
-            mx: "auto",
-            width: 56,
-            height: 56,
-            mb: 1.5,
-            background: "linear-gradient(135deg, #16a34a, #4ade80)",
-            boxShadow: "0 8px 18px rgba(22,163,74,0.3)",
+            width: 46,
+            height: 46,
+            background: "linear-gradient(135deg, #059669, #34d399)",
+            boxShadow: "0 6px 14px rgba(5,150,105,0.35)",
           }}
         >
-          <VolunteerActivismRounded sx={{ fontSize: 28 }} />
+          <VolunteerActivismRounded />
         </Avatar>
 
-        <Typography
-          variant="h6"
-          fontWeight={800}
-          sx={{ color: "#14532d" }}
-        >
-          ایلیا سافت
-        </Typography>
-
-        <Typography
-          variant="body2"
-          sx={{
-            mt: 0.5,
-            color: "text.secondary",
-          }}
-        >
-          سامانه امداد
-        </Typography>
+        <Box>
+          <Typography variant="subtitle1" fontWeight={800} sx={{ color: "#065f46" }}>
+            ایلیا سافت
+          </Typography>
+          <Typography variant="caption" sx={{ color: "text.secondary" }}>
+            سامانه امداد
+          </Typography>
+        </Box>
       </Box>
 
-      <Divider sx={{ borderColor: "rgba(22,101,52,0.15)" }} />
+      <Box sx={{ flexGrow: 1, py: 2, px: 2 }}>
+        <Typography
+          variant="caption"
+          sx={{
+            px: 1.5,
+            mb: 1,
+            display: "block",
+            color: "text.disabled",
+            fontWeight: 600,
+          }}
+        >
+          منو
+        </Typography>
 
-      <List sx={{ p: 2, flexGrow: 1 }}>
-        {menu.map((item) => {
-          const active = location.pathname === item.path;
+        <List sx={{ p: 0 }}>
+          {menu.map((item) => {
+            const active = location.pathname === item.path;
 
-          return (
-            <ListItemButton
-              key={item.title}
-              onClick={() => navigate(item.path)}
-              sx={{
-                borderRadius: 2.5,
-                mb: 1,
-                py: 1.2,
-                color: active ? "#fff" : "#334155",
-                background: active
-                  ? "linear-gradient(135deg, #16a34a, #15803d)"
-                  : "transparent",
-                boxShadow: active
-                  ? "0 8px 16px rgba(21,128,61,0.3)"
-                  : "none",
-                transition: "all .2s ease",
-                "&:hover": {
-                  background: active
-                    ? "linear-gradient(135deg, #15803d, #14532d)"
-                    : "rgba(22,163,74,0.1)",
-                },
-              }}
-            >
-              <ListItemIcon
+            return (
+              <ListItemButton
+                key={item.title}
+                onClick={() => {
+                  navigate(item.path);
+                  if (onClose) onClose();
+                }}
                 sx={{
-                  color: active ? "#fff" : "#16a34a",
-                  minWidth: 40,
+                  borderRadius: 3,
+                  mb: 0.5,
+                  py: 1.1,
+                  px: 1.5,
+                  color: active ? "#059669" : "#475569",
+                  background: active ? "#ecfdf5" : "transparent",
+                  border: active ? "1px solid #a7f3d0" : "1px solid transparent",
+                  transition: "all .18s ease",
+                  "&:hover": {
+                    background: active ? "#ecfdf5" : "#f8fafc",
+                  },
                 }}
               >
-                {item.icon}
-              </ListItemIcon>
+                <ListItemIcon
+                  sx={{
+                    color: active ? "#059669" : "#94a3b8",
+                    minWidth: 40,
+                  }}
+                >
+                  {item.icon}
+                </ListItemIcon>
 
-              <ListItemText
-                primary={item.title}
-                primaryTypographyProps={{
-                  fontWeight: active ? 700 : 500,
-                  fontSize: "0.92rem",
-                }}
-              />
-            </ListItemButton>
-          );
-        })}
+                <ListItemText
+                  primary={item.title}
+                  primaryTypographyProps={{
+                    fontWeight: active ? 700 : 500,
+                    fontSize: "0.9rem",
+                  }}
+                />
+              </ListItemButton>
+            );
+          })}
+        </List>
+      </Box>
 
-        <Divider sx={{ my: 2, borderColor: "rgba(22,101,52,0.15)" }} />
-
+      <Box sx={{ p: 2, borderTop: "1px solid #eef2f6" }}>
+        <Divider sx={{ mb: 1.5 }} />
         <ListItemButton
           onClick={logout}
           sx={{
-            borderRadius: 2.5,
-            py: 1.2,
-            color: "#d32f2f",
-            transition: "all .2s ease",
+            borderRadius: 3,
+            py: 1.1,
+            px: 1.5,
+            color: "#dc2626",
+            transition: "all .18s ease",
             "&:hover": {
-              background: "rgba(211,47,47,0.08)",
+              background: "#fef2f2",
             },
           }}
         >
-          <ListItemIcon
-            sx={{
-              color: "#d32f2f",
-              minWidth: 40,
-            }}
-          >
+          <ListItemIcon sx={{ color: "#dc2626", minWidth: 40 }}>
             <Logout />
           </ListItemIcon>
-
           <ListItemText
-            primary="خروج"
-            primaryTypographyProps={{ fontWeight: 600, fontSize: "0.92rem" }}
+            primary="خروج از حساب"
+            primaryTypographyProps={{ fontWeight: 600, fontSize: "0.9rem" }}
           />
         </ListItemButton>
-      </List>
+      </Box>
     </Drawer>
   );
 }

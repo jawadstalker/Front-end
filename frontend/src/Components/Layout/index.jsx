@@ -1,58 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
 
-import {
-  Box
-} from "@mui/material";
-
+import { Box, useMediaQuery, useTheme } from "@mui/material";
 
 import Sidebar from "../Sidebar/index";
 import Navbar from "../Navbar/index";
 
+export default function Layout({ children }) {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const [mobileOpen, setMobileOpen] = useState(false);
 
+  return (
+    <Box sx={{ minHeight: "100vh", bgcolor: "background.default" }}>
+      <Sidebar
+        variant={isMobile ? "temporary" : "permanent"}
+        open={isMobile && mobileOpen}
+        onClose={() => setMobileOpen(false)}
+      />
 
-export default function Layout({children}){
+      <Navbar onMenuClick={() => setMobileOpen(true)} />
 
-
-return(
-
-<Box>
-
-
-<Sidebar/>
-
-<Navbar/>
-
-
-
-
-<Box
-
-component="main"
-
-sx={{
-
-mr:"260px",
-
-pt:10,
-
-p:3
-
-}}
-
->
-
-
-{children}
-
-
-</Box>
-
-
-
-</Box>
-
-
-);
-
-
+      <Box
+        component="main"
+        sx={{
+          mr: isMobile ? 0 : "260px",
+          pt: isMobile ? 2 : 5,
+          px: isMobile ? 2 : 4,
+          pb: 6,
+        }}
+      >
+        {children}
+      </Box>
+    </Box>
+  );
 }
