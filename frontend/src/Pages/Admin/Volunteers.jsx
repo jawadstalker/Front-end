@@ -1,22 +1,32 @@
 import React, { useEffect, useState } from "react";
 
-import {
-  Box,
-  Typography,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Chip,
-  CircularProgress,
-  Button,
-} from "@mui/material";
+import { Box, Typography, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, CircularProgress, Button } from "@mui/material";
 
 import api from "../../api/axios";
 import toast from "react-hot-toast";
+import { colors, gradient } from "../../theme/colors";
+
+function Pill({ label, color, bg, border }) {
+  return (
+    <Box
+      sx={{
+        display: "inline-flex",
+        alignItems: "center",
+        px: 1.3,
+        py: 0.35,
+        borderRadius: 10,
+        fontSize: 11.5,
+        fontWeight: 800,
+        color,
+        background: bg,
+        border: `1px solid ${border}`,
+        whiteSpace: "nowrap",
+      }}
+    >
+      {label}
+    </Box>
+  );
+}
 
 export default function Volunteers() {
   const [volunteers, setVolunteers] = useState([]);
@@ -30,17 +40,12 @@ export default function Volunteers() {
   const loadVolunteers = async () => {
     try {
       const token = localStorage.getItem("token");
-
       const response = await api.get("/users/volunteers", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
-
       setVolunteers(response.data);
     } catch (error) {
       console.log(error);
-
       toast.error("خطا در دریافت داوطلب‌ها");
     } finally {
       setLoading(false);
@@ -50,76 +55,36 @@ export default function Volunteers() {
   const toggleActive = async (userId) => {
     try {
       setChangingId(userId);
-
       const token = localStorage.getItem("token");
 
       const response = await api.patch(
         `/users/volunteers/${userId}/toggle-active`,
         {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      setVolunteers((prev) =>
-        prev.map((volunteer) =>
-          volunteer.id === userId
-            ? response.data
-            : volunteer
-        )
-      );
+      setVolunteers((prev) => prev.map((volunteer) => (volunteer.id === userId ? response.data : volunteer)));
 
-      toast.success(
-        response.data.is_active
-          ? "داوطلب فعال شد ✅"
-          : "داوطلب غیرفعال شد"
-      );
+      toast.success(response.data.is_active ? "داوطلب فعال شد ✅" : "داوطلب غیرفعال شد");
     } catch (error) {
       console.log(error);
-
-      toast.error(
-        error.response?.data?.detail ||
-          "خطا در تغییر وضعیت داوطلب"
-      );
+      toast.error(error.response?.data?.detail || "خطا در تغییر وضعیت داوطلب");
     } finally {
       setChangingId(null);
     }
   };
 
-  // =====================================================
-  // تبدیل skills از VARCHAR/JSON به آرایه
-  // =====================================================
-
   const getSkills = (skills) => {
-    if (!skills) {
-      return [];
-    }
+    if (!skills) return [];
+    if (Array.isArray(skills)) return skills;
 
-    // اگر بک‌اند مستقیماً آرایه داد
-    if (Array.isArray(skills)) {
-      return skills;
-    }
-
-    // اگر VARCHAR شامل JSON بود
     if (typeof skills === "string") {
       try {
         const parsed = JSON.parse(skills);
-
-        if (Array.isArray(parsed)) {
-          return parsed;
-        }
-
+        if (Array.isArray(parsed)) return parsed;
         return [skills];
       } catch (error) {
-        // برای داده‌های قدیمی مثل:
-        // کمک‌های اولیه, پزشکی, رانندگی
-
-        return skills
-          .split(",")
-          .map((skill) => skill.trim())
-          .filter(Boolean);
+        return skills.split(",").map((skill) => skill.trim()).filter(Boolean);
       }
     }
 
@@ -128,270 +93,121 @@ export default function Volunteers() {
 
   if (loading) {
     return (
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          mt: 10,
-        }}
-      >
-        <CircularProgress />
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 10 }}>
+        <CircularProgress sx={{ color: colors.primary }} />
       </Box>
     );
   }
 
   return (
-    <Box
-      sx={{
-        direction: "rtl",
-      }}
-    >
-      <Typography
-        variant="h4"
-        fontWeight="bold"
-        sx={{
-          mb: 4,
-        }}
-      >
+    <Box dir="rtl">
+      <Typography sx={{ color: colors.text, fontSize: { xs: 22, sm: 26 }, fontWeight: 900, mb: 4 }}>
         مدیریت داوطلب‌ها
       </Typography>
 
       <TableContainer
         component={Paper}
-        elevation={3}
-        sx={{
-          borderRadius: 3,
-        }}
+        elevation={0}
+        sx={{ borderRadius: 3.5, border: `1px solid ${colors.border}`, boxShadow: "0 12px 30px rgba(23,32,51,.05)" }}
       >
         <Table>
-
           <TableHead>
-            <TableRow>
-
-              <TableCell align="right">
-                نام
-              </TableCell>
-
-              <TableCell align="right">
-                شماره تلفن
-              </TableCell>
-
-              <TableCell align="right">
-                شهر
-              </TableCell>
-
-              <TableCell align="right">
-                منطقه
-              </TableCell>
-
-              <TableCell align="right">
-                مهارت‌ها
-              </TableCell>
-
-              <TableCell align="right">
-                وضعیت دسترسی
-              </TableCell>
-
-              <TableCell align="right">
-                وضعیت حساب
-              </TableCell>
-
-              <TableCell align="right">
-                عملیات
-              </TableCell>
-
+            <TableRow sx={{ "& th": { background: colors.bg, color: colors.muted, fontWeight: 800, fontSize: 12.5, borderBottom: `1px solid ${colors.border}` } }}>
+              <TableCell align="right">نام</TableCell>
+              <TableCell align="right">شماره تلفن</TableCell>
+              <TableCell align="right">شهر</TableCell>
+              <TableCell align="right">منطقه</TableCell>
+              <TableCell align="right">مهارت‌ها</TableCell>
+              <TableCell align="right">وضعیت دسترسی</TableCell>
+              <TableCell align="right">وضعیت حساب</TableCell>
+              <TableCell align="right">عملیات</TableCell>
             </TableRow>
           </TableHead>
 
           <TableBody>
-
             {volunteers.length === 0 ? (
-
               <TableRow>
-
-                <TableCell
-                  colSpan={8}
-                  align="center"
-                >
+                <TableCell colSpan={8} align="center" sx={{ py: 6, color: colors.muted }}>
                   هیچ داوطلبی پیدا نشد
                 </TableCell>
-
               </TableRow>
-
             ) : (
-
               volunteers.map((volunteer) => {
-
-                const skills = getSkills(
-                  volunteer.skills
-                );
+                const skills = getSkills(volunteer.skills);
+                const available = volunteer.availability_status === "available";
 
                 return (
-                  <TableRow
-                    key={volunteer.id}
-                    hover
-                  >
-
-                    {/* نام */}
-
-                    <TableCell align="right">
+                  <TableRow key={volunteer.id} hover sx={{ "& td": { borderBottom: `1px solid ${colors.border}` } }}>
+                    <TableCell align="right" sx={{ color: colors.text, fontWeight: 600 }}>
                       {volunteer.full_name}
                     </TableCell>
 
-
-                    {/* تلفن */}
-
-                    <TableCell align="right">
+                    <TableCell align="right" sx={{ color: colors.text }}>
                       {volunteer.phone}
                     </TableCell>
 
-
-                    {/* شهر */}
-
-                    <TableCell align="right">
+                    <TableCell align="right" sx={{ color: colors.text }}>
                       {volunteer.city || "-"}
                     </TableCell>
 
-
-                    {/* منطقه */}
-
-                    <TableCell align="right">
+                    <TableCell align="right" sx={{ color: colors.text }}>
                       {volunteer.region || "-"}
                     </TableCell>
 
-
-                    {/* =================================================
-                        مهارت‌ها
-                    ================================================= */}
-
                     <TableCell align="right">
-
                       {skills.length === 0 ? (
-
-                        <Typography
-                          variant="body2"
-                          color="text.secondary"
-                        >
-                          بدون مهارت ثبت‌شده
-                        </Typography>
-
+                        <Typography sx={{ color: colors.muted, fontSize: 12.5 }}>بدون مهارت ثبت‌شده</Typography>
                       ) : (
-
-                        <Box
-                          sx={{
-                            display: "flex",
-                            flexWrap: "wrap",
-                            gap: 0.7,
-                            maxWidth: 350,
-                          }}
-                        >
-
+                        <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.7, maxWidth: 350 }}>
                           {skills.map((skill, index) => (
-
-                            <Chip
-                              key={`${skill}-${index}`}
-                              label={skill}
-                              color="primary"
-                              variant="outlined"
-                              size="small"
-                            />
-
+                            <Pill key={`${skill}-${index}`} label={skill} color={colors.primary} bg="#EFF6FF" border="#DBEAFE" />
                           ))}
-
                         </Box>
-
                       )}
-
                     </TableCell>
 
-
-                    {/* وضعیت دسترسی */}
-
                     <TableCell align="right">
-
-                      <Chip
-                        label={
-                          volunteer.availability_status ===
-                          "available"
-                            ? "آماده"
-                            : "مشغول"
-                        }
-                        color={
-                          volunteer.availability_status ===
-                          "available"
-                            ? "success"
-                            : "warning"
-                        }
-                        size="small"
+                      <Pill
+                        label={available ? "آماده" : "مشغول"}
+                        color={available ? "#059669" : "#B45309"}
+                        bg={available ? "#ECFDF5" : "#FFFBEB"}
+                        border={available ? "#A7F3D0" : "#FDE68A"}
                       />
-
                     </TableCell>
 
-
-                    {/* وضعیت حساب */}
-
                     <TableCell align="right">
-
-                      <Chip
-                        label={
-                          volunteer.is_active
-                            ? "فعال"
-                            : "غیرفعال"
-                        }
-                        color={
-                          volunteer.is_active
-                            ? "success"
-                            : "error"
-                        }
-                        size="small"
+                      <Pill
+                        label={volunteer.is_active ? "فعال" : "غیرفعال"}
+                        color={volunteer.is_active ? "#059669" : colors.danger}
+                        bg={volunteer.is_active ? "#ECFDF5" : colors.dangerBg}
+                        border={volunteer.is_active ? "#A7F3D0" : "#FECACA"}
                       />
-
                     </TableCell>
 
-
-                    {/* عملیات */}
-
                     <TableCell align="right">
-
                       <Button
-                        variant={
-                          volunteer.is_active
-                            ? "outlined"
-                            : "contained"
-                        }
-                        color={
-                          volunteer.is_active
-                            ? "error"
-                            : "success"
-                        }
+                        variant="outlined"
                         size="small"
-                        disabled={
-                          changingId === volunteer.id
-                        }
-                        onClick={() =>
-                          toggleActive(
-                            volunteer.id
-                          )
-                        }
+                        disabled={changingId === volunteer.id}
+                        onClick={() => toggleActive(volunteer.id)}
+                        sx={{
+                          borderRadius: 2,
+                          fontWeight: 700,
+                          textTransform: "none",
+                          color: volunteer.is_active ? colors.danger : "#059669",
+                          borderColor: volunteer.is_active ? "#FECACA" : "#A7F3D0",
+                          background: volunteer.is_active ? colors.dangerBg : "#ECFDF5",
+                          "&:hover": { filter: "brightness(0.97)" },
+                        }}
                       >
-
-                        {changingId === volunteer.id
-                          ? "در حال تغییر..."
-                          : volunteer.is_active
-                          ? "غیرفعال کردن"
-                          : "فعال کردن"}
-
+                        {changingId === volunteer.id ? "در حال تغییر..." : volunteer.is_active ? "غیرفعال کردن" : "فعال کردن"}
                       </Button>
-
                     </TableCell>
-
                   </TableRow>
                 );
               })
             )}
-
           </TableBody>
-
         </Table>
       </TableContainer>
     </Box>

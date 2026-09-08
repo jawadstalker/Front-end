@@ -27,9 +27,7 @@ import {
 } from "@mui/icons-material";
 
 import { useNavigate } from "react-router-dom";
-
 import api from "../../../api/axios";
-
 import { toast } from "react-hot-toast";
 
 // ============================================================
@@ -40,11 +38,14 @@ const colors = {
   primary: "#2563EB",
   primaryDark: "#1D4ED8",
   cyan: "#06B6D4",
-  purple: "#7C3AED",
+
   text: "#172033",
   muted: "#667085",
+  lightText: "#98A2B3",
+
   border: "#E5E7EB",
   surface: "#FFFFFF",
+  input: "#F8FAFC",
 };
 
 export default function Register() {
@@ -61,6 +62,10 @@ export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  // ============================================================
+  // FORM CHANGE
+  // ============================================================
+
   const handleChange = (event) => {
     const { name, value } = event.target;
 
@@ -71,7 +76,8 @@ export default function Register() {
   };
 
   // ============================================================
-  // REGISTER — BACKEND LOGIC UNCHANGED
+  // REGISTER
+  // BACKEND LOGIC UNCHANGED
   // ============================================================
 
   const handleRegister = async () => {
@@ -98,7 +104,6 @@ export default function Register() {
       });
 
       toast.success("ثبت نام با موفقیت انجام شد");
-
       navigate("/login");
     } catch (error) {
       toast.error(error.response?.data?.detail || "خطا در ثبت نام");
@@ -107,11 +112,19 @@ export default function Register() {
     }
   };
 
+  // ============================================================
+  // ENTER KEY
+  // ============================================================
+
   const handleKeyDown = (event) => {
     if (event.key === "Enter" && !loading) {
       handleRegister();
     }
   };
+
+  // ============================================================
+  // PASSWORD STATE
+  // ============================================================
 
   const passwordMismatch =
     form.confirm_password.length > 0 &&
@@ -122,20 +135,20 @@ export default function Register() {
     form.password === form.confirm_password;
 
   // ============================================================
-  // FIELD STYLES
+  // FIELD STYLE
   // ============================================================
 
   const fieldSx = {
-    mb: 1.25,
+    mb: 1.5,
 
     "& .MuiOutlinedInput-root": {
-      height: 54,
+      height: 56,
       borderRadius: 2.5,
-      backgroundColor: "#F8FAFC",
+      backgroundColor: colors.input,
       color: colors.text,
 
       transition:
-        "border-color .2s ease, background-color .2s ease, box-shadow .2s ease",
+        "background-color .2s ease, border-color .2s ease, box-shadow .2s ease",
 
       "& fieldset": {
         borderColor: colors.border,
@@ -146,12 +159,12 @@ export default function Register() {
       },
 
       "&:hover fieldset": {
-        borderColor: "#BFDBFE",
+        borderColor: "#CBD5E1",
       },
 
       "&.Mui-focused": {
         backgroundColor: "#FFFFFF",
-        boxShadow: "0 0 0 3px rgba(37,99,235,.08)",
+        boxShadow: "0 0 0 4px rgba(37,99,235,.07)",
       },
 
       "&.Mui-focused fieldset": {
@@ -163,7 +176,7 @@ export default function Register() {
     "& .MuiInputLabel-root": {
       right: 15,
       left: "auto",
-      color: "#667085",
+      color: colors.muted,
       transformOrigin: "top right",
 
       "&.Mui-focused": {
@@ -183,13 +196,13 @@ export default function Register() {
       fontSize: 13,
 
       "&::placeholder": {
-        color: "#98A2B3",
+        color: colors.lightText,
         opacity: 1,
       },
     },
 
     "& .MuiInputAdornment-root": {
-      color: colors.primary,
+      color: "#64748B",
     },
 
     "& .MuiInputAdornment-positionStart": {
@@ -197,9 +210,13 @@ export default function Register() {
     },
 
     "& .MuiInputAdornment-positionEnd": {
-      marginLeft: 1,
+      marginLeft: 2,
     },
   };
+
+  // ============================================================
+  // RENDER
+  // ============================================================
 
   return (
     <Box
@@ -207,11 +224,9 @@ export default function Register() {
       sx={{
         position: "fixed",
         inset: 0,
-
         width: "100%",
         height: "100dvh",
-
-        overflow: "hidden",
+        overflow: "auto",
 
         display: "flex",
         alignItems: "center",
@@ -220,53 +235,51 @@ export default function Register() {
         boxSizing: "border-box",
 
         px: {
-          xs: 1.2,
-          sm: 2,
+          xs: 1.5,
+          sm: 2.5,
           md: 3,
         },
 
         py: {
-          xs: 1.2,
-          sm: 2,
-          md: 2.5,
+          xs: 1.5,
+          sm: 2.5,
+          md: 3,
         },
 
-        background:
-          "linear-gradient(135deg, #EFF6FF 0%, #F5F3FF 48%, #ECFEFF 100%)",
+        background: "#F7F9FC",
       }}
     >
-      {/* =====================================================
-          BACKGROUND DECORATIONS
-      ====================================================== */}
+      {/* ========================================================
+          SUBTLE BACKGROUND
+      ========================================================= */}
 
       <Box
         sx={{
           position: "absolute",
-
           width: {
-            xs: 250,
-            md: 360,
+            xs: 260,
+            md: 420,
           },
 
           height: {
-            xs: 250,
-            md: 360,
+            xs: 260,
+            md: 420,
           },
-
-          borderRadius: "50%",
 
           top: {
             xs: -150,
-            md: -190,
+            md: -220,
           },
 
           right: {
-            xs: -110,
-            md: -130,
+            xs: -130,
+            md: -180,
           },
 
+          borderRadius: "50%",
+
           background:
-            "radial-gradient(circle, rgba(37,99,235,.14), transparent 68%)",
+            "radial-gradient(circle, rgba(37,99,235,.09), transparent 70%)",
 
           pointerEvents: "none",
         }}
@@ -277,37 +290,37 @@ export default function Register() {
           position: "absolute",
 
           width: {
-            xs: 300,
-            md: 420,
+            xs: 250,
+            md: 360,
           },
 
           height: {
-            xs: 300,
-            md: 420,
+            xs: 250,
+            md: 360,
+          },
+
+          bottom: {
+            xs: -150,
+            md: -180,
+          },
+
+          left: {
+            xs: -120,
+            md: -160,
           },
 
           borderRadius: "50%",
 
-          bottom: {
-            xs: -190,
-            md: -250,
-          },
-
-          left: {
-            xs: -130,
-            md: -170,
-          },
-
           background:
-            "radial-gradient(circle, rgba(124,58,237,.11), transparent 68%)",
+            "radial-gradient(circle, rgba(6,182,212,.07), transparent 70%)",
 
           pointerEvents: "none",
         }}
       />
 
-      {/* =====================================================
+      {/* ========================================================
           MAIN CARD
-      ====================================================== */}
+      ========================================================= */}
 
       <Box
         onKeyDown={handleKeyDown}
@@ -316,42 +329,38 @@ export default function Register() {
           zIndex: 2,
 
           width: "100%",
-          maxWidth: 1080,
+          maxWidth: 1040,
 
-          height: {
-            xs: "calc(100dvh - 24px)",
-            sm: "calc(100dvh - 32px)",
-            md: "min(650px, calc(100dvh - 40px))",
+          minHeight: {
+            xs: "auto",
+            md: 630,
           },
-
-          minHeight: 0,
 
           display: {
             xs: "block",
             md: "grid",
           },
 
-          gridTemplateColumns: "0.95fr 1.05fr",
+          gridTemplateColumns: "0.9fr 1.1fr",
 
           overflow: "hidden",
 
-          boxSizing: "border-box",
-
           borderRadius: {
             xs: 3.5,
-            md: 4.5,
+            md: 4,
           },
 
-          border: "1px solid rgba(255,255,255,.95)",
+          border: "1px solid rgba(226,232,240,.9)",
 
-          background: "#FFFFFF",
+          background: colors.surface,
 
-          boxShadow: "0 24px 65px rgba(30,41,59,.13)",
+          boxShadow:
+            "0 20px 60px rgba(15,23,42,.08)",
         }}
       >
-        {/* =====================================================
-            LEFT SIDE
-        ====================================================== */}
+        {/* ======================================================
+            LEFT BRAND PANEL
+        ======================================================= */}
 
         <Box
           sx={{
@@ -364,37 +373,30 @@ export default function Register() {
             justifyContent: "space-between",
 
             minWidth: 0,
-            minHeight: 0,
-
-            overflow: "hidden",
-
-            boxSizing: "border-box",
 
             p: {
-              md: 4,
-              lg: 4.5,
+              md: 4.5,
+              lg: 5,
             },
 
-            borderLeft: "1px solid #E5E7EB",
-
             background:
-              "linear-gradient(145deg, #EFF6FF 0%, #EEF2FF 52%, #ECFEFF 100%)",
+              "linear-gradient(145deg, #F8FBFF 0%, #F3F6FF 100%)",
+
+            borderLeft: `1px solid ${colors.border}`,
           }}
         >
           <Box>
-            {/* Logo */}
+            {/* LOGO */}
 
             <Stack
               direction="row"
-              spacing={1.7}
+              spacing={1.5}
               alignItems="center"
             >
               <Box
                 sx={{
-                  width: 48,
-                  height: 48,
-
-                  flexShrink: 0,
+                  width: 46,
+                  height: 46,
 
                   display: "flex",
                   alignItems: "center",
@@ -402,17 +404,18 @@ export default function Register() {
 
                   borderRadius: 2.4,
 
+                  color: "#FFFFFF",
+
                   background:
                     `linear-gradient(135deg, ${colors.primary}, ${colors.cyan})`,
 
                   boxShadow:
-                    "0 10px 24px rgba(37,99,235,.18)",
+                    "0 8px 20px rgba(37,99,235,.16)",
                 }}
               >
                 <VolunteerActivismRounded
                   sx={{
-                    color: "#FFFFFF",
-                    fontSize: 25,
+                    fontSize: 24,
                   }}
                 />
               </Box>
@@ -431,14 +434,11 @@ export default function Register() {
 
                 <Typography
                   sx={{
-                    color: "#64748B",
-                    fontSize: 7.8,
+                    color: "#94A3B8",
+                    fontSize: 7.5,
                     fontWeight: 800,
                     letterSpacing: 1,
-
                     mt: 0.5,
-
-                    whiteSpace: "nowrap",
                   }}
                 >
                   VOLUNTEER MANAGEMENT PLATFORM
@@ -446,43 +446,44 @@ export default function Register() {
               </Box>
             </Stack>
 
-            {/* Main Left Content */}
+            {/* HERO */}
 
             <Box
               sx={{
                 mt: {
-                  md: 7,
-                  lg: 8,
+                  md: 10,
+                  lg: 12,
                 },
+
+                maxWidth: 360,
               }}
             >
               <Box
                 sx={{
                   display: "inline-flex",
                   alignItems: "center",
+                  gap: 0.8,
 
-                  gap: 0.9,
-
-                  px: 1.3,
-                  py: 0.6,
+                  px: 1.25,
+                  py: 0.65,
 
                   borderRadius: 10,
 
-                  background: "#DBEAFE",
-                  border: "1px solid #BFDBFE",
+                  background: "#EFF6FF",
+                  border: "1px solid #DBEAFE",
+
+                  color: colors.primary,
                 }}
               >
                 <PersonAddRounded
                   sx={{
-                    color: colors.primary,
                     fontSize: 16,
                   }}
                 />
 
                 <Typography
                   sx={{
-                    color: colors.primary,
-                    fontSize: 10.5,
+                    fontSize: 10,
                     fontWeight: 800,
                   }}
                 >
@@ -492,7 +493,7 @@ export default function Register() {
 
               <Typography
                 sx={{
-                  mt: 2,
+                  mt: 2.5,
 
                   color: colors.text,
 
@@ -502,89 +503,95 @@ export default function Register() {
                   },
 
                   fontWeight: 900,
-
-                  lineHeight: 1.35,
+                  lineHeight: 1.4,
 
                   letterSpacing: "-0.7px",
                 }}
               >
-                به سامانه
+                حساب خود را بسازید
                 <br />
 
                 <Box
                   component="span"
                   sx={{
                     background:
-                      `linear-gradient(90deg, ${colors.primary}, ${colors.purple})`,
+                      `linear-gradient(90deg, ${colors.primary}, ${colors.cyan})`,
 
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
                   }}
                 >
-                  امداد بپیوندید
+                  و همراه ما باشید
                 </Box>
               </Typography>
 
               <Typography
                 sx={{
-                  mt: 2,
-
-                  maxWidth: 370,
+                  mt: 2.2,
 
                   color: colors.muted,
 
                   fontSize: 12,
+                  lineHeight: 2,
 
-                  lineHeight: 1.9,
+                  maxWidth: 350,
                 }}
               >
-                حساب کاربری خود را ایجاد کنید و به مجموعه‌ای یکپارچه
-                برای مدیریت داوطلبان، مأموریت‌ها و فعالیت‌های امدادی
-                دسترسی داشته باشید.
+                با ایجاد حساب کاربری به سامانه امداد بپیوندید
+                و از امکانات سامانه برای مدیریت و هماهنگی
+                فعالیت‌های امدادی استفاده کنید.
               </Typography>
             </Box>
           </Box>
 
-          <Typography
-            sx={{
-              color: "#94A3B8",
-              fontSize: 9,
-            }}
+          {/* FOOTER */}
+
+          <Stack
+            direction="row"
+            alignItems="center"
+            spacing={0.8}
           >
-            سامانه مدیریت و هماهنگی نیروهای امدادی
-          </Typography>
+            <SecurityRounded
+              sx={{
+                fontSize: 14,
+                color: "#94A3B8",
+              }}
+            />
+
+            <Typography
+              sx={{
+                color: "#94A3B8",
+                fontSize: 9,
+              }}
+            >
+              سامانه مدیریت و هماهنگی نیروهای امدادی
+            </Typography>
+          </Stack>
         </Box>
 
-        {/* =====================================================
-            RIGHT SIDE
-        ====================================================== */}
+        {/* ======================================================
+            RIGHT FORM PANEL
+        ======================================================= */}
 
         <Box
           sx={{
             minWidth: 0,
-            minHeight: 0,
-
-            height: "100%",
-
-            boxSizing: "border-box",
 
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
 
-            overflow: "hidden",
-
             px: {
               xs: 2.2,
-              sm: 3.5,
-              md: 4.5,
-              lg: 5.5,
+              sm: 4,
+              md: 5,
+              lg: 6,
             },
 
             py: {
-              xs: 2,
-              sm: 2.5,
-              md: 3,
+              xs: 3,
+              sm: 4,
+              md: 4.5,
             },
 
             background: "#FFFFFF",
@@ -593,11 +600,10 @@ export default function Register() {
           <Box
             sx={{
               width: "100%",
-              maxWidth: 410,
-              minWidth: 0,
+              maxWidth: 400,
             }}
           >
-            {/* =================================================
+            {/* ==================================================
                 MOBILE LOGO
             ================================================== */}
 
@@ -605,14 +611,14 @@ export default function Register() {
               direction="row"
               alignItems="center"
               justifyContent="center"
-              spacing={1.5}
+              spacing={1.3}
               sx={{
                 display: {
                   xs: "flex",
                   md: "none",
                 },
 
-                mb: 2.3,
+                mb: 3,
               }}
             >
               <Box
@@ -626,13 +632,14 @@ export default function Register() {
 
                   borderRadius: 2.1,
 
+                  color: "#FFFFFF",
+
                   background:
                     `linear-gradient(135deg, ${colors.primary}, ${colors.cyan})`,
                 }}
               >
                 <VolunteerActivismRounded
                   sx={{
-                    color: "#FFFFFF",
                     fontSize: 21,
                   }}
                 />
@@ -649,13 +656,13 @@ export default function Register() {
               </Typography>
             </Stack>
 
-            {/* =================================================
+            {/* ==================================================
                 HEADER
             ================================================== */}
 
             <Box
               sx={{
-                mb: 2.2,
+                mb: 3,
               }}
             >
               <Box
@@ -667,18 +674,19 @@ export default function Register() {
                   alignItems: "center",
                   justifyContent: "center",
 
-                  borderRadius: 2.4,
+                  borderRadius: 2.3,
 
                   background: "#EFF6FF",
+                  color: colors.primary,
+
                   border: "1px solid #DBEAFE",
 
-                  mb: 1.6,
+                  mb: 1.8,
                 }}
               >
                 <PersonAddRounded
                   sx={{
-                    color: colors.primary,
-                    fontSize: 25,
+                    fontSize: 24,
                   }}
                 />
               </Box>
@@ -688,12 +696,11 @@ export default function Register() {
                   color: colors.text,
 
                   fontSize: {
-                    xs: 23,
-                    sm: 26,
+                    xs: 24,
+                    sm: 27,
                   },
 
                   fontWeight: 900,
-
                   lineHeight: 1.3,
                 }}
               >
@@ -705,25 +712,24 @@ export default function Register() {
                   color: colors.muted,
 
                   fontSize: 11.5,
+                  lineHeight: 1.9,
 
-                  lineHeight: 1.8,
+                  mt: 0.8,
 
-                  mt: 0.7,
-
-                  maxWidth: 380,
+                  maxWidth: 370,
                 }}
               >
-                اطلاعات خود را وارد کنید تا حساب شما در سامانه امداد
-                ایجاد شود.
+                اطلاعات خود را وارد کنید تا حساب شما در سامانه
+                امداد ایجاد شود.
               </Typography>
             </Box>
 
-            {/* =================================================
+            {/* ==================================================
                 FORM
             ================================================== */}
 
             <Box>
-              {/* Full Name */}
+              {/* FULL NAME */}
 
               <TextField
                 fullWidth
@@ -747,7 +753,7 @@ export default function Register() {
                 }}
               />
 
-              {/* Phone */}
+              {/* PHONE */}
 
               <TextField
                 fullWidth
@@ -772,17 +778,13 @@ export default function Register() {
                 }}
               />
 
-              {/* Password */}
+              {/* PASSWORD */}
 
               <TextField
                 fullWidth
                 label="رمز عبور"
                 name="password"
-                type={
-                  showPassword
-                    ? "text"
-                    : "password"
-                }
+                type={showPassword ? "text" : "password"}
                 value={form.password}
                 onChange={handleChange}
                 autoComplete="new-password"
@@ -803,9 +805,7 @@ export default function Register() {
                     <InputAdornment position="end">
                       <IconButton
                         onClick={() =>
-                          setShowPassword(
-                            (prev) => !prev
-                          )
+                          setShowPassword((prev) => !prev)
                         }
                         edge="end"
                         aria-label={
@@ -814,10 +814,10 @@ export default function Register() {
                             : "نمایش رمز عبور"
                         }
                         sx={{
-                          width: 38,
-                          height: 38,
+                          width: 36,
+                          height: 36,
 
-                          color: "#98A2B3",
+                          color: "#94A3B8",
 
                           "&:hover": {
                             color: colors.primary,
@@ -836,7 +836,7 @@ export default function Register() {
                 }}
               />
 
-              {/* Confirm Password */}
+              {/* CONFIRM PASSWORD */}
 
               <TextField
                 fullWidth
@@ -879,7 +879,7 @@ export default function Register() {
 
                     "&.Mui-focused": {
                       boxShadow:
-                        "0 0 0 3px rgba(239,68,68,.08)",
+                        "0 0 0 4px rgba(239,68,68,.06)",
                     },
 
                     "&.Mui-focused fieldset": {
@@ -896,7 +896,7 @@ export default function Register() {
 
                           color: passwordMatched
                             ? "#22C55E"
-                            : colors.primary,
+                            : "#64748B",
 
                           transition:
                             "color .2s ease",
@@ -920,10 +920,10 @@ export default function Register() {
                             : "نمایش تکرار رمز عبور"
                         }
                         sx={{
-                          width: 38,
-                          height: 38,
+                          width: 36,
+                          height: 36,
 
-                          color: "#98A2B3",
+                          color: "#94A3B8",
 
                           "&:hover": {
                             color: colors.primary,
@@ -943,43 +943,39 @@ export default function Register() {
               />
             </Box>
 
-            {/* =================================================
+            {/* ==================================================
                 PASSWORD HINT
             ================================================== */}
 
-            <Box
+            <Stack
+              direction="row"
+              alignItems="center"
+              spacing={0.8}
               sx={{
-                display: "flex",
-                alignItems: "center",
-
-                gap: 0.9,
-
                 mt: -0.2,
-                mb: 1.4,
-
+                mb: 1.8,
                 px: 0.2,
               }}
             >
               <SecurityRounded
                 sx={{
-                  fontSize: 15,
+                  fontSize: 14,
                   color: colors.primary,
-                  flexShrink: 0,
                 }}
               />
 
               <Typography
                 sx={{
                   color: colors.muted,
-                  fontSize: 10,
+                  fontSize: 9.5,
                   lineHeight: 1.6,
                 }}
               >
                 برای امنیت بیشتر از رمز عبور قوی استفاده کنید.
               </Typography>
-            </Box>
+            </Stack>
 
-            {/* =================================================
+            {/* ==================================================
                 REGISTER BUTTON
             ================================================== */}
 
@@ -997,20 +993,17 @@ export default function Register() {
                 ) : (
                   <PersonAddRounded
                     sx={{
-                      fontSize: 20,
+                      fontSize: 19,
                     }}
                   />
                 )
               }
               sx={{
-                height: 52,
+                height: 54,
 
                 borderRadius: 2.5,
 
-                mt: 0.3,
-
                 fontSize: 13,
-
                 fontWeight: 900,
 
                 color: "#FFFFFF",
@@ -1023,7 +1016,7 @@ export default function Register() {
                   `linear-gradient(135deg, ${colors.primary}, ${colors.cyan})`,
 
                 boxShadow:
-                  "0 10px 24px rgba(37,99,235,.19)",
+                  "0 10px 24px rgba(37,99,235,.17)",
 
                 transition:
                   "transform .2s ease, box-shadow .2s ease",
@@ -1035,7 +1028,7 @@ export default function Register() {
                   transform: "translateY(-1px)",
 
                   boxShadow:
-                    "0 14px 30px rgba(37,99,235,.26)",
+                    "0 14px 28px rgba(37,99,235,.22)",
                 },
 
                 "&:active": {
@@ -1043,7 +1036,7 @@ export default function Register() {
                 },
 
                 "&.Mui-disabled": {
-                  color: "rgba(255,255,255,.7)",
+                  color: "rgba(255,255,255,.75)",
                   background: "#BFDBFE",
                 },
               }}
@@ -1053,18 +1046,17 @@ export default function Register() {
                 : "ایجاد حساب کاربری"}
             </Button>
 
-            {/* =================================================
-                DIVIDER
+            {/* ==================================================
+                LOGIN DIVIDER
             ================================================== */}
 
             <Box
               sx={{
                 display: "flex",
                 alignItems: "center",
+                gap: 1.2,
 
-                gap: 1.3,
-
-                my: 1.8,
+                my: 2,
               }}
             >
               <Divider
@@ -1077,8 +1069,7 @@ export default function Register() {
               <Typography
                 sx={{
                   color: colors.muted,
-                  fontSize: 10,
-
+                  fontSize: 9.5,
                   whiteSpace: "nowrap",
                 }}
               >
@@ -1093,7 +1084,7 @@ export default function Register() {
               />
             </Box>
 
-            {/* =================================================
+            {/* ==================================================
                 LOGIN BUTTON
             ================================================== */}
 
@@ -1117,10 +1108,9 @@ export default function Register() {
 
                 borderColor: "#DBEAFE",
 
-                background: "#EFF6FF",
+                background: "#F8FAFF",
 
                 fontSize: 12,
-
                 fontWeight: 800,
 
                 textTransform: "none",
@@ -1131,7 +1121,7 @@ export default function Register() {
 
                 "&:hover": {
                   borderColor: "#BFDBFE",
-                  background: "#DBEAFE",
+                  background: "#EFF6FF",
                   transform: "translateY(-1px)",
                 },
               }}
@@ -1139,7 +1129,7 @@ export default function Register() {
               ورود به حساب کاربری
             </Button>
 
-            {/* =================================================
+            {/* ==================================================
                 SECURITY FOOTER
             ================================================== */}
 
@@ -1147,23 +1137,22 @@ export default function Register() {
               direction="row"
               alignItems="center"
               justifyContent="center"
-              spacing={0.8}
+              spacing={0.7}
               sx={{
-                mt: 1.5,
+                mt: 1.7,
               }}
             >
               <SecurityRounded
                 sx={{
-                  fontSize: 14,
-                  color: "#98A2B3",
-                  flexShrink: 0,
+                  fontSize: 13,
+                  color: "#A0AAB8",
                 }}
               />
 
               <Typography
                 sx={{
                   color: "#98A2B3",
-                  fontSize: 9,
+                  fontSize: 8.8,
                   textAlign: "center",
                 }}
               >

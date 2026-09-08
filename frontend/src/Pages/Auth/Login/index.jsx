@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 
 import {
@@ -14,7 +15,6 @@ import {
 
 import {
   ArrowBackRounded,
-  BadgeRounded,
   CheckCircleRounded,
   KeyRounded,
   LockRounded,
@@ -33,31 +33,19 @@ import { toast } from "react-hot-toast";
 const colors = {
   primary: "#2563EB",
   primaryDark: "#1D4ED8",
-  cyan: "#06B6D4",
-  purple: "#7C3AED",
-  text: "#172033",
-  muted: "#667085",
-  border: "#E5E7EB",
-  surface: "#FFFFFF",
-};
+  cyan: "#0891B2",
 
-const features = [
-  {
-    icon: <VolunteerActivismRounded />,
-    title: "مدیریت داوطلبان",
-    text: "مدیریت اطلاعات و فعالیت‌های داوطلبان",
-  },
-  {
-    icon: <BadgeRounded />,
-    title: "مدیریت مأموریت‌ها",
-    text: "دسترسی سریع به مأموریت‌ها و عملیات",
-  },
-  {
-    icon: <SecurityRounded />,
-    title: "امنیت و دسترسی",
-    text: "محیط امن برای اطلاعات و کاربران",
-  },
-];
+  text: "#111827",
+  muted: "#667085",
+
+  border: "#E4E7EC",
+  softBorder: "#EAECF0",
+
+  background: "#F8FAFC",
+  surface: "#FFFFFF",
+  softBlue: "#EFF6FF",
+  blueBorder: "#DBEAFE",
+};
 
 export default function Login() {
   const navigate = useNavigate();
@@ -103,46 +91,61 @@ export default function Login() {
   };
 
   /*
-   * فاصله‌های آیکون و متن در این نسخه عمداً
-   * بیشتر شده‌اند تا UI خلوت‌تر و حرفه‌ای‌تر باشد.
+   * ============================================================
+   * INPUT STYLE
+   * ============================================================
    */
+
   const fieldSx = {
     "& .MuiOutlinedInput-root": {
-      height: 60,
-      borderRadius: 3,
-      backgroundColor: "#F8FAFC",
+      height: 56,
+      borderRadius: "14px",
+
+      backgroundColor: "#F9FAFB",
+
       color: colors.text,
-      transition: "all .2s ease",
+
+      transition:
+        "background-color .2s ease, border-color .2s ease, box-shadow .2s ease",
 
       "& fieldset": {
         borderColor: colors.border,
+        borderWidth: 1,
       },
 
       "&:hover": {
-        backgroundColor: "#F1F5F9",
+        backgroundColor: "#FFFFFF",
       },
 
       "&:hover fieldset": {
-        borderColor: "#BFDBFE",
+        borderColor: "#C7D2FE",
       },
 
       "&.Mui-focused": {
         backgroundColor: "#FFFFFF",
-        boxShadow: "0 0 0 4px rgba(37,99,235,.08)",
+
+        boxShadow:
+          "0 0 0 4px rgba(37,99,235,.07)",
       },
 
       "&.Mui-focused fieldset": {
         borderColor: colors.primary,
-        borderWidth: 1.5,
+        borderWidth: 1,
       },
     },
 
     "& .MuiInputBase-input": {
-      padding: "0 12px",
+      height: "100%",
+      boxSizing: "border-box",
+
+      padding: "0 10px",
+
       textAlign: "right",
       direction: "rtl",
+
       color: colors.text,
-      fontSize: 14,
+
+      fontSize: 13,
 
       "&::placeholder": {
         color: "#98A2B3",
@@ -151,12 +154,16 @@ export default function Login() {
     },
 
     "& .MuiInputAdornment-root": {
-      marginRight: 14,
-      color: colors.primary,
+      color: "#667085",
     },
 
     "& .MuiInputAdornment-positionStart": {
+      marginRight: 10,
       paddingLeft: 2,
+    },
+
+    "& .MuiInputAdornment-positionEnd": {
+      marginLeft: 4,
     },
   };
 
@@ -166,49 +173,81 @@ export default function Login() {
       sx={{
         minHeight: "100dvh",
         width: "100%",
+
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        p: {
+
+        position: "relative",
+
+        overflow: "hidden",
+
+        background: colors.background,
+
+        px: {
           xs: 1.5,
           sm: 3,
         },
-        overflow: "auto",
-        position: "relative",
 
-        background:
-          "linear-gradient(135deg, #EFF6FF 0%, #F5F3FF 48%, #ECFEFF 100%)",
+        py: {
+          xs: 2,
+          sm: 4,
+        },
       }}
     >
       {/* =========================================================
-          BACKGROUND DECORATION
+          SUBTLE BACKGROUND
       ========================================================= */}
 
       <Box
         sx={{
           position: "absolute",
-          width: 420,
-          height: 420,
+
+          width: {
+            xs: 260,
+            md: 430,
+          },
+
+          height: {
+            xs: 260,
+            md: 430,
+          },
+
+          top: {
+            xs: -160,
+            md: -230,
+          },
+
+          right: {
+            xs: -120,
+            md: -150,
+          },
+
           borderRadius: "50%",
-          top: -230,
-          right: -130,
 
           background:
-            "radial-gradient(circle, rgba(37,99,235,.16), transparent 68%)",
+            "radial-gradient(circle, rgba(37,99,235,.08), transparent 70%)",
+
+          pointerEvents: "none",
         }}
       />
 
       <Box
         sx={{
           position: "absolute",
-          width: 460,
-          height: 460,
-          borderRadius: "50%",
-          bottom: -280,
+
+          width: 400,
+          height: 400,
+
+          bottom: -250,
           left: -170,
 
+          borderRadius: "50%",
+
           background:
-            "radial-gradient(circle, rgba(124,58,237,.13), transparent 68%)",
+            "radial-gradient(circle, rgba(8,145,178,.06), transparent 70%)",
+
+          pointerEvents: "none",
         }}
       />
 
@@ -222,36 +261,38 @@ export default function Login() {
           zIndex: 1,
 
           width: "100%",
-          maxWidth: 1120,
+          maxWidth: 1080,
 
           display: {
             xs: "block",
             md: "grid",
           },
 
-          gridTemplateColumns: "1fr 1fr",
+          gridTemplateColumns: "0.92fr 1.08fr",
 
           minHeight: {
-            md: 660,
+            md: 610,
           },
 
           overflow: "hidden",
 
           borderRadius: {
-            xs: 4,
-            md: 5,
+            xs: "22px",
+            md: "28px",
           },
 
-          border: "1px solid rgba(255,255,255,.9)",
+          backgroundColor: colors.surface,
 
-          background: colors.surface,
+          border:
+            "1px solid rgba(255,255,255,.9)",
 
-          boxShadow: "0 30px 80px rgba(30,41,59,.14)",
+          boxShadow:
+            "0 24px 70px rgba(15,23,42,.08)",
         }}
       >
-        {/* =========================================================
-            LEFT PANEL
-        ========================================================= */}
+        {/* =======================================================
+            LEFT INFORMATION PANEL
+        ======================================================= */}
 
         <Box
           sx={{
@@ -261,17 +302,21 @@ export default function Login() {
             },
 
             flexDirection: "column",
+
             justifyContent: "space-between",
+
+            minHeight: 610,
 
             p: {
               md: 5,
-              lg: 6,
+              lg: 5.5,
             },
 
             background:
-              "linear-gradient(145deg, #EFF6FF 0%, #EEF2FF 52%, #ECFEFF 100%)",
+              "linear-gradient(145deg, #F8FAFF 0%, #F8FAFC 100%)",
 
-            borderLeft: "1px solid #E5E7EB",
+            borderLeft:
+              `1px solid ${colors.softBorder}`,
           }}
         >
           <Box>
@@ -279,22 +324,21 @@ export default function Login() {
 
             <Stack
               direction="row"
-              spacing={2}
               alignItems="center"
+              spacing={1.6}
             >
               <Box
                 sx={{
-                  width: 54,
-                  height: 54,
-                  flexShrink: 0,
+                  width: 48,
+                  height: 48,
 
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
 
-                  borderRadius: 2.8,
+                  borderRadius: "14px",
 
-                  color: "#fff",
+                  color: "#FFFFFF",
 
                   background:
                     `linear-gradient(
@@ -304,12 +348,12 @@ export default function Login() {
                     )`,
 
                   boxShadow:
-                    "0 12px 25px rgba(37,99,235,.22)",
+                    "0 8px 20px rgba(37,99,235,.16)",
                 }}
               >
                 <VolunteerActivismRounded
                   sx={{
-                    fontSize: 29,
+                    fontSize: 25,
                   }}
                 />
               </Box>
@@ -318,8 +362,11 @@ export default function Login() {
                 <Typography
                   sx={{
                     color: colors.text,
-                    fontSize: 19,
+
+                    fontSize: 17,
+
                     fontWeight: 900,
+
                     lineHeight: 1.4,
                   }}
                 >
@@ -328,11 +375,15 @@ export default function Login() {
 
                 <Typography
                   sx={{
-                    color: "#64748B",
-                    fontSize: 8.5,
+                    color: "#98A2B3",
+
+                    fontSize: 7.5,
+
                     fontWeight: 800,
-                    letterSpacing: 1.1,
-                    mt: 0.6,
+
+                    letterSpacing: 1,
+
+                    mt: 0.3,
                   }}
                 >
                   VOLUNTEER MANAGEMENT PLATFORM
@@ -344,37 +395,40 @@ export default function Login() {
 
             <Box
               sx={{
-                mt: 7,
+                mt: 10,
               }}
             >
               <Box
                 sx={{
                   display: "inline-flex",
+
                   alignItems: "center",
 
-                  gap: 1.1,
+                  gap: 0.8,
 
-                  px: 1.6,
-                  py: 0.8,
+                  px: 1.3,
+                  py: 0.65,
 
-                  borderRadius: 10,
+                  borderRadius: 20,
+
+                  background: "#EFF6FF",
+
+                  border:
+                    `1px solid ${colors.blueBorder}`,
 
                   color: colors.primary,
-
-                  background: "#DBEAFE",
-
-                  border: "1px solid #BFDBFE",
                 }}
               >
                 <CheckCircleRounded
                   sx={{
-                    fontSize: 18,
+                    fontSize: 16,
                   }}
                 />
 
                 <Typography
                   sx={{
-                    fontSize: 11,
+                    fontSize: 10,
+
                     fontWeight: 800,
                   }}
                 >
@@ -389,15 +443,15 @@ export default function Login() {
                   color: colors.text,
 
                   fontSize: {
-                    md: 35,
-                    lg: 42,
+                    md: 34,
+                    lg: 39,
                   },
 
                   fontWeight: 900,
 
-                  lineHeight: 1.35,
+                  lineHeight: 1.4,
 
-                  letterSpacing: "-.8px",
+                  letterSpacing: "-1px",
                 }}
               >
                 مدیریت هوشمند
@@ -406,15 +460,7 @@ export default function Login() {
                 <Box
                   component="span"
                   sx={{
-                    background:
-                      `linear-gradient(
-                        90deg,
-                        ${colors.primary},
-                        ${colors.purple}
-                      )`,
-
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
+                    color: colors.primary,
                   }}
                 >
                   عملیات امدادی
@@ -423,129 +469,40 @@ export default function Login() {
 
               <Typography
                 sx={{
-                  mt: 2.4,
+                  mt: 2,
 
-                  maxWidth: 410,
+                  maxWidth: 390,
 
                   color: colors.muted,
 
-                  fontSize: 13,
+                  fontSize: 12,
 
-                  lineHeight: 2,
+                  lineHeight: 2.1,
                 }}
               >
-                یک محیط یکپارچه برای مدیریت داوطلبان، مأموریت‌ها و
-                فعالیت‌های امدادی با دسترسی سریع و امن.
+                یک محیط یکپارچه برای مدیریت داوطلبان،
+                مأموریت‌ها و فعالیت‌های امدادی با دسترسی
+                سریع و امن.
               </Typography>
             </Box>
-
-            {/* Features */}
-
-            <Stack
-              spacing={1.4}
-              sx={{
-                mt: 4.2,
-              }}
-            >
-              {features.map((item) => (
-                <Box
-                  key={item.title}
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-
-                    gap: 2,
-
-                    p: 1.6,
-
-                    borderRadius: 3,
-
-                    background: "rgba(255,255,255,.72)",
-
-                    border:
-                      "1px solid rgba(148,163,184,.18)",
-
-                    transition: "all .2s ease",
-
-                    "&:hover": {
-                      transform: "translateX(-3px)",
-
-                      boxShadow:
-                        "0 8px 24px rgba(37,99,235,.08)",
-                    },
-                  }}
-                >
-                  <Box
-                    sx={{
-                      width: 43,
-                      height: 43,
-
-                      flexShrink: 0,
-
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-
-                      borderRadius: 2.3,
-
-                      background: "#DBEAFE",
-
-                      color: colors.primary,
-                    }}
-                  >
-                    {React.cloneElement(item.icon, {
-                      sx: {
-                        fontSize: 21,
-                      },
-                    })}
-                  </Box>
-
-                  <Box
-                    sx={{
-                      minWidth: 0,
-                      flex: 1,
-                    }}
-                  >
-                    <Typography
-                      sx={{
-                        color: colors.text,
-                        fontSize: 12,
-                        fontWeight: 800,
-                        lineHeight: 1.6,
-                      }}
-                    >
-                      {item.title}
-                    </Typography>
-
-                    <Typography
-                      sx={{
-                        color: colors.muted,
-                        fontSize: 10,
-                        mt: 0.5,
-                        lineHeight: 1.7,
-                      }}
-                    >
-                      {item.text}
-                    </Typography>
-                  </Box>
-                </Box>
-              ))}
-            </Stack>
           </Box>
+
+          {/* Footer */}
 
           <Typography
             sx={{
-              color: "#94A3B8",
-              fontSize: 9.5,
+              color: "#98A2B3",
+
+              fontSize: 9,
             }}
           >
             سامانه مدیریت و هماهنگی نیروهای امدادی
           </Typography>
         </Box>
 
-        {/* =========================================================
-            RIGHT LOGIN PANEL
-        ========================================================= */}
+        {/* =======================================================
+            LOGIN PANEL
+        ======================================================= */}
 
         <Box
           sx={{
@@ -564,6 +521,7 @@ export default function Login() {
             py: {
               xs: 4,
               sm: 5,
+              md: 6,
             },
 
             background: "#FFFFFF",
@@ -572,40 +530,40 @@ export default function Login() {
           <Box
             sx={{
               width: "100%",
-              maxWidth: 430,
+
+              maxWidth: 410,
             }}
           >
-            {/* Mobile Logo */}
+            {/* =================================================
+                MOBILE LOGO
+            ================================================= */}
 
             <Stack
               direction="row"
               alignItems="center"
               justifyContent="center"
-
-              spacing={1.8}
-
+              spacing={1.3}
               sx={{
                 display: {
                   xs: "flex",
                   md: "none",
                 },
 
-                mb: 3.5,
+                mb: 4,
               }}
             >
               <Box
                 sx={{
-                  width: 46,
-                  height: 46,
-                  flexShrink: 0,
+                  width: 42,
+                  height: 42,
 
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
 
-                  borderRadius: 2.4,
+                  borderRadius: "12px",
 
-                  color: "#fff",
+                  color: "#FFFFFF",
 
                   background:
                     `linear-gradient(
@@ -617,7 +575,7 @@ export default function Login() {
               >
                 <VolunteerActivismRounded
                   sx={{
-                    fontSize: 24,
+                    fontSize: 22,
                   }}
                 />
               </Box>
@@ -625,7 +583,9 @@ export default function Login() {
               <Typography
                 sx={{
                   color: colors.text,
-                  fontSize: 19,
+
+                  fontSize: 18,
+
                   fontWeight: 900,
                 }}
               >
@@ -633,7 +593,9 @@ export default function Login() {
               </Typography>
             </Stack>
 
-            {/* Login Header */}
+            {/* =================================================
+                HEADER
+            ================================================= */}
 
             <Box
               sx={{
@@ -642,27 +604,28 @@ export default function Login() {
             >
               <Box
                 sx={{
-                  width: 56,
-                  height: 56,
+                  width: 50,
+                  height: 50,
 
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
 
-                  borderRadius: 2.8,
+                  borderRadius: "14px",
+
+                  background: colors.softBlue,
+
+                  border:
+                    `1px solid ${colors.blueBorder}`,
 
                   color: colors.primary,
 
-                  background: "#EFF6FF",
-
-                  border: "1px solid #DBEAFE",
-
-                  mb: 2.4,
+                  mb: 2.2,
                 }}
               >
                 <LoginRounded
                   sx={{
-                    fontSize: 28,
+                    fontSize: 25,
                   }}
                 />
               </Box>
@@ -672,13 +635,15 @@ export default function Login() {
                   color: colors.text,
 
                   fontSize: {
-                    xs: 27,
-                    sm: 30,
+                    xs: 26,
+                    sm: 29,
                   },
 
                   fontWeight: 900,
 
-                  lineHeight: 1.35,
+                  lineHeight: 1.4,
+
+                  letterSpacing: "-.5px",
                 }}
               >
                 خوش آمدید
@@ -688,31 +653,37 @@ export default function Login() {
                 sx={{
                   color: colors.muted,
 
-                  fontSize: 13,
+                  fontSize: 12,
 
-                  lineHeight: 1.9,
+                  lineHeight: 2,
 
-                  mt: 0.9,
+                  mt: 0.8,
                 }}
               >
-                برای ورود به حساب کاربری خود، اطلاعات زیر را وارد کنید.
+                برای ورود به حساب کاربری، اطلاعات خود را
+                وارد کنید.
               </Typography>
             </Box>
 
-            {/* Form */}
+            {/* =================================================
+                FORM
+            ================================================= */}
 
             <Stack
-              spacing={2.4}
+              spacing={2.2}
             >
-              {/* Phone */}
+              {/* PHONE */}
 
               <Box>
                 <Typography
                   sx={{
                     color: "#344054",
-                    fontSize: 12,
+
+                    fontSize: 11.5,
+
                     fontWeight: 800,
-                    mb: 1,
+
+                    mb: 0.9,
                   }}
                 >
                   شماره موبایل
@@ -720,22 +691,31 @@ export default function Login() {
 
                 <TextField
                   fullWidth
+
                   value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
+
+                  onChange={(e) =>
+                    setPhone(e.target.value)
+                  }
+
                   onKeyDown={handleKeyDown}
+
                   placeholder="09123456789"
+
                   type="tel"
+
                   autoComplete="tel"
+
                   dir="rtl"
+
                   sx={fieldSx}
+
                   InputProps={{
                     startAdornment: (
-                      <InputAdornment
-                        position="start"
-                      >
+                      <InputAdornment position="start">
                         <PhoneIphoneRounded
                           sx={{
-                            fontSize: 20,
+                            fontSize: 19,
                           }}
                         />
                       </InputAdornment>
@@ -744,15 +724,18 @@ export default function Login() {
                 />
               </Box>
 
-              {/* Password */}
+              {/* PASSWORD */}
 
               <Box>
                 <Typography
                   sx={{
                     color: "#344054",
-                    fontSize: 12,
+
+                    fontSize: 11.5,
+
                     fontWeight: 800,
-                    mb: 1,
+
+                    mb: 0.9,
                   }}
                 >
                   رمز عبور
@@ -760,28 +743,35 @@ export default function Login() {
 
                 <TextField
                   fullWidth
+
                   value={password}
+
                   onChange={(e) =>
                     setPassword(e.target.value)
                   }
+
                   onKeyDown={handleKeyDown}
+
                   placeholder="رمز عبور خود را وارد کنید"
+
                   type={
                     showPassword
                       ? "text"
                       : "password"
                   }
+
                   autoComplete="current-password"
+
                   dir="rtl"
+
                   sx={fieldSx}
+
                   InputProps={{
                     startAdornment: (
-                      <InputAdornment
-                        position="start"
-                      >
+                      <InputAdornment position="start">
                         <LockRounded
                           sx={{
-                            fontSize: 20,
+                            fontSize: 19,
                           }}
                         />
                       </InputAdornment>
@@ -791,8 +781,7 @@ export default function Login() {
                       <InputAdornment
                         position="end"
                         sx={{
-                          marginRight: 0,
-                          marginLeft: 1,
+                          marginLeft: 0,
                         }}
                       >
                         <IconButton
@@ -801,26 +790,42 @@ export default function Login() {
                               (prev) => !prev
                             )
                           }
+
                           edge="end"
+
                           aria-label={
                             showPassword
                               ? "پنهان کردن رمز عبور"
                               : "نمایش رمز عبور"
                           }
+
                           sx={{
+                            width: 38,
+                            height: 38,
+
                             color: "#98A2B3",
 
                             "&:hover": {
-                              color: colors.primary,
+                              color:
+                                colors.primary,
+
                               background:
-                                "#EFF6FF",
+                                colors.softBlue,
                             },
                           }}
                         >
                           {showPassword ? (
-                            <VisibilityOffRounded />
+                            <VisibilityOffRounded
+                              sx={{
+                                fontSize: 19,
+                              }}
+                            />
                           ) : (
-                            <VisibilityRounded />
+                            <VisibilityRounded
+                              sx={{
+                                fontSize: 19,
+                              }}
+                            />
                           )}
                         </IconButton>
                       </InputAdornment>
@@ -829,75 +834,82 @@ export default function Login() {
                 />
               </Box>
 
-              {/* Login Button */}
+              {/* LOGIN */}
 
               <Button
                 fullWidth
+
                 variant="contained"
+
                 disabled={loading}
+
                 onClick={handleLogin}
+
                 endIcon={
                   !loading ? (
                     <ArrowBackRounded
                       sx={{
-                        fontSize: 20,
+                        fontSize: 19,
                       }}
                     />
                   ) : null
                 }
+
                 sx={{
-                  height: 58,
+                  height: 55,
 
-                  borderRadius: 3,
+                  borderRadius: "14px",
 
-                  mt: 0.2,
+                  mt: 0.3,
 
                   textTransform: "none",
 
-                  fontSize: 13.5,
+                  fontSize: 13,
 
-                  fontWeight: 900,
+                  fontWeight: 800,
 
-                  gap: 1.2,
+                  gap: 0.9,
+
+                  color: "#FFFFFF",
 
                   background:
-                    `linear-gradient(
-                      135deg,
-                      ${colors.primary},
-                      ${colors.cyan}
-                    )`,
+                    colors.primary,
 
                   boxShadow:
-                    "0 12px 28px rgba(37,99,235,.20)",
+                    "0 8px 20px rgba(37,99,235,.16)",
 
-                  transition: "all .2s ease",
+                  transition:
+                    "transform .2s ease, background .2s ease, box-shadow .2s ease",
 
                   "&:hover": {
                     background:
-                      `linear-gradient(
-                        135deg,
-                        ${colors.primaryDark},
-                        ${colors.cyan}
-                      )`,
+                      colors.primaryDark,
 
-                    transform: "translateY(-1px)",
+                    transform:
+                      "translateY(-1px)",
 
                     boxShadow:
-                      "0 16px 34px rgba(37,99,235,.25)",
+                      "0 12px 25px rgba(37,99,235,.20)",
+                  },
+
+                  "&:active": {
+                    transform:
+                      "translateY(0)",
                   },
 
                   "&:disabled": {
                     background: "#BFDBFE",
-                    color: "#fff",
+
+                    color: "#FFFFFF",
                   },
                 }}
               >
                 {loading ? (
                   <CircularProgress
-                    size={21}
+                    size={20}
                     thickness={4}
                     sx={{
-                      color: "#fff",
+                      color: "#FFFFFF",
                     }}
                   />
                 ) : (
@@ -909,35 +921,41 @@ export default function Login() {
 
               <Button
                 fullWidth
+
                 variant="text"
+
                 onClick={() =>
                   navigate("/otp-login")
                 }
+
                 startIcon={
                   <KeyRounded
                     sx={{
-                      fontSize: 19,
+                      fontSize: 18,
                     }}
                   />
                 }
-                sx={{
-                  height: 44,
 
-                  borderRadius: 2.3,
+                sx={{
+                  height: 42,
+
+                  borderRadius: "11px",
 
                   color: "#667085",
 
-                  fontSize: 12,
+                  fontSize: 11.5,
 
                   fontWeight: 700,
 
                   textTransform: "none",
 
-                  gap: 0.8,
+                  gap: 0.6,
 
                   "&:hover": {
                     color: colors.primary,
-                    background: "#EFF6FF",
+
+                    background:
+                      colors.softBlue,
                   },
                 }}
               >
@@ -945,45 +963,59 @@ export default function Login() {
               </Button>
             </Stack>
 
+            {/* =================================================
+                DIVIDER
+            ================================================= */}
+
             <Divider
               sx={{
-                my: 2.8,
-                borderColor: colors.border,
+                my: 2.6,
+
+                borderColor:
+                  colors.softBorder,
               }}
             />
 
-            {/* Register Card */}
+            {/* =================================================
+                REGISTER
+            ================================================= */}
 
             <Box
               sx={{
                 display: "flex",
+
                 alignItems: "center",
 
-                justifyContent: "space-between",
+                justifyContent:
+                  "space-between",
 
-                gap: 2.5,
+                gap: 2,
 
-                p: 2,
+                p: 1.6,
 
-                borderRadius: 3,
+                borderRadius: "14px",
 
-                background: "#F8FAFC",
+                background: "#F9FAFB",
 
                 border:
-                  "1px solid #E5E7EB",
+                  `1px solid ${colors.softBorder}`,
               }}
             >
               <Box
                 sx={{
                   minWidth: 0,
+
                   flex: 1,
                 }}
               >
                 <Typography
                   sx={{
                     color: "#344054",
-                    fontSize: 11.5,
+
+                    fontSize: 11,
+
                     fontWeight: 700,
+
                     lineHeight: 1.6,
                   }}
                 >
@@ -993,9 +1025,12 @@ export default function Login() {
                 <Typography
                   sx={{
                     color: "#98A2B3",
-                    fontSize: 9.5,
-                    mt: 0.45,
-                    lineHeight: 1.7,
+
+                    fontSize: 9,
+
+                    mt: 0.3,
+
+                    lineHeight: 1.6,
                   }}
                 >
                   در کمتر از یک دقیقه ثبت‌نام کنید
@@ -1006,44 +1041,51 @@ export default function Login() {
                 onClick={() =>
                   navigate("/register")
                 }
+
                 endIcon={
                   <ArrowBackRounded
                     sx={{
-                      fontSize: 17,
+                      fontSize: 16,
                     }}
                   />
                 }
+
                 sx={{
                   flexShrink: 0,
 
-                  minWidth: 128,
+                  minWidth: 116,
 
-                  height: 42,
+                  height: 40,
 
-                  px: 1.8,
+                  px: 1.5,
 
-                  borderRadius: 2.3,
+                  borderRadius: "10px",
 
                   color: colors.primary,
 
-                  background: "#EFF6FF",
+                  background:
+                    colors.softBlue,
 
                   border:
-                    "1px solid #DBEAFE",
+                    `1px solid ${colors.blueBorder}`,
 
-                  fontSize: 11,
+                  fontSize: 10.5,
 
                   fontWeight: 800,
 
                   textTransform: "none",
 
-                  gap: 0.7,
+                  gap: 0.5,
 
-                  whiteSpace: "nowrap",
+                  whiteSpace:
+                    "nowrap",
 
                   "&:hover": {
-                    background: "#DBEAFE",
-                    borderColor: "#BFDBFE",
+                    background:
+                      "#DBEAFE",
+
+                    borderColor:
+                      "#BFDBFE",
                   },
                 }}
               >
@@ -1051,20 +1093,25 @@ export default function Login() {
               </Button>
             </Box>
 
-            {/* Security */}
+            {/* =================================================
+                SECURITY
+            ================================================= */}
 
             <Stack
               direction="row"
-              spacing={1}
+              spacing={0.8}
+
               justifyContent="center"
               alignItems="center"
+
               sx={{
-                mt: 2.3,
+                mt: 2.2,
               }}
             >
               <SecurityRounded
                 sx={{
-                  fontSize: 15,
+                  fontSize: 14,
+
                   color: "#98A2B3",
                 }}
               />
@@ -1072,7 +1119,9 @@ export default function Login() {
               <Typography
                 sx={{
                   color: "#98A2B3",
-                  fontSize: 9.5,
+
+                  fontSize: 9,
+
                   textAlign: "center",
                 }}
               >
